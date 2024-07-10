@@ -4,7 +4,8 @@ Afterwards it is processed with the "processing_pipeline" function, which calls 
 Next step is the feature extraction --> see ToDo, second part \
 The output of the feature extraction part should always be 
 - a feature vector
-- a target vector
+- a target vector\
+  
 Last step is the classification, in which a classifier is first defined and the trained and tested. The output of this offline-main file should (at least) be a test-accuracy.
 
 
