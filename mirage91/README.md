@@ -1,7 +1,7 @@
 # What does the code do so far?
-First the data path and the paradigm is defined. Then the Pilot-object is created and an eeg is added to this object with the "set_eeg" method. \n
-Afterwards it is processed with the "processing_pipeline" function, which calls "preprocessing", "filtering", "Epoching and rejection" and "ICA". \n
-Next step is the feature extraction --> see ToDo, second part \n
+First the data path and the paradigm is defined. Then the Pilot-object is created and an eeg is added to this object with the "set_eeg" method. \
+Afterwards it is processed with the "processing_pipeline" function, which calls "preprocessing", "filtering", "Epoching and rejection" and "ICA". \
+Next step is the feature extraction --> see ToDo, second part \
 The output of the feature extraction part should always be 
 - a feature vector
 - a target vector
