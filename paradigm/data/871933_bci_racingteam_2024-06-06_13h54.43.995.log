@@ -1,0 +1,137 @@
+7.5013 	WARNING 	Monitor specification not found. Creating a temporary one...
+14.7804 	WARNING 	User requested fullscreen with size [1280  720], but screen is actually [1920, 1080]. Using actual size
+15.8979 	EXP 	Created window1 = Window(allowGUI=True, allowStencil=False, autoLog=True, backendConf=UNKNOWN, backgroundFit=<method-wrapper '__getattribute__' of attributeSetter object at 0x00000286698A42B0>, backgroundImage=<method-wrapper '__getattribute__' of attributeSetter object at 0x00000286698A4250>, bitsMode=UNKNOWN, blendMode='avg', bpc=(8, 8, 8), color=array([0, 0, 0]), colorSpace='rgb', depthBits=8, fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x00000286698A4040>, gamma=None, gammaErrorPolicy='raise', lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x0000028677E0F9D0>, multiSample=False, name='window1', numSamples=2, pos=(0, 0), screen=0, size=array([1920, 1080]), stencilBits=0, stereo=False, title='PsychoPy', units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+15.8980 	EXP 	window1: mouseVisible = True
+15.8980 	EXP 	window1: backgroundImage = ''
+15.8981 	EXP 	window1: backgroundFit = 'none'
+15.9007 	EXP 	window1: Attempting to measure frame rate of screen (0) ...
+15.9008 	EXP 	window1: recordFrameIntervals = False
+16.0641 	EXP 	window1: recordFrameIntervals = True
+16.2481 	EXP 	Screen (0) actual frame rate measured at 59.78Hz
+16.2481 	EXP 	window1: recordFrameIntervals = False
+16.2483 	EXP 	window1: mouseVisible = False
+18.8746 	EXP 	bci_racingteam: status = STARTED
+18.8757 	EXP 	window1: mouseVisible = True
+19.0706 	EXP 	Created text_pre_run = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_pre_run', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Start\n', units='height', win=Window(...), wrapWidth=1)
+19.0708 	EXP 	window1: mouseVisible = True
+19.0738 	EXP 	Created hor_line_precue = Line(__class__=<class 'psychopy.visual.line.Line'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=None, depth=0.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=5.0, name='hor_line_precue', opacity=0.5, ori=0.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+19.0740 	EXP 	window1: mouseVisible = True
+19.0769 	EXP 	Created ver_line_precue = Line(__class__=<class 'psychopy.visual.line.Line'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=None, depth=-1.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=5.0, name='ver_line_precue', opacity=0.5, ori=90.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+19.0771 	EXP 	window1: mouseVisible = True
+19.0801 	EXP 	Created hor_line_cue = Line(__class__=<class 'psychopy.visual.line.Line'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=None, depth=0.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=5.0, name='hor_line_cue', opacity=0.5, ori=0.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+19.0803 	EXP 	window1: mouseVisible = True
+19.0850 	EXP 	Created ver_line_cue = Line(__class__=<class 'psychopy.visual.line.Line'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=None, depth=-1.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=5.0, name='ver_line_cue', opacity=0.5, ori=90.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+19.0852 	EXP 	window1: mouseVisible = True
+19.1193 	EXP 	Created image_cue = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, anchor=('center', 'center'), autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=-2.0, draggable=False, flipHoriz=False, flipVert=False, image='default.png', interpolate=True, mask=None, maskParams=None, name='image_cue', opacity=1.0, ori=0.0, pos=array([0.  , 0.26]), size=array([0.15, 0.15]), texRes=128.0, units='height', win=Window(...))
+19.1195 	EXP 	window1: mouseVisible = True
+19.1359 	EXP 	Created image_mi = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, anchor=('center', 'center'), autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, image='default.png', interpolate=True, mask=None, maskParams=None, name='image_mi', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([0.5, 0.5]), texRes=128.0, units='height', win=Window(...))
+19.1361 	EXP 	window1: mouseVisible = True
+19.1379 	EXP 	Created text_pause = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_pause', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='', units='height', win=Window(...), wrapWidth=1)
+19.1380 	EXP 	window1: mouseVisible = True
+19.1458 	EXP 	Created text_post_run = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_post_run', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='End\n', units='height', win=Window(...), wrapWidth=1)
+0.0513 	EXP 	text_pre_run: autoDraw = True
+10.9483 	EXP 	Imported classes.xlsx as conditions, 2 conditions, 2 params
+10.9488 	EXP 	Created sequence: fullRandom, trialTypes=2, nReps=2, seed=None
+10.9491 	EXP 	New trial (rep=0, index=0): {'pic_name': 'pics/foot.png', 'class_mi': 'foot'}
+10.9519 	DATA 	Keypress: space
+10.9677 	EXP 	text_pre_run: autoDraw = False
+10.9677 	EXP 	hor_line_precue: autoDraw = True
+10.9677 	EXP 	ver_line_precue: autoDraw = True
+11.5344 	EXP 	hor_line_precue: autoDraw = False
+11.5344 	EXP 	ver_line_precue: autoDraw = False
+11.5344 	EXP 	hor_line_precue: autoDraw = False
+11.5344 	EXP 	ver_line_precue: autoDraw = False
+11.5344 	EXP 	image_cue: image = 'pics/foot.png'
+11.5344 	EXP 	hor_line_cue: autoDraw = True
+11.5344 	EXP 	ver_line_cue: autoDraw = True
+11.5344 	EXP 	image_cue: autoDraw = True
+12.5677 	EXP 	hor_line_cue: autoDraw = False
+12.5677 	EXP 	ver_line_cue: autoDraw = False
+12.5677 	EXP 	image_cue: autoDraw = False
+12.5677 	EXP 	hor_line_cue: autoDraw = False
+12.5677 	EXP 	ver_line_cue: autoDraw = False
+12.5677 	EXP 	image_cue: autoDraw = False
+12.5677 	EXP 	image_mi: image = 'pics/foot.png'
+12.5677 	EXP 	image_mi: autoDraw = True
+14.5677 	EXP 	image_mi: autoDraw = False
+14.5677 	EXP 	image_mi: autoDraw = False
+14.5677 	EXP 	text_pause: autoDraw = True
+18.5523 	EXP 	New trial (rep=0, index=1): {'pic_name': 'pics/hand.png', 'class_mi': 'hand'}
+18.5675 	EXP 	text_pause: autoDraw = False
+18.5675 	EXP 	text_pause: autoDraw = False
+18.5675 	EXP 	hor_line_precue: autoDraw = True
+18.5675 	EXP 	ver_line_precue: autoDraw = True
+19.1342 	EXP 	hor_line_precue: autoDraw = False
+19.1342 	EXP 	ver_line_precue: autoDraw = False
+19.1342 	EXP 	hor_line_precue: autoDraw = False
+19.1342 	EXP 	ver_line_precue: autoDraw = False
+19.1342 	EXP 	image_cue: image = 'pics/hand.png'
+19.1342 	EXP 	hor_line_cue: autoDraw = True
+19.1342 	EXP 	ver_line_cue: autoDraw = True
+19.1342 	EXP 	image_cue: autoDraw = True
+20.1674 	EXP 	hor_line_cue: autoDraw = False
+20.1674 	EXP 	ver_line_cue: autoDraw = False
+20.1674 	EXP 	image_cue: autoDraw = False
+20.1674 	EXP 	hor_line_cue: autoDraw = False
+20.1674 	EXP 	ver_line_cue: autoDraw = False
+20.1674 	EXP 	image_cue: autoDraw = False
+20.1674 	EXP 	image_mi: image = 'pics/hand.png'
+20.1674 	EXP 	image_mi: autoDraw = True
+22.1674 	EXP 	image_mi: autoDraw = False
+22.1674 	EXP 	image_mi: autoDraw = False
+22.1674 	EXP 	text_pause: autoDraw = True
+26.1521 	EXP 	New trial (rep=1, index=0): {'pic_name': 'pics/foot.png', 'class_mi': 'foot'}
+26.1673 	EXP 	text_pause: autoDraw = False
+26.1673 	EXP 	text_pause: autoDraw = False
+26.1673 	EXP 	hor_line_precue: autoDraw = True
+26.1673 	EXP 	ver_line_precue: autoDraw = True
+26.7006 	EXP 	hor_line_precue: autoDraw = False
+26.7006 	EXP 	ver_line_precue: autoDraw = False
+26.7006 	EXP 	hor_line_precue: autoDraw = False
+26.7006 	EXP 	ver_line_precue: autoDraw = False
+26.7006 	EXP 	image_cue: image = 'pics/foot.png'
+26.7006 	EXP 	hor_line_cue: autoDraw = True
+26.7006 	EXP 	ver_line_cue: autoDraw = True
+26.7006 	EXP 	image_cue: autoDraw = True
+27.7338 	EXP 	hor_line_cue: autoDraw = False
+27.7338 	EXP 	ver_line_cue: autoDraw = False
+27.7338 	EXP 	image_cue: autoDraw = False
+27.7338 	EXP 	hor_line_cue: autoDraw = False
+27.7338 	EXP 	ver_line_cue: autoDraw = False
+27.7338 	EXP 	image_cue: autoDraw = False
+27.7338 	EXP 	image_mi: image = 'pics/foot.png'
+27.7338 	EXP 	image_mi: autoDraw = True
+29.7340 	EXP 	image_mi: autoDraw = False
+29.7340 	EXP 	image_mi: autoDraw = False
+29.7340 	EXP 	text_pause: autoDraw = True
+33.7185 	EXP 	New trial (rep=1, index=1): {'pic_name': 'pics/hand.png', 'class_mi': 'hand'}
+33.7338 	EXP 	text_pause: autoDraw = False
+33.7338 	EXP 	text_pause: autoDraw = False
+33.7338 	EXP 	hor_line_precue: autoDraw = True
+33.7338 	EXP 	ver_line_precue: autoDraw = True
+34.2671 	EXP 	hor_line_precue: autoDraw = False
+34.2671 	EXP 	ver_line_precue: autoDraw = False
+34.2671 	EXP 	hor_line_precue: autoDraw = False
+34.2671 	EXP 	ver_line_precue: autoDraw = False
+34.2671 	EXP 	image_cue: image = 'pics/hand.png'
+34.2671 	EXP 	hor_line_cue: autoDraw = True
+34.2671 	EXP 	ver_line_cue: autoDraw = True
+34.2671 	EXP 	image_cue: autoDraw = True
+35.3003 	EXP 	hor_line_cue: autoDraw = False
+35.3003 	EXP 	ver_line_cue: autoDraw = False
+35.3003 	EXP 	image_cue: autoDraw = False
+35.3003 	EXP 	hor_line_cue: autoDraw = False
+35.3003 	EXP 	ver_line_cue: autoDraw = False
+35.3003 	EXP 	image_cue: autoDraw = False
+35.3003 	EXP 	image_mi: image = 'pics/hand.png'
+35.3003 	EXP 	image_mi: autoDraw = True
+37.3005 	EXP 	image_mi: autoDraw = False
+37.3005 	EXP 	image_mi: autoDraw = False
+37.3005 	EXP 	text_pause: autoDraw = True
+41.3002 	EXP 	text_pause: autoDraw = False
+41.3002 	EXP 	text_pause: autoDraw = False
+41.3002 	EXP 	text_post_run: autoDraw = True
+43.2524 	DATA 	Keypress: space
+43.2668 	EXP 	text_post_run: autoDraw = False
+43.2670 	EXP 	bci_racingteam: status = STOPPED
+43.3591 	EXP 	window1: mouseVisible = True
