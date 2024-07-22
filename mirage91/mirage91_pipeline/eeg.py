@@ -16,7 +16,7 @@ from os.path import isfile
 
 # main
 class EEG:
-    def __init__(self, path, paradigm):
+    def __init__(self, path:str, paradigm:dict):
         '''
         Initialization of the EEG class.
         Input: 
@@ -27,12 +27,12 @@ class EEG:
         # self._path_epochs = '/'.join(self._path.split('\\')[:-1]) + '/epochs.fif'
         self._paradigm_cues = paradigm
         self._eeg_stream, self._paradigm_stream = self._load_xdf_file()
-        self._eeg_data = self._eeg_stream['time_series'].T
-        self._eeg_time = self._eeg_stream['time_stamps']
-        self._paradigm_data = self._paradigm_stream['time_series']
-        self._paradigm_time = self._paradigm_stream['time_stamps']
-        self._fs = float(self._eeg_stream['info']['nominal_srate'][0])
-        self._raw_mne = self._create_mne_object()
+        # self._eeg_data = self._eeg_stream['time_series'].T
+        # self._eeg_time = self._eeg_stream['time_stamps']
+        # self._paradigm_data = self._paradigm_stream['time_series']
+        # self._paradigm_time = self._paradigm_stream['time_stamps']
+        # self._fs = float(self._eeg_stream['info']['nominal_srate'][0])
+        self._raw_mne = self._create_mne_objects()
         self.featureX = None
         self.feautreY = None
 
@@ -54,8 +54,16 @@ class EEG:
 
         return eeg_streams, paradigm_streams
     
-    def _get_correct_streams(self, path):
-        ''' TODO: '''
+    def _get_correct_streams(self, path:str):
+        '''
+        Has the input path for on .xdf block an returns the eeg and paradigm stream
+
+        Input:
+            - path: Path to the EEG recording stored sa .xdf file. [str]
+        Output: 
+            - eeg_stream: Dictionary object that contains the EEG stream. [dict]
+            - paradigm_stream: Dictionary object that contains the EEG stream. [dict]
+        '''
         stream_data, _ = load_xdf(path)
         for idx, stream in enumerate(stream_data):
             if stream['info']['name'][0] == 'BrainVision RDA':  
@@ -65,36 +73,43 @@ class EEG:
         
         return eeg_stream, paradigm_stream
 
-    
-    def _create_mne_object(self):
+    def _create_mne_objects(self):
         '''
         Create an MNE object for the EEG data for easier use of the built in methods.
         Input: -
         Output: 
-            - raw: MNE object that contains the [mne.io.RawArray]
+            - raw: MNE object that contains the [list of mne.io.RawArray]
         '''
-        # find the first timepoint for both streams
-        eeg_first_timestep = float(self._eeg_time[0])
-        cue_first_timestep = float(self._paradigm_time[0])
+        raw_mnes = []
+        for eeg_stream, paradigm_stream in zip(self._eeg_stream, self._paradigm_stream):
+            eeg_data = eeg_stream['time_series'].T
+            eeg_time = eeg_stream['time_stamps']
+            paradigm_data = paradigm_stream['time_series']
+            paradigm_time = paradigm_stream['time_stamps']
+            fs = float(eeg_stream['info']['nominal_srate'][0])
+            # find the first timepoint for both streams
+            eeg_first_timestep = float(eeg_time[0])
+            cue_first_timestep = float(paradigm_time[0])
 
-        # determine if eeg stream started first or paradigm stream
-        if eeg_first_timestep < cue_first_timestep:
-            absolut_startpoint = eeg_first_timestep
-        else:
-            absolut_startpoint = cue_first_timestep
+            # determine if eeg stream started first or paradigm stream
+            if eeg_first_timestep < cue_first_timestep:
+                absolut_startpoint = eeg_first_timestep
+            else:
+                absolut_startpoint = cue_first_timestep
 
-        self._eeg_time -= absolut_startpoint
-        self._paradigm_time -= absolut_startpoint
+            eeg_time -= absolut_startpoint
+            paradigm_time -= absolut_startpoint
 
-        # define channel names
-        channel_names = [element['label'][0] for element in self._eeg_stream['info']['desc'][0]['channels'][0]['channel']]
+            # define channel names
+            channel_names = [element['label'][0] for element in eeg_stream['info']['desc'][0]['channels'][0]['channel']]
 
-        raw = mne.io.RawArray(self._eeg_data,
-                              mne.create_info(ch_names=channel_names,
-                                              sfreq=self._fs,
-                                              ch_types='eeg'),
-                              verbose=False)
-        return raw
+            raw = mne.io.RawArray(eeg_data,
+                                mne.create_info(ch_names=channel_names,
+                                                sfreq=fs,
+                                                ch_types='eeg'),
+                                verbose=False)
+            raw_mnes.append(raw)
+        return raw_mnes
     
     def _preprocessing(self, plot=False):
         '''
@@ -103,30 +118,31 @@ class EEG:
             - plot: Boolean variable to decide wether the MNE sensor data should be plotted.
         Output: -
         '''
-        # drop the spatial sensor channels and define eeg setup
-        self._raw_mne.drop_channels(['x_dir', 'y_dir', 'z_dir'])
-        self._raw_mne.set_montage("standard_1020")
+        for idx, _ in enumerate(self._raw_mne):
+            # drop the spatial sensor channels and define eeg setup
+            self._raw_mne[idx].drop_channels(['x_dir', 'y_dir', 'z_dir'])
+            self._raw_mne[idx].set_montage("standard_1020")
 
-        # find bad channels and interpolate them for replacement
-        bad_channels = mne.preprocessing.find_bad_channels_lof(self._raw_mne)
-        self._raw_mne.info['bads'].extend(bad_channels)
-        self._raw_mne.interpolate_bads()
+            # find bad channels and interpolate them for replacement
+            bad_channels = mne.preprocessing.find_bad_channels_lof(self._raw_mne[idx])
+            self._raw_mne[idx].info['bads'].extend(bad_channels)
+            self._raw_mne[idx].interpolate_bads()
 
-        # rereference with common average reference (CAR)
-        self._raw_mne.set_eeg_reference("average",projection=False)
+            # rereference with common average reference (CAR)
+            self._raw_mne[idx].set_eeg_reference("average",projection=False)
 
-        # apply standard high, low and notch filters
-        self._raw_mne.filter(1., None, method='iir', )  # verbose=False)  # Highpass filter at 1 Hz
-        self._raw_mne.notch_filter(50., method='iir')  # verbose=False)  # Notch filter at 50 Hz
-        self._raw_mne.filter(None, 80., method='iir')  # , verbose=False)  # Anti-aliasing filter at 80 Hz
+            # apply standard high, low and notch filters
+            self._raw_mne[idx].filter(1., None, method='iir', )  # verbose=False)  # Highpass filter at 1 Hz
+            self._raw_mne[idx].notch_filter(50., method='iir')  # verbose=False)  # Notch filter at 50 Hz
+            self._raw_mne[idx].filter(None, 80., method='iir')  # , verbose=False)  # Anti-aliasing filter at 80 Hz
 
-        # after applying the highpass, we can resample to 250Hz
-        self._raw_mne.resample(250)
+            # after applying the highpass, we can resample to 250Hz
+            self._raw_mne[idx].resample(250)
         
-        if plot:
-            scale=dict(eeg=100e-6, eog=150e-6)
-            self._raw_mne.plot(n_channels=32,scalings=scale,start=36, duration=16, show_scrollbars=False)
-            self._raw_mne.plot_sensors(show_names=True)
+        # if plot:
+        #     scale=dict(eeg=100e-6, eog=150e-6)
+        #     self._raw_mne.plot(n_channels=32,scalings=scale,start=36, duration=16, show_scrollbars=False)
+        #     self._raw_mne.plot_sensors(show_names=True)
 
     def _epoching_and_rejecting(self):
         '''
