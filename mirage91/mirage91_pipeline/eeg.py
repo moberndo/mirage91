@@ -24,7 +24,7 @@ class EEG:
             - paradigm: Paradigm that was used to record the data [dict]
         '''
         self._path = path
-        self._path_epochs = '/'.join(self._path.split('\\')[:-1]) + '/epochs.fif'
+        # self._path_epochs = '/'.join(self._path.split('\\')[:-1]) + '/epochs.fif'
         self._paradigm_cues = paradigm
         self._eeg_stream, self._paradigm_stream = self._load_xdf_file()
         self._eeg_data = self._eeg_stream['time_series'].T
@@ -44,9 +44,27 @@ class EEG:
             - eeg_stream: ...
             - paradigm_stream: ...
         '''
-        streams, _ = load_xdf(self._path)
-        _, eeg_stream, paradigm_stream = streams
+        eeg_streams = []
+        paradigm_streams = []
+
+        for path in self._path:
+            new_eeg_stream, new_paradigm_stream = self._get_correct_streams(path)
+            eeg_streams.append(new_eeg_stream)
+            paradigm_streams.append(new_paradigm_stream)
+
+        return eeg_streams, paradigm_streams
+    
+    def _get_correct_streams(self, path):
+        ''' TODO: '''
+        stream_data, _ = load_xdf(path)
+        for idx, stream in enumerate(stream_data):
+            if stream['info']['name'][0] == 'BrainVision RDA':  
+                eeg_stream = stream_data[idx]
+            elif stream['info']['name'][0] == 'paradigm':
+                paradigm_stream = stream_data[idx]
+        
         return eeg_stream, paradigm_stream
+
     
     def _create_mne_object(self):
         '''
