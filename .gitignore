@@ -1,0 +1,10 @@
+# GITIGNORE
+
+# all .xdf files
+*.xdf
+
+# everything inside the _storage folder
+_storage/*
+
+# all __pycache__ folders
+__pycache__/
