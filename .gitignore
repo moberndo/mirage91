@@ -3,6 +3,15 @@
 # all .xdf files
 *.xdf
 
+# all .fif files
+*.fif
+
+# all .npy files
+*.npy
+
+# all .set files
+*.set
+
 # everything inside the _storage folder
 _storage/*
 
