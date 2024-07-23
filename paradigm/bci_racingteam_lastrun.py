@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2024.1.5),
-    on July 18, 2024, at 10:56
+    on July 22, 2024, at 16:34
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -33,16 +33,17 @@ import sys  # to get file system encoding
 import psychopy.iohub as io
 from psychopy.hardware import keyboard
 
-# Run 'Before Experiment' code from code_pre_run
+# Run 'Before Experiment' code from code_pre_block
 from pylsl import StreamInfo, StreamOutlet
 
 info = StreamInfo(name='paradigm',type='Markers',channel_count=1,channel_format='string')
 outlet=StreamOutlet(info)
 
 pre_cue_t = 2.0
-cue_t = 0.0
 mi_t = 4.5
 pause_t = 2.5
+
+outlet.push_sample(x=["start_block"])
 # --- Setup global variables (available in all functions) ---
 # create a device manager to handle hardware (keyboards, mice, mirophones, speakers, etc.)
 deviceManager = hardware.DeviceManager()
@@ -141,7 +142,7 @@ def setupData(expInfo, dataDir=None):
     thisExp = data.ExperimentHandler(
         name=expName, version='',
         extraInfo=expInfo, runtimeInfo=None,
-        originPath='C:\\Users\\Mirage91\\Documents\\github\\mirage91\\paradigm\\bci_racingteam_lastrun.py',
+        originPath='C:\\Users\\Markus\\Mirage91\\Program\\mirage91\\paradigm\\bci_racingteam_lastrun.py',
         savePickle=True, saveWideText=True,
         dataFileName=dataDir + os.sep + filename, sortColumns='time'
     )
@@ -380,8 +381,8 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     
     # Start Code - component code to be run after the window creation
     
-    # --- Initialize components for Routine "pre_run" ---
-    text_pre_run = visual.TextStim(win=win, name='text_pre_run',
+    # --- Initialize components for Routine "pre_block" ---
+    text_pre_block = visual.TextStim(win=win, name='text_pre_block',
         text='Press any key to start ...',
         font='Open Sans',
         pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
@@ -442,9 +443,9 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         depth=0.0);
     key_resp = keyboard.Keyboard(deviceName='key_resp')
     
-    # --- Initialize components for Routine "post_run" ---
+    # --- Initialize components for Routine "post_block" ---
     text_post_run = visual.TextStim(win=win, name='text_post_run',
-        text='End\n',
+        text='Block Finished. Yuhu!',
         font='Open Sans',
         pos=(0, 0), height=0.05, wrapWidth=None, ori=0.0, 
         color='white', colorSpace='rgb', opacity=None, 
@@ -480,19 +481,19 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         format='%Y-%m-%d %Hh%M.%S.%f %z', fractionalSecondDigits=6
     )
     
-    # --- Prepare to start Routine "pre_run" ---
+    # --- Prepare to start Routine "pre_block" ---
     continueRoutine = True
     # update component parameters for each repeat
-    thisExp.addData('pre_run.started', globalClock.getTime(format='float'))
+    thisExp.addData('pre_block.started', globalClock.getTime(format='float'))
     # create starting attributes for key_resp_start
     key_resp_start.keys = []
     key_resp_start.rt = []
     _key_resp_start_allKeys = []
-    # Run 'Begin Routine' code from code_pre_run
+    # Run 'Begin Routine' code from code_pre_block
     outlet.push_sample(x=["pre_run"])
     # keep track of which components have finished
-    pre_runComponents = [text_pre_run, key_resp_start]
-    for thisComponent in pre_runComponents:
+    pre_blockComponents = [text_pre_block, key_resp_start]
+    for thisComponent in pre_blockComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
         thisComponent.tStartRefresh = None
@@ -504,7 +505,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     frameN = -1
     
-    # --- Run Routine "pre_run" ---
+    # --- Run Routine "pre_block" ---
     routineForceEnded = not continueRoutine
     while continueRoutine:
         # get current time
@@ -514,23 +515,23 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
         
-        # *text_pre_run* updates
+        # *text_pre_block* updates
         
-        # if text_pre_run is starting this frame...
-        if text_pre_run.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+        # if text_pre_block is starting this frame...
+        if text_pre_block.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
             # keep track of start time/frame for later
-            text_pre_run.frameNStart = frameN  # exact frame index
-            text_pre_run.tStart = t  # local t and not account for scr refresh
-            text_pre_run.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(text_pre_run, 'tStartRefresh')  # time at next scr refresh
+            text_pre_block.frameNStart = frameN  # exact frame index
+            text_pre_block.tStart = t  # local t and not account for scr refresh
+            text_pre_block.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(text_pre_block, 'tStartRefresh')  # time at next scr refresh
             # add timestamp to datafile
-            thisExp.timestampOnFlip(win, 'text_pre_run.started')
+            thisExp.timestampOnFlip(win, 'text_pre_block.started')
             # update status
-            text_pre_run.status = STARTED
-            text_pre_run.setAutoDraw(True)
+            text_pre_block.status = STARTED
+            text_pre_block.setAutoDraw(True)
         
-        # if text_pre_run is active this frame...
-        if text_pre_run.status == STARTED:
+        # if text_pre_block is active this frame...
+        if text_pre_block.status == STARTED:
             # update params
             pass
         
@@ -574,7 +575,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
             routineForceEnded = True
             break
         continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in pre_runComponents:
+        for thisComponent in pre_blockComponents:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
@@ -583,11 +584,11 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
     
-    # --- Ending Routine "pre_run" ---
-    for thisComponent in pre_runComponents:
+    # --- Ending Routine "pre_block" ---
+    for thisComponent in pre_blockComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    thisExp.addData('pre_run.stopped', globalClock.getTime(format='float'))
+    thisExp.addData('pre_block.stopped', globalClock.getTime(format='float'))
     # check responses
     if key_resp_start.keys in ['', [], None]:  # No response was made
         key_resp_start.keys = None
@@ -596,7 +597,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         thisExp.addData('key_resp_start.rt', key_resp_start.rt)
         thisExp.addData('key_resp_start.duration', key_resp_start.duration)
     thisExp.nextEntry()
-    # the Routine "pre_run" was not non-slip safe, so reset the non-slip timer
+    # the Routine "pre_block" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
     # set up handler to look after randomisation of conditions etc
@@ -1193,19 +1194,19 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     # completed 4.0 repeats of 'run'
     
     
-    # --- Prepare to start Routine "post_run" ---
+    # --- Prepare to start Routine "post_block" ---
     continueRoutine = True
     # update component parameters for each repeat
-    thisExp.addData('post_run.started', globalClock.getTime(format='float'))
+    thisExp.addData('post_block.started', globalClock.getTime(format='float'))
     # create starting attributes for key_resp_end
     key_resp_end.keys = []
     key_resp_end.rt = []
     _key_resp_end_allKeys = []
-    # Run 'Begin Routine' code from code_post_run
-    outlet.push_sample(x=["post_run"])
+    # Run 'Begin Routine' code from code_post_block
+    outlet.push_sample(x=["post_block"])
     # keep track of which components have finished
-    post_runComponents = [text_post_run, key_resp_end]
-    for thisComponent in post_runComponents:
+    post_blockComponents = [text_post_run, key_resp_end]
+    for thisComponent in post_blockComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
         thisComponent.tStartRefresh = None
@@ -1217,7 +1218,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     _timeToFirstFrame = win.getFutureFlipTime(clock="now")
     frameN = -1
     
-    # --- Run Routine "post_run" ---
+    # --- Run Routine "post_block" ---
     routineForceEnded = not continueRoutine
     while continueRoutine:
         # get current time
@@ -1287,7 +1288,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
             routineForceEnded = True
             break
         continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in post_runComponents:
+        for thisComponent in post_blockComponents:
             if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
                 continueRoutine = True
                 break  # at least one component has not yet finished
@@ -1296,11 +1297,11 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
             win.flip()
     
-    # --- Ending Routine "post_run" ---
-    for thisComponent in post_runComponents:
+    # --- Ending Routine "post_block" ---
+    for thisComponent in post_blockComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    thisExp.addData('post_run.stopped', globalClock.getTime(format='float'))
+    thisExp.addData('post_block.stopped', globalClock.getTime(format='float'))
     # check responses
     if key_resp_end.keys in ['', [], None]:  # No response was made
         key_resp_end.keys = None
@@ -1309,7 +1310,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         thisExp.addData('key_resp_end.rt', key_resp_end.rt)
         thisExp.addData('key_resp_end.duration', key_resp_end.duration)
     thisExp.nextEntry()
-    # the Routine "post_run" was not non-slip safe, so reset the non-slip timer
+    # the Routine "post_block" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
     # mark experiment as finished
