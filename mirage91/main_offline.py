@@ -12,20 +12,25 @@ from classifier import sLDA
 
 ''' SETTINGS '''
 pilot_name = 'Patrick'
+# Session 18th July 2024
 path = [
-        r'C:\Users\Markus\Mirage91\Program\recordings\2024_07_18\block_1.xdf',
-        r'C:\Users\Markus\Mirage91\Program\recordings\2024_07_18\block_2.xdf',
-        r'C:\Users\Markus\Mirage91\Program\recordings\2024_07_18\block_3.xdf'
+        r'C:\Users\Markus\Mirage91\Program\mirage91\recordings\2024_07_18\block_1.xdf',
+        r'C:\Users\Markus\Mirage91\Program\mirage91\recordings\2024_07_18\block_2.xdf',
+        r'C:\Users\Markus\Mirage91\Program\mirage91\recordings\2024_07_18\block_3.xdf'
        ]
-paradigm = {'pre_cue':2.0, 'left_hand':4.5, 'left_foot':4.5, 'right_foot':4.5, 'mental_sing':4.5, 'pause':2.5}
-tasks = ['left_hand', 'left_foot', 'right_foot', 'mental_sing']
+paradigm = {'pre_cue':2.0, 'left_hand':4.5, 'left_foot':4.5, 'right_foot':4.5, 'mental_singing':4.5, 'pause':2.5, 'post_run':0.0}
+tasks = ['left_hand', 'left_foot', 'right_foot', 'mental_singing']
+# Session 10th June 2024
+# path = [r'C:\Users\Markus\Mirage91\Program\mirage91\recordings\2024_06_10\block_1.xdf']
+# paradigm = {'pre_cue':2.0, 'hand':4.5, 'foot':4.5, 'pause':2.5}
+# tasks = ['hand', 'foot']
 
 ''' MAIN '''
 # define pilot
 pilot = Pilot(pilot_name)
 
 # load eeg and process it
-pilot.set_eeg(path, paradigm)
+pilot.set_eeg(path, paradigm, tasks)
 pilot.eeg.processing_pipeline()
 pilot.eeg.show_erds()
 # pilot.eeg.show_erds_bp(tasks)

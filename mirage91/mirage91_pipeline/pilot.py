@@ -18,14 +18,15 @@ class Pilot:
         self.eeg = None
         self.classifier = None
     
-    def set_eeg(self, path, paradigm):
+    def set_eeg(self, path, paradigm, tasks):
         '''
         Set the EEG data for the pilot.
         Input:
             - path: Path to the data [str]
             - paradigm: Paradigm that was used to record the data [dict]
+            - tasks: List of all tasks. [List of str]
         '''
-        self.eeg = EEG(path, paradigm)
+        self.eeg = EEG(path, paradigm, tasks)
 
     def eeg(self):
         '''
