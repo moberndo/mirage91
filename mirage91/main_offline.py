@@ -14,9 +14,9 @@ from classifier import sLDA
 pilot_name = 'Patrick'
 # Session 18th July 2024
 path = [
-        r'C:\Users\Markus\Mirage91\Program\mirage91\recordings\2024_07_18\block_1.xdf',
-        r'C:\Users\Markus\Mirage91\Program\mirage91\recordings\2024_07_18\block_2.xdf',
-        r'C:\Users\Markus\Mirage91\Program\mirage91\recordings\2024_07_18\block_3.xdf'
+        r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_1.xdf',
+        r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_2.xdf',
+        r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_3.xdf'
        ]
 paradigm = {'pre_cue':2.0, 'left_hand':4.5, 'left_foot':4.5, 'right_foot':4.5, 'mental_singing':4.5, 'pause':2.5, 'post_run':0.0}
 tasks = ['left_hand', 'left_foot', 'right_foot', 'mental_singing']
