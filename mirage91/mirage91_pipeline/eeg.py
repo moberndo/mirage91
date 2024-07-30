@@ -7,6 +7,7 @@ import mne
 from mne import read_epochs
 from mne.time_frequency import tfr_multitaper, psd_array_welch
 from mne.preprocessing import ICA
+from mne.decoding import CSP
 from pyxdf import load_xdf
 from autoreject import AutoReject
 import matplotlib.pyplot as plt
@@ -14,12 +15,20 @@ from matplotlib.colors import TwoSlopeNorm
 from numpy import isin, max, arange, mean, array, reshape, linspace, save
 import numpy as np
 from os.path import isfile
-
+from sklearn.model_selection import train_test_split
 from typing import List, Dict
 
+
+# Example of how to add regularization to CSP
+class RegularizedCSP(CSP):
+    def _decompose_covs(self, covs, sample_weights):
+        n_channels = covs.shape[-1]
+        covs += np.eye(n_channels) * 1e-12  # Regularization
+        return super()._decompose_covs(covs, sample_weights)
+    
 # main
 class EEG:
-    def __init__(self, path:List[str]|str, paradigm:Dict[str, float], tasks:List[str]):
+    def __init__(self, path:List[str] or str, paradigm:Dict[str, float], tasks:List[str]):
         '''
         Initialization of the EEG class.
         Input: 
@@ -37,8 +46,16 @@ class EEG:
         # self._paradigm_time = self._paradigm_stream['time_stamps']
         # self._fs = float(self._eeg_stream['info']['nominal_srate'][0])
         self._raw_mne = self._create_mne_objects()
-        self.featureX = None
-        self.feautreY = None
+        self._fs = None
+        self.x_train = None
+        self.y_train = None
+        self.x_test = None
+        self.y_test = None
+        self.featureX_train = None
+        self.feautreY_train = None
+        self.featureX_test = None
+        self.feautreY_test = None
+
 
     def _load_xdf_file(self):
         '''
@@ -94,6 +111,7 @@ class EEG:
                 paradigm_data = paradigm_data[:-1]
                 paradigm_time = paradigm_time[:-1]
             fs = float(eeg_stream['info']['nominal_srate'][0])
+            self._fs = fs
             # find the first timepoint for both streams
             eeg_first_timestep = float(eeg_time[0])
             cue_first_timestep = float(paradigm_time[0])
@@ -179,7 +197,6 @@ class EEG:
 
             # create event_id dictionary for all tasks
             event_id_dict = {task: event_id[task] for task in self._tasks}
-
             # create mne Epochs object
             new_epoch = mne.Epochs(
                 raw=raw_mne,
@@ -232,44 +249,89 @@ class EEG:
         Input: -
         Output: -
         '''
+        
         if isfile(self._path_epochs):
             self.epochs = read_epochs(self._path_epochs)
         else:
             self._preprocessing()
             self._epoching_and_rejecting()
+        print(f'EVENT IDs: {self.epochs.event_id}')
+        if np.isnan(self.epochs.get_data(copy=False).any()):
+            raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
         self._apply_ica()
-
-    def extract_features(self):
+        
+    def split_train_test(self):
+        '''
+        Separate data in train and test set
+        '''
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.epochs.get_data(copy=False),
+                                                                                self.epochs.events[:, 2],
+                                                                                train_size=0.7)
+        return self.x_train, self.x_test, self.y_train, self.y_test
+    
+    def extract_features(self, modality=None):
         '''
         Extracting features from the processed and epoched EEG data.
         Input: -
         Output: -
         '''
-        ### Feature 1: Bandpower ###
-        # find optimal frequency bands
-        freq_bands = [(3, 5),  # lower and upper freq-band limits
-                      (10, 15),]
-        # cut epochs dependend on frequency bands
-        freq_epochs = [self.epochs.filter(l_freq=band[0], h_freq=band[1], method='iir') for band in freq_bands]
-        # square the time-data and calculate the average
-        # epoch.get_data() returns a numpy arrray of shape (num_epochs, num_channels, num_timepoints)
-        bp_features = array([mean(epoch.get_data(copy=False)**2, axis=2) for epoch in freq_epochs])
-        bp_features = reshape(bp_features, newshape=(bp_features.shape[1], -1))
-        ground_truth = self.epochs.events[:, 2]
+        if modality == 'bp':
+            ### Feature 1: Bandpower ###
+            # find optimal frequency bands
+            freq_bands = [(3, 5),  # lower and upper freq-band limits
+                          (10, 15),]
+            # cut epochs dependend on frequency bands
+            freq_epochs = [self.epochs.filter(l_freq=band[0], h_freq=band[1], method='iir') for band in freq_bands]
+            # square the time-data and calculate the average
+            # epoch.get_data() returns a numpy arrray of shape (num_epochs, num_channels, num_timepoints)
+            bp_features = array([mean(epoch.get_data(copy=False)**2, axis=2) for epoch in freq_epochs])
+            bp_features = reshape(bp_features, newshape=(bp_features.shape[1], -1))
+            ground_truth = self.epochs.events[:, 2]
+            
+            # prepare Feature Variables Bandpower
+            self.featureX_train = bp_features
+            self.featureY_train = ground_truth
+            self.featureX_test = bp_features
+            self.featureY_test = ground_truth
+        
+        elif modality == 'csp':
+            ### Feature 2: CSP ###
+            # split data in train and test
+            self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.epochs.get_data(copy=False),
+                                                                                    self.epochs.events[:, 2],
+                                                                                    train_size=0.7)
+            # CSP with regularization 
+            csp = RegularizedCSP(n_components=4 , reg=1e-8, log=True, norm_trace=False)  
+            csp.fit(self.x_train, self.y_train)
+            
+            
+            x_train_csp = csp.transform(self.x_train)
+            reshape(x_train_csp, newshape=(x_train_csp.shape[1], -1))
+            x_test_csp = csp.transform(self.x_test)
+            reshape(x_test_csp, newshape=(x_test_csp.shape[1], -1))
+            
+            # prepare Feature Variables CSP
+            self.featureX_train = x_train_csp
+            self.featureY_train = self.y_train
+            self.featureX_test = x_test_csp
+            self.featureY_test = self.y_test
+        else:
+            raise ValueError('Please use a modality: f.e. bp or csp.')
+        
 
-        self.featureX = bp_features
-        self.featureY = ground_truth
 
     def get_features(self):
         '''
         This function is called to obtain the features from the EEG class that are needed to train a classifier.
         Input: -
         Output: 
-            - featureX: Feature vector of the EEG data
-            - featureY: Target vector according to featureX.
+            - featureX_train: TRAIN feature vector of the EEG data
+            - featureX_test: TEST feature vector of the EEG data
+            - featureY_train: TRAIN target vector according to featureX
+            - featureY_test: TEST target vector according to featureX_test
         '''
-        if self.featureX is not None and self.featureY is not None:
-            return self.featureX, self.featureY
+        if self.featureX_train is not None and self.featureY_train is not None:
+            return self.featureX_train, self.featureX_test, self.featureY_train, self.featureY_test
         else:
             raise ValueError('Features have not been extracted yet. Use the "extract_features()" method.')
     
@@ -399,13 +461,14 @@ class EEG:
 
 
 
-
-
-
 if __name__ == '__main__':
-    path = r'C:\Users\Markus\Mirage91\Program\venv\mirage91\_storage\block_patrick.xdf'
+    
+    #path = r'C:\Users\Markus\Mirage91\Program\venv\mirage91\_storage\block_patrick.xdf'
+    path = [r'C:\Users\michi\Documents\Mirage91\aktuell\Pilot\block_.xdf',r'C:\Users\michi\Documents\Mirage91\aktuell\Pilot\block_.xdf']
     paradigm = {'pre_cue':2.0, 'hand':4.5, 'foot':4.5, 'pause':2.5}
-    eeg = EEG(path=path, paradigm=paradigm)
+    eeg = EEG(path=path, paradigm=paradigm, tasks=['foot', 'hand'])
     eeg.processing_pipeline()
-    eeg.show_erds()
+    #eeg.show_erds()
+    #eeg.extract_features()
+    
     plt.show()
