@@ -532,7 +532,7 @@ class AdvancedPipelineEvaluator:
     def build_pipeline_bandpower(self): 
        return Pipeline([
            ('bandpower', FunctionTransformer(self.bandpower_features, validate=False)),
-           ('pca', PCA(n_components=50)),
+           ('pca', PCA(n_components=20)),
            ('scaler', StandardScaler()),
            ('classifier', GradientBoostingClassifier())
        ])
@@ -540,7 +540,7 @@ class AdvancedPipelineEvaluator:
     def build_pipeline_fourier(self): 
         return Pipeline([
             ('fourier', FunctionTransformer(self.fourier_features, validate=False)),
-            ('pca', PCA(n_components=50)),
+            ('pca', PCA(n_components=20)),
             ('scaler', StandardScaler()),
             ('classifier', RandomForestClassifier(class_weight='balanced'))
         ])
@@ -548,7 +548,7 @@ class AdvancedPipelineEvaluator:
     def build_pipeline_autoregressive(self): 
         return Pipeline([
             ('autoregressive', FunctionTransformer(self.autoregressive_features, validate=False)),
-            ('pca', PCA(n_components=50)),
+            ('pca', PCA(n_components=20)),
             ('scaler', StandardScaler()),
             ('classifier', SVC(class_weight='balanced'))
         ])
@@ -556,7 +556,6 @@ class AdvancedPipelineEvaluator:
     def build_pipeline_skewness_kurtosis(self):
         return Pipeline([
             ('skew_kurt', FunctionTransformer(self.skewness_kurtosis_features, validate=False)),
-            ('pca', PCA(n_components=50)),
             ('scaler', StandardScaler()),
             ('classifier', LinearDiscriminantAnalysis())
         ])
@@ -565,7 +564,7 @@ class AdvancedPipelineEvaluator:
         num_features = self.X_train.shape[1] * self.X_train.shape[2]
         return Pipeline([
             ('reshape_for_scaler', ReshapeForScaler()),
-            ('pca', PCA(n_components=50)),
+            #('pca', PCA(n_components=20)),
             ('scaler', StandardScaler()),
             ('reshape_back', ReshapeBack(original_shape=(num_features))),
             ('autoencoder', PyTorchAutoencoder(input_dim=num_features, epochs=50, batch_size=32)),
@@ -575,7 +574,7 @@ class AdvancedPipelineEvaluator:
     def build_pipeline_hjorth(self): 
         return Pipeline([
             ('hjorth', FunctionTransformer(self.hjorth_parameters, validate=False)),
-            ('pca', PCA(n_components=50)),
+            ('pca', PCA(n_components=20)),
             ('scaler', StandardScaler()),
             ('classifier', GradientBoostingClassifier())
         ])
@@ -583,7 +582,7 @@ class AdvancedPipelineEvaluator:
     def build_pipeline_fractal(self):
         return Pipeline([
             ('fractal', FunctionTransformer(self.fractal_dimension, validate=False)),
-            ('pca', PCA(n_components=50)),
+            ('pca', PCA(n_components=20)),
             ('scaler', StandardScaler()),
             ('classifier', RandomForestClassifier(class_weight='balanced'))
         ])
@@ -601,7 +600,7 @@ class AdvancedPipelineEvaluator:
                 ('hjorth', FunctionTransformer(self.hjorth_parameters, validate=False)),
                 ('fractal', FunctionTransformer(self.fractal_dimension, validate=False)),
             ])),
-            ('pca', PCA(n_components=50)),
+            ('pca', PCA(n_components=20)),
             ('scaler', StandardScaler()),
             ('ensemble', StackingClassifier(
                 estimators=base_learners,
