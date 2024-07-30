@@ -4,17 +4,17 @@ Authors: Mirage 91
 """
 # imports python
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 # main
-class sLDA():
+class sLDA:
     '''
     Classifier class for shrinkage Linear Discriminant Analysis (sLDA).
     '''
-    def __init__(self, x, y, train_size=0.8, shrinkage='auto', method='lsqr'): 
+    #def __init__(self, x, y, train_size=0.8, shrinkage='auto', method='lsqr'): 
+    def __init__(self, x_train, x_test, y_train, y_test, shrinkage='auto', method='lsqr'):
         '''
         Initialize the class with a feature and target vector.
         Input:
@@ -25,10 +25,13 @@ class sLDA():
             - shrinkage: ...
             - method: ...
         '''
+        self.x_train = x_train
+        self.x_test = x_test
+        self.y_train = y_train
+        self.y_test = y_test
         self.shrinkage=shrinkage
         self.method=method
         self.classifier = self._create_classifier()
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, train_size=train_size)
 
     def _create_classifier(self):
         '''
@@ -44,6 +47,7 @@ class sLDA():
             - plot_cm: Boolean variable to decide wether the confusion matrix should be plotted. [bool]
         Output: -
         '''
+
         self.classifier.fit(self.x_train, self.y_train)
         y_predicted = self.classifier.predict(self.x_test)
         acc = accuracy_score(y_true=self.y_test, y_pred=y_predicted)
@@ -56,8 +60,22 @@ class sLDA():
         if plot_cm:
             plt.figure(figsize=(8, 6))
             sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
-                        xticklabels=['Predicted Negative', 'Predicted Positive'],
-                        yticklabels=['Actual Negative', 'Actual Positive'])
+                        #xticklabels=['Predicted Negative', 'Predicted Positive'],
+                        #yticklabels=['Actual Negative', 'Actual Positive']
+                        )
             plt.xlabel('Predicted')
             plt.ylabel('Actual')
             plt.title('Confusion Matrix')
+            
+
+
+
+
+
+
+
+
+
+
+    
+    
