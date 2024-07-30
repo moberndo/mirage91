@@ -65,7 +65,7 @@ pilot.eeg.extract_features(modality=modality)
 X_train_feat, X_test_feat, Y_train_feat, Y_test_feat = pilot.eeg.get_features()
 # choose classifier
 classifier = sLDA(X_train_feat, X_test_feat, Y_train_feat, Y_test_feat)
-classifier.train_and_test()
+classifier.train_and_test(modality=modality)
 
 # extract features csp
 print('\n CSP + LDA: \n')
@@ -74,13 +74,13 @@ pilot.eeg.extract_features(modality=modality)
 X_train_feat, X_test_feat, Y_train_feat, Y_test_feat = pilot.eeg.get_features()
 # choose classifier
 classifier = sLDA(X_train_feat, X_test_feat, Y_train_feat, Y_test_feat)
-classifier.train_and_test()
+classifier.train_and_test(modality=modality)
 
-print('\n PIPELINE TESTING ... \n')
-## ONLY FOR EVALUATING NEW THINGS
-# find best pipeline and parameters automatically (see SLDA.PY)
-evaluator = AdvancedPipelineEvaluator(X_train, X_test, Y_train, Y_test)
-evaluator.evaluate_all_pipelines()
+# print('\n PIPELINE TESTING ... \n')
+# ## ONLY FOR EVALUATING NEW THINGS
+# # find best pipeline and parameters automatically (see SLDA.PY)
+# evaluator = AdvancedPipelineEvaluator(X_train, X_test, Y_train, Y_test)
+# evaluator.evaluate_all_pipelines()
 
 # show results
 plt.show()
