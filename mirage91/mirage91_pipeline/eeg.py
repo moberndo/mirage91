@@ -28,7 +28,7 @@ class RegularizedCSP(CSP):
     
 # main
 class EEG:
-    def __init__(self, path:List[str] or str, paradigm:Dict[str, float], tasks:List[str]):
+    def __init__(self, path:List[str]|str, paradigm:Dict[str, float], tasks:List[str]):
         '''
         Initialization of the EEG class.
         Input: 
@@ -40,11 +40,6 @@ class EEG:
         self._paradigm_cues = paradigm
         self._tasks = tasks
         self._eeg_stream, self._paradigm_stream = self._load_xdf_file()
-        # self._eeg_data = self._eeg_stream['time_series'].T
-        # self._eeg_time = self._eeg_stream['time_stamps']
-        # self._paradigm_data = self._paradigm_stream['time_series']
-        # self._paradigm_time = self._paradigm_stream['time_stamps']
-        # self._fs = float(self._eeg_stream['info']['nominal_srate'][0])
         self._raw_mne = self._create_mne_objects()
         self._fs = None
         self.x_train = None
@@ -318,8 +313,6 @@ class EEG:
         else:
             raise ValueError('Please use a modality: f.e. bp or csp.')
         
-
-
     def get_features(self):
         '''
         This function is called to obtain the features from the EEG class that are needed to train a classifier.
@@ -367,37 +360,37 @@ class EEG:
             # Define the arrangement of the channels on the EEG cap
             channel_positions = {'AFz': (0, 4),
                                  'F5': (1, 1),
-                'F3': (1, 2),
-                'F1': (1, 3),
-                'Fz': (1, 4),
-                'F2': (1, 5),
-                'F4': (1, 6),
-                'F6': (1, 7),
-                'FC5': (2, 1),
-                'FC3': (2, 2),
-                'FC1': (2, 3),
-                'FCz': (2, 4),
-                'FC2': (2, 5),
-                'FC4': (2, 6),
-                'FC6': (2, 7),
-                'C5': (3, 1),
-                'C3': (3, 2),
-                'C1': (3, 3),
-                'Cz': (3, 4),
-                'C2': (3, 5),
-                'C4': (3, 6),
-                'C6': (3, 7),
-                'CP5': (4, 1),
-                'CP3': (4, 2),
-                'CP1': (4, 3),
-                'CPz': (4, 4),
-                'CP2': (4, 5),
-                'CP4': (4, 6),
-                'CP6': (4, 7),
-                'P1': (5, 3),
-                'Pz': (5, 4),
-                'P2': (5, 5),
-            }
+                                'F3': (1, 2),
+                                'F1': (1, 3),
+                                'Fz': (1, 4),
+                                'F2': (1, 5),
+                                'F4': (1, 6),
+                                'F6': (1, 7),
+                                'FC5': (2, 1),
+                                'FC3': (2, 2),
+                                'FC1': (2, 3),
+                                'FCz': (2, 4),
+                                'FC2': (2, 5),
+                                'FC4': (2, 6),
+                                'FC6': (2, 7),
+                                'C5': (3, 1),
+                                'C3': (3, 2),
+                                'C1': (3, 3),
+                                'Cz': (3, 4),
+                                'C2': (3, 5),
+                                'C4': (3, 6),
+                                'C6': (3, 7),
+                                'CP5': (4, 1),
+                                'CP3': (4, 2),
+                                'CP1': (4, 3),
+                                'CPz': (4, 4),
+                                'CP2': (4, 5),
+                                'CP4': (4, 6),
+                                'CP6': (4, 7),
+                                'P1': (5, 3),
+                                'Pz': (5, 4),
+                                'P2': (5, 5),
+                                }
 
             
             
