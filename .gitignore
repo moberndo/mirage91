@@ -15,5 +15,8 @@
 # everything inside the _storage folder
 _storage/*
 
+# everything inside the paradigm>data folder
+paradigm/data/*
+
 # all __pycache__ folders
 __pycache__/

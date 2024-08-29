@@ -15,27 +15,27 @@ from classifier.pipeline_test import AdvancedPipelineEvaluator
 pilot_name = 'Patrick'
 
 # ALL Sessions 4 classes 18th + 26th July 2024
-path = [
-        r'C:\Users\mivi\Desktop\Mirage91\aktuell\Pilot\recordings\2024_07_18\block_1.xdf',
-        r'C:\Users\mivi\Desktop\Mirage91\aktuell\Pilot\recordings\2024_07_18\block_2.xdf',
-        r'C:\Users\mivi\Desktop\Mirage91\aktuell\Pilot\recordings\2024_07_18\block_3.xdf',
-        r'C:\Users\mivi\Desktop\Mirage91\aktuell\Pilot\recordings\2024_07_26\block_1.xdf',
-        r'C:\Users\mivi\Desktop\Mirage91\aktuell\Pilot\recordings\2024_07_26\block_2.xdf',
-        r'C:\Users\mivi\Desktop\Mirage91\aktuell\Pilot\recordings\2024_07_26\block_3.xdf'
-        ]
+# path = [
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_1.xdf',
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_2.xdf',
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_3.xdf',
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_26\block_1.xdf',
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_26\block_2.xdf',
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_26\block_3.xdf'
+#         ]
 # #Session 26th July 2024
 # path = [
-#         r'C:\Users\michi\Documents\Mirage91\aktuell\Pilot\recordings\2024_07_26\block_1.xdf',
-#         r'C:\Users\michi\Documents\Mirage91\aktuell\Pilot\recordings\2024_07_26\block_2.xdf',
-#         r'C:\Users\michi\Documents\Mirage91\aktuell\Pilot\recordings\2024_07_26\block_3.xdf'
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_26\block_1.xdf',
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_26\block_2.xdf',
+#         r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_26\block_3.xdf'
 #         ]
 
-# #Session 18th July 2024
-# path = [
-#         r'C:\Users\michi\Documents\Mirage91\aktuell\Pilot\recordings\2024_07_18\block_1.xdf',
-#         r'C:\Users\michi\Documents\Mirage91\aktuell\Pilot\recordings\2024_07_18\block_2.xdf',
-#         r'C:\Users\michi\Documents\Mirage91\aktuell\Pilot\recordings\2024_07_18\block_3.xdf'
-#         ]
+#Session 18th July 2024
+path = [
+        r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_1.xdf',
+        r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_2.xdf',
+        r'C:\Users\Markus\Mirage91\Program\venv\mirage91\recordings\2024_07_18\block_3.xdf'
+        ]
 paradigm = {'pre_cue':2.0, 'left_hand':4.5, 'left_foot':4.5, 'right_foot':4.5, 'mental_singing':4.5, 'pause':2.5, 'post_run':0.0}
 tasks = ['left_hand', 'left_foot', 'right_foot', 'mental_singing']
 
