@@ -204,24 +204,27 @@ class EEG:
             # reject_criteria = dict(eeg=150e-6)  # 100 µV # max(self._eeg_data*0.8)
             # new_epoch.drop_bad(reject=reject_criteria)
 
-            # Autoreject epochs
-            ar = AutoReject()
-            new_epoch = ar.fit_transform(new_epoch)
             epochs_list.append(new_epoch)
 
             # Store each epoch's label and EEG data
-            for epoch_data, epoch_event in zip(new_epoch.get_data(), new_epoch.events[:, -1]):
+            # for epoch_data, epoch_event in zip(new_epoch.get_data(), new_epoch.events[:, -1]):
                 # epoch_data: the actual EEG data for the epoch
                 # epoch_event: the event_id for the corresponding event
-                epochs_data_list.append((epoch_event, epoch_data))
+                # epochs_data_list.append((epoch_event, epoch_data))
 
         # Save the epochs in a list of tuples [(event_id, epoch_data), ...]
-        self.epochs_data_list = epochs_data_list
-        if save_npy:
-            save('./features/epoched_data.npy', self.epochs_data_list)
+        #self.epochs_data_list = epochs_data_list
+        #if save_npy:
+        #    save('./features/epoched_data.npy', self.epochs_data_list)
 
         # Concatenate epochs for further processing in MNE, if needed
         self.epochs = mne.concatenate_epochs([new_epoch for new_epoch in epochs_list])
+
+        # After concatenating the epochs autoreject the bad trials
+
+        # Autoreject epochs
+        ar = AutoReject()
+        new_epoch = ar.fit_transform(new_epoch)
 
     def _apply_ica(self):
         '''
@@ -229,6 +232,8 @@ class EEG:
         Input: -
         Output: -
         '''
+        self.epochs.plot()
+
         ica = ICA(
             n_components=len(self.epochs.ch_names),
             method='fastica',
@@ -238,17 +243,15 @@ class EEG:
         )
         
         ica.fit(self.epochs)
-        # detect artifacts in ica
-        ica.detect_artifacts(self.epochs)
-
-        # remove artifacts from ica
-        self.epochs = ica.apply(self.epochs)
-
-        ica.plot_components(show=False)
+        ica.plot_components()
         ica.plot_sources(self.epochs, show=False)
         ica.plot_properties(self.epochs, show=False)
-        # exclude = [0, 1, 2, 3, 4]
-        # self.epochs = ica.apply(self.epochs, exclude=exclude)
+        ica.exclude = [0, 1] 
+
+        self.epochs_cleaned = ica.apply(self.epochs)
+        self.epochs_cleaned.plot()
+
+
 
     def processing_pipeline(self):
         '''
@@ -271,16 +274,17 @@ class EEG:
         # ica_cleaned_epochs = 
         save('./features/epoched_data.npy', self.epochs_data_list)
         # apply CSP
+        ...
 
         
-    def split_train_test(self):
-        '''
-        Separate data in train and test set
-        '''
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.epochs.get_data(copy=False),
-                                                                                self.epochs.events[:, 2],
-                                                                                train_size=0.7)
-        return self.x_train, self.x_test, self.y_train, self.y_test
+    #def split_train_test(self):
+    #    '''
+    #    Separate data in train and test set
+    #    '''
+    #    self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.epochs.get_data(copy=False),
+    #                                                                            self.epochs.events[:, 2],
+    #                                                                            train_size=0.7)
+    #    return self.x_train, self.x_test, self.y_train, self.y_test
     
     def extract_features(self, modality=None):
         '''
@@ -331,20 +335,20 @@ class EEG:
         else:
             raise ValueError('Please use a modality: f.e. bp or csp.')
         
-    def get_features(self):
-        '''
-        This function is called to obtain the features from the EEG class that are needed to train a classifier.
-        Input: -
-        Output: 
-            - featureX_train: TRAIN feature vector of the EEG data
-            - featureX_test: TEST feature vector of the EEG data
-            - featureY_train: TRAIN target vector according to featureX
-            - featureY_test: TEST target vector according to featureX_test
-        '''
-        if self.featureX_train is not None and self.featureY_train is not None:
-            return self.featureX_train, self.featureX_test, self.featureY_train, self.featureY_test
-        else:
-            raise ValueError('Features have not been extracted yet. Use the "extract_features()" method.')
+    #def get_features(self):
+    #    '''
+    #    This function is called to obtain the features from the EEG class that are needed to train a classifier.
+    #    Input: -
+    #    Output: 
+    #        - featureX_train: TRAIN feature vector of the EEG data
+    #        - featureX_test: TEST feature vector of the EEG data
+    #        - featureY_train: TRAIN target vector according to featureX
+    #        - featureY_test: TEST target vector according to featureX_test
+    #    '''
+    #    if self.featureX_train is not None and self.featureY_train is not None:
+    #        return self.featureX_train, self.featureX_test, self.featureY_train, self.featureY_test
+    #    else:
+    #        raise ValueError('Features have not been extracted yet. Use the "extract_features()" method.')
     
     def show_erds(self):
         ''' 
