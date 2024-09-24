@@ -33,9 +33,7 @@ pilot.eeg.epoching_and_rejecting()
 pilot.eeg.processing_pipeline() # change this
 
 
-
-
-# extract features bandpower
+'''# extract features bandpower
 print('\n BANDPOWER + LDA: \n ')
 modality = 'bp'
 pilot.eeg.extract_features(modality=modality)
@@ -48,7 +46,7 @@ modality = 'csp'
 pilot.eeg.extract_features(modality=modality)
 # save features in "feature" folder
 ...
-
+'''
 
 
 # show results
