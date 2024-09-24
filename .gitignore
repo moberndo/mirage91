@@ -12,6 +12,9 @@
 # all .set files
 *.set
 
+# all .DS_Store files
+.DS_Store
+
 # everything inside the _storage folder
 _storage/*
 
