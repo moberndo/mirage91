@@ -1,1 +1,2 @@
-#from .slda import sLDA
+from .pilot import Pilot
+from .eeg import EEG
