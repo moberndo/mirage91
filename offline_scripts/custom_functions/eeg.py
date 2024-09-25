@@ -56,7 +56,7 @@ class EEG:
         # If the session date is the 30.08., then change the markers from right_hand to left_hand
         
         for idx, folder in enumerate(folders):
-            xdf_paths = [os.path.join(folders[idx], xdf) for xdf in os.listdir(folders[idx])]
+            xdf_paths = [os.path.join(folders[idx], xdf) for xdf in os.listdir(folders[idx]) if xdf.endswith('.xdf')]
             for xdf_path in xdf_paths:
                 new_eeg_stream, new_paradigm_stream = self._get_correct_streams(xdf_path)
                 eeg_streams.append(new_eeg_stream)
@@ -134,6 +134,17 @@ class EEG:
             raw_mnes.append((raw, stream_dict))
         return raw_mnes
     
+    @staticmethod
+    def _save_epochs_as_npy(epochs, filename):
+        epochs_data_list = []
+        for epoch_data, epoch_event in zip(epochs.get_data(), epochs.events[:, -1]):
+            # epoch_data: the actual EEG data for the epoch
+            # epoch_event: the event_id for the corresponding event
+            epochs_data_list.append((epoch_event, epoch_data))
+
+        filepath = './features/' + filename + '.npy'
+        save(filepath, epochs_data_list)
+    
     def preprocessing(self, plot=True):
         '''
         Applying filters, dropping channels and resampling of the EEG data.
@@ -159,7 +170,7 @@ class EEG:
             self._raw_mne[idx][0].notch_filter(50., method='iir')  # verbose=False)  # Notch filter at 50 Hz
             self._raw_mne[idx][0].filter(None, 45., method='iir')  # , verbose=False)  # Anti-aliasing filter at 45 Hz
 
-            # after applying the highpass, we can resample to 250Hz
+            # after applying the highpass, we can resample to 200Hz
             self._raw_mne[idx][0].resample(200)
 
             #if plot:
@@ -173,7 +184,6 @@ class EEG:
         Input: -
         Output: -
         '''
-        epochs_data_list = []
         epochs_list = []
         for _, (raw_mne, streams) in enumerate(self._raw_mne):
             cue_names = [element[0] for element in streams['paradigm_data']]
@@ -206,25 +216,14 @@ class EEG:
 
             epochs_list.append(new_epoch)
 
-            # Store each epoch's label and EEG data
-            # for epoch_data, epoch_event in zip(new_epoch.get_data(), new_epoch.events[:, -1]):
-                # epoch_data: the actual EEG data for the epoch
-                # epoch_event: the event_id for the corresponding event
-                # epochs_data_list.append((epoch_event, epoch_data))
-
-        # Save the epochs in a list of tuples [(event_id, epoch_data), ...]
-        #self.epochs_data_list = epochs_data_list
-        #if save_npy:
-        #    save('./features/epoched_data.npy', self.epochs_data_list)
 
         # Concatenate epochs for further processing in MNE, if needed
         self.epochs = mne.concatenate_epochs([new_epoch for new_epoch in epochs_list])
+        EEG._save_epochs_as_npy(self.epochs, 'epoched_eeg')
 
-        # After concatenating the epochs autoreject the bad trials
-
-        # Autoreject epochs
-        ar = AutoReject()
-        new_epoch = ar.fit_transform(new_epoch)
+        # After concatenating the epochs Autoreject the bad trials
+        #ar = AutoReject()
+        #new_epoch = ar.fit_transform(new_epoch)
 
     def _apply_ica(self):
         '''
@@ -248,9 +247,8 @@ class EEG:
         ica.plot_properties(self.epochs, show=False)
         ica.exclude = [0, 1] 
 
-        self.epochs_cleaned = ica.apply(self.epochs)
-        self.epochs_cleaned.plot()
-
+        self.epochs = ica.apply(self.epochs)
+        self.epochs.plot()
 
 
     def processing_pipeline(self):
@@ -270,21 +268,11 @@ class EEG:
             raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
         self._apply_ica()
         # save features
-        trials, labels = self.epochs.get_data(), self.epochs.events[:, -1]
-        # ica_cleaned_epochs = 
-        save('./features/epoched_data.npy', self.epochs_data_list)
+        EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg')
         # apply CSP
         ...
 
-        
-    #def split_train_test(self):
-    #    '''
-    #    Separate data in train and test set
-    #    '''
-    #    self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.epochs.get_data(copy=False),
-    #                                                                            self.epochs.events[:, 2],
-    #                                                                            train_size=0.7)
-    #    return self.x_train, self.x_test, self.y_train, self.y_test
+    
     
     def extract_features(self, modality=None):
         '''
@@ -335,20 +323,6 @@ class EEG:
         else:
             raise ValueError('Please use a modality: f.e. bp or csp.')
         
-    #def get_features(self):
-    #    '''
-    #    This function is called to obtain the features from the EEG class that are needed to train a classifier.
-    #    Input: -
-    #    Output: 
-    #        - featureX_train: TRAIN feature vector of the EEG data
-    #        - featureX_test: TEST feature vector of the EEG data
-    #        - featureY_train: TRAIN target vector according to featureX
-    #        - featureY_test: TEST target vector according to featureX_test
-    #    '''
-    #    if self.featureX_train is not None and self.featureY_train is not None:
-    #        return self.featureX_train, self.featureX_test, self.featureY_train, self.featureY_test
-    #    else:
-    #        raise ValueError('Features have not been extracted yet. Use the "extract_features()" method.')
     
     def show_erds(self):
         ''' 
