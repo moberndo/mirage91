@@ -12,7 +12,7 @@ from classifier.slda import sLDA
 from classifier.pipeline_test import AdvancedPipelineEvaluator
 
 ''' SETTINGS '''
-pilot_name = 'Patrick'
+pilot_name = 'Antonio'
 
 # ALL Sessions 4 classes 18th + 26th July 2024
 # path = [
