@@ -11,7 +11,7 @@ Reference on right mastoid
 	- both_feet
 	- mental singing
 
-1 blocks of 
+3 blocks of 
 	4 runs of
 		15 trials per class
 --> Overall 60 trials per class

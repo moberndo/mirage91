@@ -6,11 +6,11 @@ Ground on forehead
 Reference on right mastoid
 
 # Paradigm
-3 classes:
+2 classes:
 	- right_hand
 	- mental singing
 
-1 blocks of 
+3 blocks of 
 	4 runs of
 		15 trials per class
 --> Overall 60 trials per class

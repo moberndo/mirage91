@@ -2,14 +2,9 @@ from pylsl import StreamInfo, StreamOutlet
 import time
 from pynput import keyboard
 
-import logging
-
-# Suppress LSL-related log output
-logging.getLogger('pylsl').setLevel(logging.ERROR)
-
 
 # Create LSL stream
-info = StreamInfo(name='KeyPressStream', type='ClassProb', nominal_srate=10, channel_count=4, channel_format='float32', source_id='uniqueid1234')
+info = StreamInfo(name='ClassifierOutput', type='ClassProb', nominal_srate=10, channel_count=4, channel_format='float32', source_id='uniqueid1234')
 outlet = StreamOutlet(info)
 
 print("Press 1, 2, 3, or 4 to send data to the LSL stream. Press 'q' to quit.")

@@ -1,4 +1,5 @@
 import socket
+from pylsl import StreamInlet, resolve_stream
 
 def send_connection_request():
     # Send a connection request to the game
@@ -34,7 +35,20 @@ def create_payload(data):
     payload = data.encode()  # placeholder, format accordingly
     return payload
 
-# Set up the socket for communication
+
+
+
+# Find the stream
+streams = resolve_stream('name', 'ClassifierOutput')
+inlet = StreamInlet(streams[0])
+
+# Receive data from the stream
+while True:
+    sample, timestamp = inlet.pull_sample()
+    print(f"Received: {sample} at {timestamp}")
+
+
+'''# Set up the socket for communication
 UDP_IP = "your_game_host_ip"
 UDP_PORT = 59075  # as specified for BCI input stream
 
@@ -42,4 +56,4 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
 # Example of sending a command
-send_bci_data("your_bci_control_signal")
+send_bci_data("your_bci_control_signal")'''
