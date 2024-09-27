@@ -8,6 +8,7 @@ import mne
 from mne import read_epochs
 from mne.time_frequency import tfr_multitaper, psd_array_welch
 from mne.preprocessing import ICA
+from mne_icalabel import label_components
 from mne.decoding import CSP
 from pyxdf import load_xdf
 from autoreject import AutoReject
@@ -219,7 +220,7 @@ class EEG:
 
         # Concatenate epochs for further processing in MNE, if needed
         self.epochs = mne.concatenate_epochs([new_epoch for new_epoch in epochs_list])
-        EEG._save_epochs_as_npy(self.epochs, 'epoched_eeg')
+        EEG._save_epochs_as_npy(epochs=self.epochs, filename='epoched_eeg')
 
         # After concatenating the epochs Autoreject the bad trials
         #ar = AutoReject()
@@ -231,8 +232,8 @@ class EEG:
         Input: -
         Output: -
         '''
-        self.epochs.plot()
-
+        # self.epochs.plot()
+        filt_raw = self.epochs
         ica = ICA(
             n_components=len(self.epochs.ch_names),
             method='fastica',
@@ -241,14 +242,23 @@ class EEG:
             random_state=42
         )
         
+        # Fit ICA to epochs
         ica.fit(self.epochs)
-        ica.plot_components()
-        ica.plot_sources(self.epochs, show=False)
-        ica.plot_properties(self.epochs, show=False)
-        ica.exclude = [0, 1] 
+        # Get labels of ICA and print them
+        # ic_labels = label_components(filt_raw, ica, method="iclabel")
+        # print(ic_labels["labels"])
+        # Plot ICA components, sources and properties
+        # ica.plot_components()
+        # ica.plot_sources(self.epochs, show=True)
+        # ica.plot_properties(self.epochs, show=True)
 
+        # Define the ICA components that should be excluded
+        ica.exclude = [0, 4] 
+
+        # Apply ICA to epochs
+        print('Apply ICA now')
         self.epochs = ica.apply(self.epochs)
-        self.epochs.plot()
+        print('ICA finished!')
 
 
     def processing_pipeline(self):
@@ -257,71 +267,44 @@ class EEG:
         Input: -
         Output: -
         '''
-        
-        # if isfile(self._path_epochs):
-        #     self.epochs = read_epochs(self._path_epochs)
-        # else:
-        #     self._preprocessing()
-        #     self.epoching_and_rejecting()
+
         print(f'EVENT IDs: {self.epochs.event_id}')
         if np.isnan(self.epochs.get_data(copy=False).any()):
             raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
-        self._apply_ica()
-        # save features
-        EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg')
-        # apply CSP
-        ...
-
-    
-    
-    def extract_features(self, modality=None):
-        '''
-        Extracting features from the processed and epoched EEG data.
-        Input: -
-        Output: -
-        '''
-        if modality == 'bp':
-            ### Feature 1: Bandpower ###
-            # find optimal frequency bands
-            freq_bands = [(3, 5),  # lower and upper freq-band limits
-                          (10, 15),]
-            # cut epochs dependend on frequency bands
-            freq_epochs = [self.epochs.filter(l_freq=band[0], h_freq=band[1], method='iir') for band in freq_bands]
-            # square the time-data and calculate the average
-            # epoch.get_data() returns a numpy arrray of shape (num_epochs, num_channels, num_timepoints)
-            bp_features = array([mean(epoch.get_data(copy=False)**2, axis=2) for epoch in freq_epochs])
-            bp_features = reshape(bp_features, newshape=(bp_features.shape[1], -1))
-            ground_truth = self.epochs.events[:, 2]
-            
-            # prepare Feature Variables Bandpower
-            self.featureX_train = bp_features
-            self.featureY_train = ground_truth
-            self.featureX_test = bp_features
-            self.featureY_test = ground_truth
         
-        elif modality == 'csp':
-            ### Feature 2: CSP ###
-            # split data in train and test
-            self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.epochs.get_data(copy=False),
-                                                                                    self.epochs.events[:, 2],
-                                                                                    train_size=0.7)
-            # CSP with regularization 
-            csp = RegularizedCSP(n_components=4 , reg=1e-8, log=True, norm_trace=False)  
-            csp.fit(self.x_train, self.y_train)
-            
-            
-            x_train_csp = csp.transform(self.x_train)
-            reshape(x_train_csp, newshape=(x_train_csp.shape[1], -1))
-            x_test_csp = csp.transform(self.x_test)
-            reshape(x_test_csp, newshape=(x_test_csp.shape[1], -1))
-            
-            # prepare Feature Variables CSP
-            self.featureX_train = x_train_csp
-            self.featureY_train = self.y_train
-            self.featureX_test = x_test_csp
-            self.featureY_test = self.y_test
-        else:
-            raise ValueError('Please use a modality: f.e. bp or csp.')
+        self._apply_ica()
+        # Save cleaned epochs as .npy file
+        EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg')
+        # Create CSP object
+        self._extract_csp_and_save(self.epochs)
+
+
+    def _extract_csp_and_save(self, epochs, n_components=4, file_name='csp_features.npy'):
+        '''
+        Extract CSP features from MNE epochs object and save them as .npy file
+        Input: 
+            - epochs:
+            - n_components: 
+            - file_name: 
+        Output:
+            - 
+        '''
+        x = epochs.get_data()
+        y = epochs.events[:, -1]
+
+        # Initialize CSP object
+        csp = CSP(n_components=n_components, log=True, cov_est='epoch')
+        # Fit CSP on the data and extract features
+        csp.fit(x, y)
+        csp_features = csp.transform(x)
+
+        # Create a list of tuples (label, feature) for each epoch
+        features_with_labels = [(label, feature) for label, feature in zip(y, csp_features)]
+
+        # Save the CSP features as .npy file
+        file_path = './features/' + file_name
+        save(file_path, features_with_labels)
+        print(f'CSP features saved to {file_path}')
         
     
     def show_erds(self):
