@@ -2,11 +2,6 @@ from pylsl import StreamInfo, StreamOutlet
 import time
 from pynput import keyboard
 
-import logging
-
-# Suppress LSL-related log output
-logging.getLogger('pylsl').setLevel(logging.ERROR)
-
 
 # Create LSL stream
 info = StreamInfo(name='KeyPressStream', type='ClassProb', nominal_srate=10, channel_count=4, channel_format='float32', source_id='uniqueid1234')

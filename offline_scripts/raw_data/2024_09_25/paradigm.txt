@@ -1,0 +1,26 @@
+# PARADIGM for session 25th of September
+
+# EEG
+Recording of a 32 Channel EEG
+Ground on forehead
+Reference on right mastoid
+
+# Paradigm
+4 classes:
+	- right_hand
+	- left_hand
+	- feet
+	- mental singing
+
+2 blocks of 
+	4 runs of
+		15 trials per class
+1 block of
+	1 run of
+		15 trials per class
+
+--> Overall 45 trials per class
+Everything randomized
+
+Trial:
+pre_cue (2.0s) --> class_task (4.5s) --> pause (2.5s)
