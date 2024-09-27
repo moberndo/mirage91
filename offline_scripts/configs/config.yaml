@@ -1,0 +1,16 @@
+wandb_disabled: False
+experiment: evaluation
+
+data:
+  dataset_path: /home/philipp/datasets/features/features/cleaned_epoched_eeg.npy
+  validation_size: 0.15
+  test_size: 0.15
+
+training:
+  k_fold_splits: 10
+  epochs: 200
+  batch_size: 25
+
+
+model:
+  name: "LMDA"
