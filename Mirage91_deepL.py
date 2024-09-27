@@ -12,7 +12,7 @@ from torchsummary import summary
 import matplotlib.pyplot as plt
 from LMDA_modified import LMDA
 
-filename = 'D:/Mirage91/npi/epoched_data.npy'
+filename = 'D:/Mirage91/npi/features/cleaned_epoched_eeg.npy'
 X = np.load(filename, allow_pickle=True)
 
 
@@ -26,13 +26,15 @@ Label = labels
 # Label[Label==4] = 3
 
 'cross validation'
-X = X[:,:,250*2:250*6]
-X = X[:,:,0:-1:4]
+X = X[:,:,200*2:200*6]
+X = X[:,:,0:-1:3]
 
 
 c1 = np.where(Label == 3)[0]  # Get indices where Label is 3
 c2 = np.where(Label == 4)[0]  # Get indices where Label is 4
 c3 = np.where(Label == 1)[0]  # Get indices where Label is 2
+
+
 
 # Combine the indices
 combined_indices = np.concatenate((c1, c2,c3))
@@ -45,11 +47,16 @@ c = np.random.permutation(X.shape[0])
 X = X[c,:,:]
 Label = Label[c]
 
-Label[Label==3] = 0
-Label[Label==4] = 1
-Label[Label==1] = 2
 
+# Label[c1] = 0
+# Label[c2] = 1
+# Label[c3] = 2
+# Get unique values and create a mapping
+unique_values = np.unique(Label)
+mapping = {val: idx for idx, val in enumerate(unique_values)}
 
+# Apply the mapping to the Label array
+Label = np.array([mapping[val] for val in Label])
 
 
 batch_sizee = 25
@@ -209,7 +216,7 @@ for train_index, test_index in kf.split(X):
     # dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size= batch_sizee, shuffle=True,pin_memory=True)
     del img, label, train_data
     torch.cuda.empty_cache()
-    model = LMDA(num_classes=3, chans=32, samples=250, channel_depth1=24, channel_depth2=7).cuda()
+    model = LMDA(num_classes=3, chans=32, samples=267, channel_depth1=24, channel_depth2=7).cuda()
     # model = Conformer(emb_size=40, depth=6, n_classes=2).cuda()
 
     # n_classes, dropoutRate, kernelLength, kernelLength2, F1, D = 2, 0.5, 64, 16, 8, 2
