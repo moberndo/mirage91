@@ -20,10 +20,6 @@ labels = (np.array(X[:, 0])).astype(np.float32)
 inputs = np.array(X[:, 1].tolist())  
 X = inputs
 Label = labels
-# Label[Label==1] = 0
-# Label[Label==2] = 1
-# Label[Label==3] = 2
-# Label[Label==4] = 3
 
 'cross validation'
 X = X[:,:,200*2:200*6]
@@ -48,9 +44,6 @@ X = X[c,:,:]
 Label = Label[c]
 
 
-# Label[c1] = 0
-# Label[c2] = 1
-# Label[c3] = 2
 # Get unique values and create a mapping
 unique_values = np.unique(Label)
 mapping = {val: idx for idx, val in enumerate(unique_values)}
@@ -76,102 +69,6 @@ LongTensor = torch.cuda.LongTensor
 # criterion_l1 = torch.nn.L1Loss().cuda()
 # criterion_l2 = torch.nn.MSELoss().cuda()
 criterion_cls = torch.nn.CrossEntropyLoss().cuda()
-
-# model = Conformer().cuda()
-# model = nn.DataParallel(model, device_ids=[i for i in range(len(gpus))])
-# model = model.cuda()
-
-# model = EEGInception().cuda()
-
-'mine'
-out_channels = 15
-n_chunks = 3
-depth = 15
-
-chans = 63
-samples = 121
-num_classes = 2
-# 
-
-C = 63
-T = 121
-# model = LMDA(num_classes=2, chans=32, samples=438, depth=9, kernel=75, channel_depth1=24, channel_depth2=9).cuda()
-
-# model =  DeepConvNet(C, T,  5, 0.5, N = 2, pool_type = 'maxpool', max_norm_ratio = 1).cuda()
-    
-# model = EEGInception(input_time=1890, fs=64, ncha=chans, filters_per_branch=8,
-#                   scales_time=(500, 250, 125), dropout_rate=0.25,
-#                   activation=nn.ELU(inplace=True), n_classes=2).cuda()
-# model = ShallowConvNet(num_classes=2, chans=chans, samples=samples).cuda()
-
-    # model = EEGNet(num_classes = 2, chans = 63, samples=128, dropout_rate=0.5, kernel_length=32, F1=8, F2=16).cuda()
-
-# n_classes, dropoutRate, kernelLength, kernelLength2, F1, D = 4, 0.5, 64, 16, 8, 2
-# F2 = F1 * D
-# model = EEGNet(n_classes, chans, samples, dropoutRate, kernelLength, kernelLength2, F1, D, F2).cuda()
-
-# model = YourModel(20, 20, 20,(2,2,2), (2,4,4), (2,2,2)).cuda()
-
-
-# kernel_size = [(7, 3, 3), (5, 3, 3),(3, 3, 3),(3, 3)]
-# chan = (16,16,16,16)
-# embed_in = 32
-# hidden_dimension = 32
-# num_heads = 4
-# head_dim = 8
-# window_size = 3
-# relative_pos_embedding=True
-# downscaling_factor=4
-# # x = torch.rand(1,1,64,32,32)
-# # _, _, depth, _, _ = x.shape
-# model = SwinCNN(64,kernel_size, chan, embed_in, hidden_dimension,num_heads,head_dim,window_size,downscaling_factor,relative_pos_embedding).cuda()
-
-# kernel_size = [(7, 3, 3), (5, 3, 3),(3, 3, 3),(1, 1)]
-# chan = (16,16,16,16)
-
-# num_heads = 5
-# head_dim = 8
-# relative_pos_embedding = True
-# downscaling_factor = 2
-# embed_in=40
-# hidden_dimension = 40
-# window_size = 2 
-
-
-# kernel_size = [(7, 3, 3), (5, 3, 3),(3, 3, 3),(1, 1)]
-# chan = (16,16,16,16)
-
-# num_heads = 5
-# head_dim = 8
-# relative_pos_embedding = True
-# downscaling_factor = 2
-# embed_in=40
-# hidden_dimension = 40
-# window_size = 2 
-# x = torch.rand(1,1,64,32,32)
-# _, _, depth, _, _ = x.shape
-# model = SwinCNN4(depth,kernel_size, chan, embed_in, hidden_dimension,num_heads,head_dim,window_size,downscaling_factor,relative_pos_embedding).cuda()
-
-
-########################################
-
-# model = EEGNet(num_classes = 4, chans = 32, samples=875, dropout_rate=0.5, kernel_length=32, F1=8, F2=16).cuda()
-
-# a = torch.randn(12, 1, 63, 128).cuda().float()
-# l2 = model(a)
-# model_optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-2)
-
-# model = ShallowConvNet(num_classes=2, chans=63, samples=128).cuda()
-# model = EEGNet(num_classes = 2, chans = 63, samples=128, dropout_rate=0.5, kernel_length=32, F1=8, F2=16).cuda()
-
-# model = ConvTransformer(num_classes=2, channels=8, num_heads=2, E=16, F=256, T=64, depth=2).cuda()
-# model = ConvTransformer(num_classes=2, channels=8, num_heads=2, E=16, F=256, T=128, depth=2).cuda()
-
-
-# model = TimeSformer(img_size=32, num_classes=2, num_frames=64, attention_type='divided_space_time').cuda()
-
-# x = torch.rand((128,63,6000))
-# label = torch.randint(low=0, high=2, size=(6000,))
 
 from sklearn.model_selection import KFold
 import numpy as np
@@ -368,26 +265,10 @@ acc = np.mean(Acc_all,axis = 0)
 'Results'
 
 'EEGNET'
-# class 1 & 2 -> 67-70
-# class 1 & 3 -> 53-54
-# class 1 & 4 -> 70-72
-
-# class 2 & 3 -> 68-71
-# class 2 & 4 -> 72-74
-
-# class 3 & 4 -> 75-78
 
 
 'LMDA'
-# class 3 & 4 -> 78-81
 
-# class 3,4,2  -> 50-52
-# class 1,4,2  -> 48-50
-# class 1,2,3  -> 51-52
-
-
-
-# class 3,4,1  -> 64-67
 
 
 
