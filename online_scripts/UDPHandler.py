@@ -2,6 +2,7 @@ import socket
 import secrets
 import threading
 import time
+import struct
 
 # ---Header Composition--- (10 Bytes)
 
@@ -34,6 +35,7 @@ import time
 # ---Connection Token--- (8 Bytes; only when first request connection)
 # Refered to as Host token which we have to address when sending commend to host
 
+#local_ip='169.254.105.17', local_port=59075
 class GameUDPInterface:
     def __init__(self, host_ip = '127.0.0.1', host_port = 59075, local_ip='0.0.0.0', local_port=64385, buffer_size=1024, verbose = False):
         """
@@ -68,6 +70,22 @@ class GameUDPInterface:
         self.heartbeat_thread = threading.Thread(target=self._send_heartbeat)
         self.heartbeat_thread.daemon = True
 
+    def create_packet_header(self, packet_type, session_token, has_token=False):
+        # packet header based on game protocol p.64
+        flags = 0x01 if has_token else 0x00
+        header = (
+            packet_type.to_bytes(1, byteorder='big') +
+            flags.to_bytes(1, byteorder='big') +
+            session_token
+        )
+        return header
+
+    def create_payload(self, data):
+        # Convert the EEG signal into bytes, --> float (32-bit) to bytes
+        payload = bytearray()
+        for value in data:
+            payload.extend(struct.pack('<f', float(value)))  # <f means little-endian float
+        return payload
 
     def _create_token(self,token_size=8):
         return secrets.token_hex(token_size)
