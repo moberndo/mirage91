@@ -25,3 +25,4 @@ paradigm/data/*
 __pycache__/
 wandb
 .idea
+*.pt

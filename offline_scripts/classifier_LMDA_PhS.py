@@ -11,21 +11,14 @@ def evaluate(device, config: dict):
     X = np.load(config["data"]["dataset_path"], allow_pickle=True)
 
     labels = (np.array(X[:, 0])).astype(np.float32)
-    inputs = np.array(X[:, 1].tolist())
-    X = inputs
+    X = np.array(X[:, 1].tolist())
     Label = labels
 
     'cross validation'
     X = X[:, :, 200 * 2:200 * 6]
     X = X[:, :, 0:-1:3]
 
-    c1 = np.where(Label == 3)[0]  # Get indices where Label is 3
-    c2 = np.where(Label == 4)[0]  # Get indices where Label is 4
-    c3 = np.where(Label == 1)[0]  # Get indices where Label is 2
-
-    # Combine the indices
-    combined_indices = np.concatenate((c1, c2, c3))
-
+    combined_indices = np.where(np.isin(Label, config["data"]["selected_classes"]))[0]
     # Use the combined indices to index X and Label
     X = X[combined_indices, :, :]
     Label = Label[combined_indices]
@@ -41,8 +34,8 @@ def evaluate(device, config: dict):
     # Apply the mapping to the Label array
     Label = np.array([mapping[val] for val in Label])
 
-    batch_sizee = 25
-    n_epochs = 200
+    batch_sizee = config["training"]["batch_size"]
+    n_epochs = config["training"]["epochs"]
     c_dim = 2
     lr = 0.001
     b1 = 0.5
@@ -98,15 +91,15 @@ def evaluate(device, config: dict):
         del img, label, train_data
         if device == "cuda":
             torch.cuda.empty_cache()
-        model = LMDA(num_classes=3, chans=32, samples=267, channel_depth1=24, channel_depth2=7).to(device)
-        t = count_parameters(model)
-        # model = Conformer(emb_size=40, depth=6, n_classes=2).cuda()
 
-        # n_classes, dropoutRate, kernelLength, kernelLength2, F1, D = 2, 0.5, 64, 16, 8, 2
-        # F2 = F1 * D
-        # chans = 32
-        # samples = 438
-        # model = EEGNet(n_classes, chans, samples, dropoutRate, kernelLength, kernelLength2, F1, D, F2).cuda()
+        model = LMDA(num_classes=len(config["data"]["selected_classes"]), chans=32, samples=267, channel_depth1=24,
+                     channel_depth2=7).to(device)
+        if config["model"]["load_model"]:
+            model.load_state_dict(torch.load(config["model"]["path"], weights_only=True))
+
+        # t = count_parameters(model)
+        # torch.save(model.state_dict(), config["model"]["path"])
+        # model = Conformer(emb_size=40, depth=6, n_classes=2).cuda()
 
         optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-3)
         del test_data, test_label
