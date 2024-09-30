@@ -115,26 +115,28 @@ except Exception as e:
 # classify binary input A,B
 def classify_binary_inputs(sample):
     # mask for binary inputs, initialized all 16 bits to 0 for starters
-    binary_inputs = 0b00000000_00000000
-    
-    if sample[0] > 0.25:
-        binary_inputs |= 0b00000000_00000001 # Input A (Bit 1)
-    if sample[1] > 0.25:
-        binary_inputs |= 0b00000000_00000010  # Input B (Bit 2)
+    binary_inputs = 0
+    thrsh = 0.25
+    if sample[0] > thrsh:
+        binary_inputs |= 1<<8 # Input A (Bit 1)
+    if sample[1] > thrsh:
+        binary_inputs |= 2<<8  # Input B (Bit 2)
     # put the 16-bit binary inputs into bytes
-    return binary_inputs.to_bytes(2, byteorder='little') # little = little-endian
+    return binary_inputs.to_bytes(2) # little = little-endian
 
 # Function to encode analogue inputs into the range [00h, FFh] (1 byte per axis)
 def encode_analogue_input(value):
     # analogue input from [-1.0, 1.0] to [00h, FFh]
     encoded_value = int((value + 1) * 127.5)  # [-1, 1] -> [0, 255]
-    return max(0, min(255, encoded_value)).to_bytes(1, byteorder='big')
+    return max(0, min(255, encoded_value)).to_bytes(1)
 
 def create_payload(sample):
     # Binary Inputs A,B (2 bytes for 16-bit mask)
     binary_inputs = classify_binary_inputs(sample)
 
+    thrsh = 0.25
     # Analogue Inputs (X and Y axes) mapping
+
     x_axis = encode_analogue_input(sample[2])  # 3rd value to X-axis
     y_axis = encode_analogue_input(sample[3])  # 4th value to Y-axis
 
@@ -148,7 +150,7 @@ def create_payload(sample):
 while True:
     try:
         sample, timestamp = inlet.pull_sample()  # Pull the latest sample from LSL stream
-        print(f"Received classification: {sample} at {timestamp}")  # Log
+        # print(f"Received classification: {sample} at {timestamp}")  # Log
 
         # session_token = udp_handler.client_token  # Client token from handler
         # connection_token = udp_handler.host_token  # Host token
@@ -158,13 +160,14 @@ while True:
         connection_token = bytes.fromhex(udp_handler.host_token)  # transform to bytes
 
         # Step 3: Create the packet header
-        header = udp_handler.create_packet_header(packet_type=0x04, session_token=session_token, has_token=True)
+        header = udp_handler.create_packet_header(packet_type=0x04, session_token=connection_token, has_token=True)
 
         payload = create_payload(sample)
-        print(f'Payload: {payload}')
-        message = header + payload + connection_token  # UDP message
+        # print(f'Payload: {payload}')
+        message = header + payload # UDP message
+        print(message.hex())
         udp_handler._send_message(message.hex())  # Send message to the game via UDP in hex format
-        print(f"Sent BCI data to game: {message.hex()}")  # Log
+        # print(f"Sent BCI data to game: {message.hex()}")  # Log
 
     # Error handling
     except KeyboardInterrupt:

@@ -72,7 +72,10 @@ class GameUDPInterface:
 
     def create_packet_header(self, packet_type, session_token, has_token=False):
         # packet header based on game protocol p.64
-        flags = 0x01 if has_token else 0x00
+        # flags = 0x01 if has_token else 0x00
+        
+        # this flag must always be 00
+        flags = 0x00
         header = (
             packet_type.to_bytes(1, byteorder='big') +
             flags.to_bytes(1, byteorder='big') +
