@@ -300,7 +300,6 @@ from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from statsmodels.tsa.ar_model import AutoReg
-import pywt
 from scipy.stats import skew, kurtosis
 import matplotlib.pyplot as plt
 from torch.cuda.amp import GradScaler, autocast  # For mixed precision training
