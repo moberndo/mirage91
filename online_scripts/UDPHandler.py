@@ -80,12 +80,13 @@ class GameUDPInterface:
         )
         return header
 
-    def create_payload(self, data):
-        # Convert the EEG signal into bytes, --> float (32-bit) to bytes
-        payload = bytearray()
-        for value in data:
-            payload.extend(struct.pack('<f', float(value)))  # <f means little-endian float
-        return payload
+    # def create_payload(self, data):
+    #     # Convert the EEG signal into bytes, --> float (32-bit) to bytes, p.71
+    #     payload = bytearray()
+    #     for value in data:
+    #         payload.extend(struct.pack('<f', float(value)))  # <f means little-endian float
+    #     return payload
+    
 
     def _create_token(self,token_size=8):
         return secrets.token_hex(token_size)

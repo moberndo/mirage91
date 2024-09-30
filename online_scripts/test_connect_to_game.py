@@ -92,8 +92,13 @@ import struct
 udp_handler = GameUDPInterface(verbose=True)
 print(f"UDP Socket bound to {udp_handler.local_ip}:{udp_handler.local_port}") # log: local or host?
 
-udp_handler.connect()  # Connect to game
-print("Connection Accepted")  # Log
+try:
+    udp_handler.connect()  # Connect to game
+    print("Connection Accepted")  # Log
+except Exception as e:
+    print(f"Error occurred: {e}. The game may have closed or is unreachable.") # disconnection error 
+    udp_handler.disconnect()
+    
 
 # Find the LSL stream
 try:
@@ -103,6 +108,41 @@ try:
 except Exception as e:
     print(f"Failed to resolve LSL stream: {e}")
     exit()  # Exit stream, log
+    
+    
+ #################### create payload acc. to p.71 #####################
+        
+# classify binary input A,B
+def classify_binary_inputs(sample):
+    # mask for binary inputs, initialized all 16 bits to 0 for starters
+    binary_inputs = 0b00000000_00000000
+    
+    if sample[0] > 0.25:
+        binary_inputs |= 0b00000000_00000001 # Input A (Bit 1)
+    if sample[1] > 0.25:
+        binary_inputs |= 0b00000000_00000010  # Input B (Bit 2)
+    # put the 16-bit binary inputs into bytes
+    return binary_inputs.to_bytes(2, byteorder='little') # little = little-endian
+
+# Function to encode analogue inputs into the range [00h, FFh] (1 byte per axis)
+def encode_analogue_input(value):
+    # analogue input from [-1.0, 1.0] to [00h, FFh]
+    encoded_value = int((value + 1) * 127.5)  # [-1, 1] -> [0, 255]
+    return max(0, min(255, encoded_value)).to_bytes(1, byteorder='big')
+
+def create_payload(sample):
+    # Binary Inputs A,B (2 bytes for 16-bit mask)
+    binary_inputs = classify_binary_inputs(sample)
+
+    # Analogue Inputs (X and Y axes) mapping
+    x_axis = encode_analogue_input(sample[2])  # 3rd value to X-axis
+    y_axis = encode_analogue_input(sample[3])  # 4th value to Y-axis
+
+    # Combine binary and analogue inputs into the full payload
+    return binary_inputs + x_axis + y_axis
+
+###################################
+        
 
 # Send classification data
 while True:
@@ -120,8 +160,8 @@ while True:
         # Step 3: Create the packet header
         header = udp_handler.create_packet_header(packet_type=0x04, session_token=session_token, has_token=True)
 
-        payload = udp_handler.create_payload(sample)
-
+        payload = create_payload(sample)
+        print(f'Payload: {payload}')
         message = header + payload + connection_token  # UDP message
         udp_handler._send_message(message.hex())  # Send message to the game via UDP in hex format
         print(f"Sent BCI data to game: {message.hex()}")  # Log
@@ -131,7 +171,7 @@ while True:
         print("Disconnecting...")
         udp_handler.disconnect()
         break
-    except Exception as e:
-        print(f"Error occurred: {e}. The game may have closed or is unreachable.")
-        udp_handler.disconnect()
-        break
+    # except Exception as e:
+    #     print(f"Error occurred: {e}. The game may have closed or is unreachable.")
+    #     udp_handler.disconnect()
+    #     break
