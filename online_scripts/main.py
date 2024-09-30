@@ -6,6 +6,8 @@ Authors: Mirage 91
 from pylsl import StreamInfo, StreamOutlet
 from OnlineProcessingPipeline import OnlineProcessingPipeline as pipe
 import time
+import numpy as np
+import pickle
 # import sLDA #import the classifier
 
 
@@ -17,7 +19,7 @@ filterorder = 4
 fs_downsampled = 16
 ftype = 'butter'
 btype = 'band'  # or 'lowpass', 'highpass'
-channel_count = 1  # for the classifier stream according to the game and predictor
+channel_count = 4  # for the classifier stream according to the game and predictor
 length_of_window = 1  #second window moving average
 t_timeout = 5
 
@@ -29,8 +31,14 @@ filter_alpha = pipe.OnlineFilter(filterorder, cutoff_freq1, stream_eeg.fs, btype
 filter_beta = pipe.OnlineFilter(filterorder, cutoff_freq2, stream_eeg.fs, btype, ftype, stream_eeg.n_channels)
 filters = [filter_alpha, filter_beta]
 filter_mov_avg = pipe.MovingAverageFilter(length_of_window, stream_eeg.fs, stream_eeg.n_channels)
-downsampling_ratio = stream_eeg.fs / fs_downsampled  #downsampling ratio must be an integer
+downsampling_ratio = int(np.round(stream_eeg.fs / fs_downsampled,0))  #downsampling ratio must be an integer
 dec_filter = pipe.DecimationFilter(downsampling_ratio)
+
+# initialize Classifier
+with open('lda_model.pk', 'rb') as file:
+    lda_model_ObM = pickle.load(file)
+classifier = lda_model_ObM.classifier()
+
 
 print('Creating the classifier stream info...')
 info_classifier = StreamInfo('classifier', 'classifier', channel_count, 0, 'float32')
@@ -45,7 +53,7 @@ while decoding:
     chunk, timestamps = stream_eeg.inlet.pull_chunk()
     if chunk:
         # modify pipeline
-        processed_chunk = pipe.run_pipeline_dummy(chunk, filters, filter_mov_avg, dec_filter)
+        processed_chunk = pipe.run_pipeline_sLDA_bp_ObM(chunk, filters, filter_mov_avg, dec_filter)
         if processed_chunk.size > 0:
             ############################################################################################################
             ###                                     Begin Classifier                                                 ###
@@ -54,15 +62,16 @@ while decoding:
             # predictor should look something like this
             # [predicted_class, linear_scores, class_probabilities] = sLDA.classifier.predict(processed_chunk[:,-1])
             # #just dummy variable, edit accordingly to the classifier
-            predicted_class = processed_chunk[-1, -1]  #just dummy variable to see if everything works
+            predicted_probabilities = classifier.predict_proba(np.transpose(processed_chunk))
+
             ############################################################################################################
             ###                                     End Classifier                                                   ###
             ############################################################################################################
 
             # prepare the predicted chunk to be streamed
-            if predicted_class:
+            if predicted_probabilities:
                 # TODO: edit the out_chunk such that it includes the predicted classes and is suitable for the game
-                out_chunk = [predicted_class]
+                out_chunk = [np.transpose(predicted_probabilities)]
                 outlet_classifier.push_chunk(out_chunk)
 
 
