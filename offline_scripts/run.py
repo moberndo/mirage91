@@ -7,7 +7,7 @@ import random
 
 import yaml
 
-from offline_scripts.classifier_LMDA_PhS import evaluate
+from offline_scripts.classifier_LMDA_PhS import evaluate, train_final
 
 CONFIG_PATH = "./configs/"
 
@@ -44,13 +44,15 @@ def init_weights_and_bias(config: dict):
     )
 
 
-def run_evaluation(config: dict):
-    init_weights_and_bias(config=conf)
-    evaluate(device=device, config=config)
-
 if __name__ == "__main__":
     try:
         conf = load_config("config.yaml")
-        run_evaluation(conf)
+        init_weights_and_bias(config=conf)
+        if conf["experiment"] == "evaluation":
+            evaluate(device=device, config=conf)
+        elif conf["experiment"] == "final":
+            train_final(device=device, config=conf)
+        else:
+            print("Currently you can decide between evaluation and final")
     except Exception as e:
         print(f"Enter as second argument a valid path to the config file.\nDetailed error message: {e}")

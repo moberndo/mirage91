@@ -1,5 +1,5 @@
 wandb_disabled: True
-experiment: evaluation
+experiment: final
 
 data:
   dataset_path: /home/philipp/datasets/features/features/cleaned_epoched_eeg.npy
@@ -9,8 +9,13 @@ data:
 
 training:
   k_fold_splits: 10
-  epochs: 1
+  epochs: 100
   batch_size: 25
+  lr: 1e-3
+  weight_decay: 1e-3
+
+final:
+  test_split: 0.2
 
 
 model:
