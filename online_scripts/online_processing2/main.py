@@ -71,7 +71,7 @@ while decoding:
             # prepare the predicted chunk to be streamed
             if predicted_probabilities:
                 # TODO: edit the out_chunk such that it includes the predicted classes and is suitable for the game
-                out_chunk = [predicted_probabilities]
+                out_chunk = [np.transpose(predicted_probabilities)]
                 outlet_classifier.push_chunk(out_chunk)
 
 
