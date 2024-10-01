@@ -122,13 +122,13 @@ def classify_binary_inputs(sample):
     if sample[1] > thrsh:
         binary_inputs |= 2<<8  # Input B (Bit 2)
     # put the 16-bit binary inputs into bytes
-    return binary_inputs.to_bytes(2) # little = little-endian
+    return binary_inputs.to_bytes(2, byteorder= 'big') # little = little-endian
 
 # Function to encode analogue inputs into the range [00h, FFh] (1 byte per axis)
 def encode_analogue_input(value):
     # analogue input from [-1.0, 1.0] to [00h, FFh]
     encoded_value = int((value + 1) * 127.5)  # [-1, 1] -> [0, 255]
-    return max(0, min(255, encoded_value)).to_bytes(1)
+    return max(0, min(255, encoded_value)).to_bytes(1, byteorder= 'little')
 
 def create_payload(sample):
     # Binary Inputs A,B (2 bytes for 16-bit mask)

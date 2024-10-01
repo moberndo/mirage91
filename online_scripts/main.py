@@ -100,7 +100,7 @@ while decoding:
         predicted_class = model(processed_chunk_tensor)
 
 
-    print(predicted_class.numpy())
+    # print(predicted_class.numpy())
     outlet_classifier.push_chunk(predicted_class.numpy())
 
         # stop the decoder when no EEG samples received
