@@ -116,7 +116,7 @@ except Exception as e:
 def classify_binary_inputs(sample):
     # mask for binary inputs, initialized all 16 bits to 0 for starters
     binary_inputs = 0
-    thrsh = 0.25
+    thrsh = 0.4
     if sample[0] > thrsh:
         binary_inputs |= 1<<8 # Input A (Bit 1)
     if sample[1] > thrsh:

@@ -82,10 +82,15 @@ time.sleep(2)
 while decoding:
     # Get a new chunk, load buffer and apply preprocessing
     while 1:
-        time.sleep(0.1)
+        time.sleep(0.5)
         chunk, timestamps = stream_eeg.inlet.pull_chunk()
+
+        chunk = array(chunk).T
+        chunk = chunk[0:32,:]
+        # print(chunk.shape)
+
         # if chunk:
-        buffer = append(buffer, array(chunk).T, axis=1)
+        buffer = append(buffer, chunk, axis=1)
         if buffer.shape[1] >= buffer_size:
             processed_chunk = pipe.apply_pipeline(buffer, filters, dec_filter)
             break
