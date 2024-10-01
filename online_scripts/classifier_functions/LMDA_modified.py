@@ -77,4 +77,5 @@ class LMDA(nn.Module):
 
         features = torch.flatten(x, 1)
         cls = self.classifier(features)
+        cls = nn.functional.softmax(cls, dim=-1)
         return cls

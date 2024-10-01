@@ -62,6 +62,7 @@ outlet_classifier = StreamOutlet(info)
 model = LMDA(num_classes=4, chans=32, samples=267, channel_depth1=24, channel_depth2=7)
 # Load the saved weights into the model
 model.load_state_dict(load(classifier_params, weights_only=True))
+
 # Initialize
 model.eval()
 
@@ -93,12 +94,14 @@ while decoding:
     processed_chunk = copy(processed_chunk)  
 
     # Convert the NumPy array to a Tensor
-    processed_chunk_tensor = from_numpy(processed_chunk).double()
+    processed_chunk_tensor = from_numpy(processed_chunk).float()
     # Make a prediction
     with torch.no_grad():
         predicted_class = model(processed_chunk_tensor)
 
-    outlet_classifier.push_chunk(predicted_class)
+
+    print(predicted_class.numpy())
+    outlet_classifier.push_chunk(predicted_class.numpy())
 
         # stop the decoder when no EEG samples received
     t_start_timeout = time.time()
