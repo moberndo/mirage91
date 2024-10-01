@@ -116,29 +116,37 @@ except Exception as e:
 def classify_binary_inputs(sample):
     # mask for binary inputs, initialized all 16 bits to 0 for starters
     binary_inputs = 0
-    thrsh = 0.4
-    if sample[0] > thrsh:
-        binary_inputs |= 1<<8 # Input A (Bit 1)
-    if sample[1] > thrsh:
-        binary_inputs |= 2<<8  # Input B (Bit 2)
+    thrsh = 0.5
+    if sample[0] > sample[1]:
+        if sample[0] > thrsh:
+            binary_inputs |= 1<<8 # Input A (Bit 1)
+    else:
+        if sample[1] > thrsh:
+            binary_inputs |= 2<<8  # Input B (Bit 2)
     # put the 16-bit binary inputs into bytes
     return binary_inputs.to_bytes(2, byteorder= 'big') # little = little-endian
 
 # Function to encode analogue inputs into the range [00h, FFh] (1 byte per axis)
-def encode_analogue_input(value):
+def encode_analogue_input(value,thresh):
     # analogue input from [-1.0, 1.0] to [00h, FFh]
-    encoded_value = int((value + 1) * 127.5)  # [-1, 1] -> [0, 255]
-    return max(0, min(255, encoded_value)).to_bytes(1, byteorder= 'little')
+    if value >= thresh:
+        # encoded_value = int((value + 1) * 127.5)  # [-1, 1] -> [0, 255]
+        encoded_value = int((((value -0.5)/0.25)*128)+127)
+        # encoded_value = int(255)
+        # encoded_value = max(0, min(255, encoded_value))
+    else:
+        encoded_value = int(127)
+    return encoded_value.to_bytes(1, byteorder= 'little')
 
 def create_payload(sample):
     # Binary Inputs A,B (2 bytes for 16-bit mask)
     binary_inputs = classify_binary_inputs(sample)
 
-    thrsh = 0.25
+    thresh = 0.5
     # Analogue Inputs (X and Y axes) mapping
 
-    x_axis = encode_analogue_input(sample[2])  # 3rd value to X-axis
-    y_axis = encode_analogue_input(sample[3])  # 4th value to Y-axis
+    x_axis = encode_analogue_input(sample[2],thresh)  # 3rd value to X-axis
+    y_axis = encode_analogue_input(sample[3],thresh)  # 4th value to Y-axis
 
     # Combine binary and analogue inputs into the full payload
     return binary_inputs + x_axis + y_axis
