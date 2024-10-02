@@ -129,10 +129,11 @@ def classify_binary_inputs(sample):
 # Function to encode analogue inputs into the range [00h, FFh] (1 byte per axis)
 def encode_analogue_input(value,thresh):
     # analogue input from [-1.0, 1.0] to [00h, FFh]
+    # print(value)
     if value >= thresh:
         # encoded_value = int((value + 1) * 127.5)  # [-1, 1] -> [0, 255]
-        encoded_value = int((((value -0.5)/0.25)*128)+127)
-        # encoded_value = int(255)
+        # encoded_value = int((((value -0.5)/0.25)*128)+127)
+        encoded_value = int(255)
         # encoded_value = max(0, min(255, encoded_value))
     else:
         encoded_value = int(127)
