@@ -5,6 +5,7 @@ Authors: Mirage 91
 
 import numpy as np
 import scipy.signal as signal
+from scipy.signal import butter, filtfilt
 
 
 class OnlineProcessingPipeline:
@@ -22,8 +23,8 @@ class OnlineProcessingPipeline:
         # Looking for an EEG-stream
         def __init__(self) -> None:
             from pylsl import StreamInlet, resolve_byprop
-            print("looking for an EEG stream...")
-            self.streams = resolve_byprop('type', 'EEG', timeout=10)
+            print("Looking for an EEG stream...")
+            self.streams = resolve_byprop(prop='type', value='EEG', timeout=10)
             if len(self.streams) < 1:
                 raise TimeoutError('No EEG-Stream could be found, please attach EEG')
             self.fs = self.streams[0].nominal_srate()
@@ -54,6 +55,31 @@ class OnlineProcessingPipeline:
             decimated_chunk = chunk[:, self.ringbuffer[0]::self.downsampling_factor]
             self.ringbuffer = np.roll(self.ringbuffer, length_of_chunk)
             return decimated_chunk
+        
+    def apply_pipeline(chunk, filters, dec_filter, buffer_size=300, ):
+        def butter_bandpass(lowpass, highpass, fs, order=4):
+            nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
+            low = lowpass / nyquist
+            high = highpass / nyquist
+            b, a = butter(order, [low, high], btype='band')
+            return b, a
+
+        def apply_bandpass_filter(data, lowpass, highpass, fs, order=4):
+            # Get the filter coefficients
+            b, a = butter_bandpass(lowpass, highpass, fs, order=order)
+            
+            # Apply the filter along the second axis (axis=1) for each channel
+            filtered_data = filtfilt(b, a, data, axis=1)
+            
+            return filtered_data
+        # Cut buffer to buffer size
+        buffer = chunk[:,-buffer_size:]
+        filtered_buffer = apply_bandpass_filter(buffer, lowpass=1, highpass=45, fs=512)[:,:267]
+        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, 267)).astype('double')
+
+        return filtered_buffer # shape of filtered_buffer is [1, 1, 32, 267]
+
+
 
     def run_pipeline_dummy(chunk, filters, mov_avg_filter, dec_filter):
         # Transpose the chunks into dimensions of (channels x samples)
