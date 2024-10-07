@@ -7,7 +7,6 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
 
 # main
 class sLDA:
@@ -66,12 +65,12 @@ class sLDA:
         if plot_cm:
             plt.figure(figsize=(8, 6))
             sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
-                        xticklabels= ['left_foot', 'left_hand', 'mental_singing', 'right_foot'],
-                        yticklabels= ['left_foot', 'left_hand', 'mental_singing', 'right_foot'])
+                        xticklabels= ['left_hand', 'right_hand', 'feet', 'mental_singing'],
+                        yticklabels= ['left_hand', 'right_hand', 'feet', 'mental_singing'])
             plt.xlabel('Predicted')
             plt.ylabel('Actual')
             plt.title(f'Confusion Matrix {modality}')
-            plt.savefig('confusion_matrix.png')
+            plt.savefig('./offline_scripts/classifier_results/confusion_matrix_sLDA_ObM.png')
             plt.show()
             
    
