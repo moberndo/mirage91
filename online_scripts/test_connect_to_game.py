@@ -133,7 +133,10 @@ def encode_analogue_input(value,thresh):
     if value >= thresh:
         # encoded_value = int((value + 1) * 127.5)  # [-1, 1] -> [0, 255]
         # encoded_value = int((((value -0.5)/0.25)*128)+127)
-        encoded_value = int(255)
+        if thresh <= x < max_prob:
+            return int((((value - thresh)/(max_prob-thresh))*128)+127)  # y = 0.5 for 0.5 <= x < 0.7
+        elif max_prob <= x <= 1:
+            return int(255)
         # encoded_value = max(0, min(255, encoded_value))
     else:
         encoded_value = int(127)
