@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import StepLR
 
 from offline_scripts.classifier_functions.LMDA_modified import LMDA
+from offline_scripts.custom_functions.load_data import load_dataset
 from offline_scripts.custom_functions.training_helpers import EarlyStopping
 
 
@@ -13,10 +14,13 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, config: dict, 
     # criterion_l1 = torch.nn.L1Loss().cuda()
     # criterion_l2 = torch.nn.MSELoss().cuda()
     criterion = torch.nn.CrossEntropyLoss().cuda(device=device)
-    model = LMDA(num_classes=len(config["data"]["selected_classes"]), chans=32, samples=267, channel_depth1=24,
-                 channel_depth2=7).to(device)
+    model = LMDA(num_classes=len(config["data"]["selected_classes"]),
+                 chans=config["model"]["lmda"]["chans"],
+                 samples=config["model"]["lmda"]["samples"],
+                 channel_depth1=config["model"]["lmda"]["channel_depth1"],
+                 channel_depth2=config["model"]["lmda"]["channel_depth2"]).to(device)
     if config["model"]["load_model"]:
-        model.load_state_dict(torch.load(config["model"]["path"], weights_only=True))
+        model.load_state_dict(torch.load(f'{config["model"]["path"]}/best_LMDA_PhS_fold-{fold}.pt', weights_only=True))
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=float(config["training"]["lr"]),
                                   weight_decay=float(config["training"]["weight_decay"]))
@@ -93,7 +97,11 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, config: dict, 
             print("Early stopping")
             return model, val_acc_epoch[epoch]
 
-    return model, val_acc_epoch[-1]
+        # Save the best model
+        if not early_stopping.early_stop:
+            torch.save(model.state_dict(), f'{config["model"]["path"]}/best_LMDA_PhS_fold-{fold}.pt')
+
+    return model, early_stopping.acc
 
 def load_data(x, y, device, config: dict, shuffle: bool = False) -> torch.utils.data.DataLoader:
     data = np.expand_dims(x, axis=1)
@@ -103,30 +111,7 @@ def load_data(x, y, device, config: dict, shuffle: bool = False) -> torch.utils.
     return torch.utils.data.DataLoader(dataset=dataset, batch_size=config["training"]["batch_size"], shuffle=shuffle)
 
 def evaluate(device, config: dict):
-    X = np.load(config["data"]["dataset_path"], allow_pickle=True)
-
-    labels = (np.array(X[:, 0])).astype(np.float32)
-    X = np.array(X[:, 1].tolist())
-    Label = labels
-
-    X = X[:, :, 200 * 2:200 * 6]
-    X = X[:, :, 0:-1:3]
-
-    combined_indices = np.where(np.isin(Label, config["data"]["selected_classes"]))[0]
-    # Use the combined indices to index X and Label
-    X = X[combined_indices, :, :]
-    Label = Label[combined_indices]
-
-    c = np.random.permutation(X.shape[0])
-    X = X[c, :, :]
-    Label = Label[c]
-
-    # Get unique values and create a mapping
-    unique_values = np.unique(Label)
-    mapping = {val: idx for idx, val in enumerate(unique_values)}
-
-    # Apply the mapping to the Label array
-    Label = np.array([mapping[val] for val in Label])
+    X, y = load_dataset(config)
 
     kf = KFold(n_splits=config["training"]["k_fold_splits"])
     acc_list = []
@@ -135,7 +120,7 @@ def evaluate(device, config: dict):
     for train_index, test_index in kf.split(X):
 
         X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Label[train_index], Label[test_index]
+        y_train, y_test = y[train_index], y[test_index]
 
         dataloader = load_data(x=X_train, y=y_train, device=device, config=config, shuffle=True)
         test_dataloader = load_data(x=X_test, y=y_test, device=device, config=config)
@@ -151,32 +136,9 @@ def evaluate(device, config: dict):
     print(f'Average accuracy over all folds: {np.mean(acc_list)}')
 
 def train_final(device, config: dict):
-    X = np.load(config["data"]["dataset_path"], allow_pickle=True)
+    X, y = load_dataset(config)
 
-    labels = (np.array(X[:, 0])).astype(np.float32)
-    X = np.array(X[:, 1].tolist())
-    Label = labels
-
-    X = X[:, :, 200 * 2:200 * 6]
-    X = X[:, :, 0:-1:3]
-
-    combined_indices = np.where(np.isin(Label, config["data"]["selected_classes"]))[0]
-    # Use the combined indices to index X and Label
-    X = X[combined_indices, :, :]
-    Label = Label[combined_indices]
-
-    c = np.random.permutation(X.shape[0])
-    X = X[c, :, :]
-    Label = Label[c]
-
-    # Get unique values and create a mapping
-    unique_values = np.unique(Label)
-    mapping = {val: idx for idx, val in enumerate(unique_values)}
-
-    # Apply the mapping to the Label array
-    Label = np.array([mapping[val] for val in Label])
-
-    X_train, X_test, y_train, y_test = train_test_split(X, Label, test_size=config["final"]["test_split"],
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=config["final"]["test_split"],
                                                         random_state=0)
     dataloader = load_data(x=X_train, y=y_train, device=device, config=config, shuffle=True)
     test_dataloader = load_data(x=X_test, y=y_test, device=device, config=config)
@@ -184,5 +146,4 @@ def train_final(device, config: dict):
     model, acc = train_model(train_loader=dataloader, val_loader=test_dataloader, config=config, device=device)
 
     print(f'Final acc: {acc}')
-    torch.save(model.state_dict(), config["model"]["path"])
     return

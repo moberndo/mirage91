@@ -24,5 +24,9 @@ final:
 
 model:
   load_model: False
-  path: ./classifier_results/LMDA_PhS.pt
-  name: "LMDA"
+  path: ./classifier_results
+  lmda:
+    chans: 32
+    samples: 267
+    channel_depth1: 24
+    channel_depth2: 7
