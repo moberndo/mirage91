@@ -26,3 +26,4 @@ __pycache__/
 wandb
 .idea
 *.pt
+confusion_matrix-fold_*.png

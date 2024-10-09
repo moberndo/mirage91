@@ -8,13 +8,13 @@ data:
   selected_classes: [1, 2, 3, 4]
 
 training:
-  k_fold_splits: 10
+  k_fold_splits: 5
   epochs: 100
   batch_size: 25
   lr: 1e-3
   weight_decay: 1e-3
   early_stopping:
-    enable: True
+    enable: False
     patience: 5
     min_delta: 0.01
 

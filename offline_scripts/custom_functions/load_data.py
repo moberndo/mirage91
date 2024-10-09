@@ -1,4 +1,6 @@
 import numpy as np
+import torch
+from torch.utils.data import WeightedRandomSampler
 
 
 def load_dataset(config: dict):
@@ -28,3 +30,15 @@ def load_dataset(config: dict):
     Label = np.array([mapping[val] for val in Label])
 
     return X, Label
+
+def load_dataloader(x, y, device, config: dict, shuffle: bool = False) -> torch.utils.data.DataLoader:
+    data = np.expand_dims(x, axis=1)
+    img = (torch.from_numpy(data).to(device)).type(torch.float32)
+    label = (torch.from_numpy(y).to(device)).type(torch.long)
+    dataset = torch.utils.data.TensorDataset(img, label)
+
+    class_counts = torch.bincount(label)
+    class_weights = 1. / class_counts.float()
+    sample_weights = class_weights[label]
+    sampler = WeightedRandomSampler(weights=sample_weights, num_samples=len(sample_weights), replacement=True)
+    return torch.utils.data.DataLoader(dataset=dataset, sampler=sampler, batch_size=config["training"]["batch_size"])

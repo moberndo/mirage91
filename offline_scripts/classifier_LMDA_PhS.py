@@ -1,14 +1,59 @@
 import numpy as np
 import torch
 import wandb
+from matplotlib import pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.model_selection import KFold, train_test_split
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import StepLR
 
 from offline_scripts.classifier_functions.LMDA_modified import LMDA
-from offline_scripts.custom_functions.load_data import load_dataset
+from offline_scripts.custom_functions.load_data import load_dataset, load_dataloader
 from offline_scripts.custom_functions.training_helpers import EarlyStopping
 
+
+def eval_model(model: LMDA, criterion: torch.nn.CrossEntropyLoss, val_loader: DataLoader, device):
+    model.eval()
+    val_loss = 0.0
+    val_acc = 0.0
+    with torch.no_grad():
+        for inputs, labels in val_loader:
+            outputs = model(inputs)
+
+            loss = criterion(outputs, labels)
+
+            y_pred = torch.max(outputs, 1)[1]
+            val_acc += float((y_pred == labels).to(device).numpy().astype(int).sum()) / float(labels.size(0))
+            val_loss += loss.item()
+
+    val_loss /= len(val_loader)
+    val_acc /= len(val_loader)
+    return val_loss, val_acc
+
+def eval_model_extended(model: LMDA, criterion: torch.nn.CrossEntropyLoss, val_loader: DataLoader, device, config,
+                        fold: int):
+    model.eval()
+    inputs = val_loader.dataset[:][0]
+    y_true = val_loader.dataset[:][1]
+    outputs = model(inputs)
+
+    loss = criterion(outputs, y_true)
+    y_pred = torch.max(outputs, 1)[1]
+
+    cm = confusion_matrix(y_true, y_pred, normalize='true')
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["1", "2", "3", "4"])
+    disp.plot(cmap=plt.cm.Blues)
+    plt.title(f'Confusion Matrix Fold-{fold}')
+
+    plt.savefig(f'{config["model"]["path"]}/plots/confusion_matrix-fold_{fold}.png')
+    plt.close()
+
+    wandb.log({f'{fold}-confusion_matrix': wandb.Image(f'{config["model"]["path"]}/plots/confusion_matrix-fold_{fold}.png')})
+
+    val_acc = float((y_pred == y_true).to(device).numpy().astype(int).sum()) / float(y_true.size(0))
+    val_loss = loss.item()
+
+    return val_loss, val_acc
 
 def train_model(train_loader: DataLoader, val_loader: DataLoader, config: dict, device, fold: int = 0):
     # criterion_l1 = torch.nn.L1Loss().cuda()
@@ -33,7 +78,7 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, config: dict, 
 
     early_stopping = EarlyStopping(patience=config["training"]["early_stopping"]["patience"],
                                    min_delta=config["training"]["early_stopping"]["min_delta"])
-
+    best_val_loss = float("inf")
     for epoch in range(config["training"]["epochs"]):
         model.train()
         train_loss = 0.0
@@ -57,22 +102,7 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, config: dict, 
         train_loss_epoch[epoch] = train_loss
         train_acc_epoch[epoch] = train_acc
 
-        model.eval()
-        val_loss = 0.0
-        val_acc = 0.0
-        with torch.no_grad():
-            for inputs, labels in val_loader:
-                outputs = model(inputs)
-
-                loss = criterion(outputs, labels)
-
-                y_pred = torch.max(outputs, 1)[1]
-                val_acc += float((y_pred == labels).to(device).numpy().astype(int).sum()) / float(labels.size(0))
-                val_loss += loss.item()
-
-
-        val_loss /= len(val_loader)
-        val_acc /= len(val_loader)
+        val_loss, val_acc = eval_model(model, criterion, val_loader, device)
         val_loss_epoch[epoch] = val_loss
         val_acc_epoch[epoch] = val_acc
 
@@ -92,23 +122,20 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, config: dict, 
               '  Val accuracy is %.6f' % val_acc,
               '  Best accuracy is %.6f' % torch.max(val_acc_epoch))
 
-        early_stopping(val_loss)
-        if early_stopping.early_stop:
-            print("Early stopping")
-            return model, val_acc_epoch[epoch]
+        if config["training"]["early_stopping"] is True:
+            early_stopping(val_loss)
+            if early_stopping.early_stop:
+                print("Early stopping")
+                break
 
         # Save the best model
-        if not early_stopping.early_stop:
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
             torch.save(model.state_dict(), f'{config["model"]["path"]}/best_LMDA_PhS_fold-{fold}.pt')
 
-    return model, early_stopping.acc
-
-def load_data(x, y, device, config: dict, shuffle: bool = False) -> torch.utils.data.DataLoader:
-    data = np.expand_dims(x, axis=1)
-    img = (torch.from_numpy(data).to(device)).type(torch.float32)
-    label = (torch.from_numpy(y).to(device)).type(torch.long)
-    dataset = torch.utils.data.TensorDataset(img, label)
-    return torch.utils.data.DataLoader(dataset=dataset, batch_size=config["training"]["batch_size"], shuffle=shuffle)
+    model.load_state_dict(torch.load(f'{config["model"]["path"]}/best_LMDA_PhS_fold-{fold}.pt', weights_only=True))
+    loss, acc = eval_model_extended(model, criterion, val_loader, device, config, fold)
+    return loss, acc
 
 def evaluate(device, config: dict):
     X, y = load_dataset(config)
@@ -122,10 +149,10 @@ def evaluate(device, config: dict):
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
 
-        dataloader = load_data(x=X_train, y=y_train, device=device, config=config, shuffle=True)
-        test_dataloader = load_data(x=X_test, y=y_test, device=device, config=config)
+        dataloader = load_dataloader(x=X_train, y=y_train, device=device, config=config, shuffle=True)
+        test_dataloader = load_dataloader(x=X_test, y=y_test, device=device, config=config)
 
-        _, acc = train_model(train_loader=dataloader, val_loader=test_dataloader, config=config, device=device,
+        loss, acc = train_model(train_loader=dataloader, val_loader=test_dataloader, config=config, device=device,
                              fold=fold)
         acc_list.append(acc)
         if device == "cuda":
@@ -133,17 +160,19 @@ def evaluate(device, config: dict):
 
 
         fold += 1
-    print(f'Average accuracy over all folds: {np.mean(acc_list)}')
+    wandb.run.log({f"Average {config["training"]["k_fold_splits"]}-Fold accuracy": np.mean(acc_list)})
+    print(f'Average {config["training"]["k_fold_splits"]}-Fold accuracy: {np.mean(acc_list)}')
 
 def train_final(device, config: dict):
     X, y = load_dataset(config)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=config["final"]["test_split"],
                                                         random_state=0)
-    dataloader = load_data(x=X_train, y=y_train, device=device, config=config, shuffle=True)
-    test_dataloader = load_data(x=X_test, y=y_test, device=device, config=config)
+    dataloader = load_dataloader(x=X_train, y=y_train, device=device, config=config, shuffle=True)
+    test_dataloader = load_dataloader(x=X_test, y=y_test, device=device, config=config)
 
-    model, acc = train_model(train_loader=dataloader, val_loader=test_dataloader, config=config, device=device)
+    loss, acc = train_model(train_loader=dataloader, val_loader=test_dataloader, config=config, device=device)
 
-    print(f'Final acc: {acc}')
+    wandb.run.log({f"Final accuracy": acc})
+    print(f'Final accuracy: {acc}')
     return
