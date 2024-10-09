@@ -1,5 +1,5 @@
-wandb_disabled: True
-experiment: final
+wandb_disabled: False
+experiment: evaluation
 
 data:
   dataset_path: /home/philipp/datasets/features/features/cleaned_epoched_eeg.npy
@@ -13,6 +13,10 @@ training:
   batch_size: 25
   lr: 1e-3
   weight_decay: 1e-3
+  early_stopping:
+    enable: True
+    patience: 5
+    min_delta: 0.01
 
 final:
   test_split: 0.2

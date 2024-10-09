@@ -11,7 +11,7 @@ from offline_scripts.classifier_LMDA_PhS import evaluate, train_final
 
 CONFIG_PATH = "./configs/"
 
-wandb.login()
+run = wandb.login()
 
 if torch.cuda.is_available():
     device = torch.device("cuda")
