@@ -122,7 +122,7 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, config: dict, 
               '  Val accuracy is %.6f' % val_acc,
               '  Best accuracy is %.6f' % torch.max(val_acc_epoch))
 
-        if config["training"]["early_stopping"] is True:
+        if config["training"]["early_stopping"]["enabled"]:
             early_stopping(val_loss)
             if early_stopping.early_stop:
                 print("Early stopping")

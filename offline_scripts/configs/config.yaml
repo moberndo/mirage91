@@ -14,7 +14,7 @@ training:
   lr: 1e-3
   weight_decay: 1e-3
   early_stopping:
-    enable: False
+    enabled: False
     patience: 5
     min_delta: 0.01
 
