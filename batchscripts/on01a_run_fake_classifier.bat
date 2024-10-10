@@ -1,9 +1,9 @@
 @echo off
-
 :: generate all subject specific variables
 call vars\subjectconfig.bat
 
-start /D%lsl_apps_brainvisionrda% BrainVisionRDA.exe
-echo App launched.
+cd ../online_scripts
+rem call activate opencv
 
-exit 0
+call python fake_classifier.py
+pause

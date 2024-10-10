@@ -130,13 +130,15 @@ def classify_binary_inputs(sample):
 def encode_analogue_input(value,thresh):
     # analogue input from [-1.0, 1.0] to [00h, FFh]
     # print(value)
+    max_prob = 0.8
     if value >= thresh:
         # encoded_value = int((value + 1) * 127.5)  # [-1, 1] -> [0, 255]
         # encoded_value = int((((value -0.5)/0.25)*128)+127)
-        if thresh <= x < max_prob:
-            return int((((value - thresh)/(max_prob-thresh))*128)+127)  # y = 0.5 for 0.5 <= x < 0.7
-        elif max_prob <= x <= 1:
-            return int(255)
+        if thresh <= value < max_prob:
+            # print(value)
+            encoded_value = int((((value - thresh)/(max_prob-thresh))*128)+127)  # y = 0.5 for 0.5 <= x < 0.7
+        elif max_prob <= value <= 1:
+            encoded_value = int(255)
         # encoded_value = max(0, min(255, encoded_value))
     else:
         encoded_value = int(127)
@@ -152,6 +154,8 @@ def create_payload(sample):
     x_axis = encode_analogue_input(sample[2],thresh)  # 3rd value to X-axis
     y_axis = encode_analogue_input(sample[3],thresh)  # 4th value to Y-axis
 
+    # print(f"{sample[2]} : {x_axis}")
+    # print(f"{sample[3]} : {y_axis}")
     # Combine binary and analogue inputs into the full payload
     return binary_inputs + x_axis + y_axis
 
