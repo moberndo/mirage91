@@ -8,7 +8,7 @@ import mne
 from mne import read_epochs
 from mne.time_frequency import tfr_multitaper, psd_array_welch
 from mne.preprocessing import ICA
-from mne_icalabel import label_components
+#from mne_icalabel import label_components
 from mne.decoding import CSP
 from pyxdf import load_xdf
 from autoreject import AutoReject
@@ -140,10 +140,10 @@ class EEG:
     @staticmethod
     def _save_epochs_as_npy(epochs, filename, session_number):
         epochs_data_list = []
-        for epoch_data, epoch_event, session_num in zip(epochs.get_data(copy=True), epochs.events[:, -1], session_number):
+        for epoch_data, epoch_event in zip(epochs.get_data(copy=True), epochs.events[:, -1]):
             # epoch_data: the actual EEG data for the epoch
             # epoch_event: the event_id for the corresponding event
-            epochs_data_list.append((epoch_event, epoch_data, session_num))
+            epochs_data_list.append((epoch_event, epoch_data))
 
         filepath = './features/' + filename + '.npy'
         save(filepath, epochs_data_list)
@@ -238,26 +238,26 @@ class EEG:
             method='fastica',
             fit_params=None,
             max_iter='auto',
-            random_state=42
+            random_state=91
         )
         
         # Fit ICA to epochs
         ica.fit(self.epochs)
         # Get labels of ICA and print them
-        ic_labels = label_components(self.epochs, ica, method="iclabel")
-        print(ic_labels["labels"])
+        # ic_labels = label_components(self.epochs, ica, method="iclabel")
+        # print(ic_labels["labels"])
         # Plot ICA components, sources and properties
         # ica.plot_components()
         # ica.plot_sources(self.epochs, show=True)
         # ica.plot_properties(self.epochs, show=True)
 
         # Define the ICA components that should be excluded
-        lst_exclude = []
-        for num, label in zip(list(range(32)), ic_labels["labels"]):
-            if label != 'brain' and label != 'other':
-                lst_exclude.append(num)
+        # lst_exclude = []
+        # for num, label in zip(list(range(32)), ic_labels["labels"]):
+        #     if label != 'brain' and label != 'other':
+        #         lst_exclude.append(num)
                 
-        ica.exclude = lst_exclude
+        ica.exclude = [0]
 
         # Apply ICA to epochs
         print('Apply ICA now')
@@ -267,7 +267,6 @@ class EEG:
 
         ar = AutoReject(verbose=True)
         self.epochs = ar.fit_transform(self.epochs)
-        
 
     def processing_pipeline(self):
         '''

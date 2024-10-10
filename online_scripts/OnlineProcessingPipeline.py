@@ -56,7 +56,8 @@ class OnlineProcessingPipeline:
             self.ringbuffer = np.roll(self.ringbuffer, length_of_chunk)
             return decimated_chunk
         
-    def apply_pipeline(chunk, filters, dec_filter, buffer_size=300, ):
+    def apply_pipeline(chunk, filters, dec_filter, buffer_size=350, output_size=267,
+                       lowpass=1, highpass=45):
         def butter_bandpass(lowpass, highpass, fs, order=4):
             nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
             low = lowpass / nyquist
@@ -67,15 +68,14 @@ class OnlineProcessingPipeline:
         def apply_bandpass_filter(data, lowpass, highpass, fs, order=4):
             # Get the filter coefficients
             b, a = butter_bandpass(lowpass, highpass, fs, order=order)
-            
             # Apply the filter along the second axis (axis=1) for each channel
             filtered_data = lfilter(b, a, data, axis=1)
-            
             return filtered_data
+        
         # Cut buffer to buffer size
         buffer = chunk[:,-buffer_size:]
-        filtered_buffer = apply_bandpass_filter(buffer, lowpass=1, highpass=45, fs=512)[:,:267]
-        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, 267)).astype('double')
+        filtered_buffer = apply_bandpass_filter(buffer, lowpass=lowpass, highpass=highpass, fs=512)[:,:output_size]
+        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, output_size)).astype('double')
 
         return filtered_buffer # shape of filtered_buffer is [1, 1, 32, 267]
 
