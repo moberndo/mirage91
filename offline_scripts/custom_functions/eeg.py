@@ -50,7 +50,6 @@ class EEG:
         '''
         eeg_streams = []
         paradigm_streams = []
-        session_number = []
 
         # Find all the different session days
         folders = [os.path.join(self._path, f) for f in os.listdir(self._path) if os.path.isdir(os.path.join(self._path, f))]
@@ -65,14 +64,15 @@ class EEG:
                 if folder == './raw_data/2024_08_30':
                     # change paradigm stream
                     for idx_, elem in enumerate(new_paradigm_stream['time_series']):
+                        
                         if elem == ['right_hand']:
                             new_paradigm_stream['time_series'][idx_] = ['left_hand']
                 paradigm_streams.append(new_paradigm_stream)
-                session_number.append(idx+1)
+                
                 
 
 
-        return eeg_streams, paradigm_streams, session_number
+        return eeg_streams, paradigm_streams
     
     def _get_correct_streams(self, path:str):
         '''
