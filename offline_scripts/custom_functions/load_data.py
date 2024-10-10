@@ -32,6 +32,14 @@ def load_dataset(config: dict):
     return X, Label
 
 def load_dataloader(x, y, device, config: dict, shuffle: bool = False) -> torch.utils.data.DataLoader:
+    X_np = x
+
+    X_mean = np.mean(X_np, axis=(0, 1, 2), keepdims=True)
+    X_std = np.std(X_np, axis=(0, 1, 2), keepdims=True)
+    X_normalized = (X_np - X_mean) / X_std
+
+    x = torch.tensor(X_normalized, dtype=torch.float32)
+
     data = np.expand_dims(x, axis=1)
     img = (torch.from_numpy(data).to(device)).type(torch.float32)
     label = (torch.from_numpy(y).to(device)).type(torch.long)
