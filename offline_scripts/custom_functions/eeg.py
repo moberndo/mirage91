@@ -35,7 +35,7 @@ class EEG:
         # self._path_epochs = '/'.join(self._path[0].split('\\')[:-1]) + '/preprocessed_epo.fif'
         self._paradigm_cues = paradigm
         self._tasks = tasks
-        self._eeg_stream, self._paradigm_stream = self._load_xdf_file()
+        self._eeg_stream, self._paradigm_stream, self._session_number = self._load_xdf_file()
         self._raw_mne = self._create_mne_objects()
         self._fs = None
 
@@ -50,6 +50,7 @@ class EEG:
         '''
         eeg_streams = []
         paradigm_streams = []
+        session_number = []
 
         # Find all the different session days
         folders = [os.path.join(self._path, f) for f in os.listdir(self._path) if os.path.isdir(os.path.join(self._path, f))]
@@ -63,14 +64,15 @@ class EEG:
                 eeg_streams.append(new_eeg_stream)
                 if folder == './raw_data/2024_08_30':
                     # change paradigm stream
-                    for idx, elem in enumerate(new_paradigm_stream['time_series']):
+                    for idx_, elem in enumerate(new_paradigm_stream['time_series']):
                         if elem == ['right_hand']:
-                            new_paradigm_stream['time_series'][idx] = ['left_hand']
+                            new_paradigm_stream['time_series'][idx_] = ['left_hand']
                 paradigm_streams.append(new_paradigm_stream)
+                session_number.append(idx+1)
                 
 
 
-        return eeg_streams, paradigm_streams
+        return eeg_streams, paradigm_streams, session_number
     
     def _get_correct_streams(self, path:str):
         '''
@@ -99,7 +101,7 @@ class EEG:
             - raw: MNE object that contains the [list of mne.io.RawArray]
         '''
         raw_mnes = []
-        for eeg_stream, paradigm_stream in zip(self._eeg_stream, self._paradigm_stream):
+        for eeg_stream, paradigm_stream, session_number in zip(self._eeg_stream, self._paradigm_stream, self._session_number):
             eeg_data = eeg_stream['time_series'].T
             eeg_time = eeg_stream['time_stamps']
             paradigm_data = paradigm_stream['time_series']
@@ -132,16 +134,16 @@ class EEG:
                                                 sfreq=fs,
                                                 ch_types='eeg'),
                                 verbose=False)
-            raw_mnes.append((raw, stream_dict))
+            raw_mnes.append((raw, stream_dict, session_number))
         return raw_mnes
     
     @staticmethod
-    def _save_epochs_as_npy(epochs, filename):
+    def _save_epochs_as_npy(epochs, filename, session_number):
         epochs_data_list = []
-        for epoch_data, epoch_event in zip(epochs.get_data(), epochs.events[:, -1]):
+        for epoch_data, epoch_event, session_num in zip(epochs.get_data(copy=True), epochs.events[:, -1], session_number):
             # epoch_data: the actual EEG data for the epoch
             # epoch_event: the event_id for the corresponding event
-            epochs_data_list.append((epoch_event, epoch_data))
+            epochs_data_list.append((epoch_event, epoch_data, session_num))
 
         filepath = './features/' + filename + '.npy'
         save(filepath, epochs_data_list)
@@ -186,7 +188,9 @@ class EEG:
         Output: -
         '''
         epochs_list = []
-        for _, (raw_mne, streams) in enumerate(self._raw_mne):
+        session_numbers = []
+        for _, (raw_mne, streams, session_nums) in enumerate(self._raw_mne):
+            session_numbers.append(session_nums)
             cue_names = [element[0] for element in streams['paradigm_data']]
             cue_durations = [self._paradigm_cues[cue] for cue in cue_names]
             annotations = mne.Annotations(onset=streams['paradigm_time'],
@@ -220,11 +224,7 @@ class EEG:
 
         # Concatenate epochs for further processing in MNE, if needed
         self.epochs = mne.concatenate_epochs([new_epoch for new_epoch in epochs_list])
-        EEG._save_epochs_as_npy(epochs=self.epochs, filename='epoched_eeg')
-
-        # After concatenating the epochs Autoreject the bad trials
-        #ar = AutoReject()
-        #new_epoch = ar.fit_transform(new_epoch)
+        EEG._save_epochs_as_npy(epochs=self.epochs, filename='epoched_eeg', session_number=session_numbers)
 
     def _apply_ica(self):
         '''
@@ -232,8 +232,7 @@ class EEG:
         Input: -
         Output: -
         '''
-        # self.epochs.plot()
-        filt_raw = self.epochs
+        # After concatenating the epochs Autoreject the bad trials
         ica = ICA(
             n_components=len(self.epochs.ch_names),
             method='fastica',
@@ -245,21 +244,30 @@ class EEG:
         # Fit ICA to epochs
         ica.fit(self.epochs)
         # Get labels of ICA and print them
-        # ic_labels = label_components(filt_raw, ica, method="iclabel")
-        # print(ic_labels["labels"])
+        ic_labels = label_components(self.epochs, ica, method="iclabel")
+        print(ic_labels["labels"])
         # Plot ICA components, sources and properties
         # ica.plot_components()
         # ica.plot_sources(self.epochs, show=True)
         # ica.plot_properties(self.epochs, show=True)
 
         # Define the ICA components that should be excluded
-        ica.exclude = [0, 4] 
+        lst_exclude = []
+        for num, label in zip(list(range(32)), ic_labels["labels"]):
+            if label != 'brain' and label != 'other':
+                lst_exclude.append(num)
+                
+        ica.exclude = lst_exclude
 
         # Apply ICA to epochs
         print('Apply ICA now')
         self.epochs = ica.apply(self.epochs)
+        self.epochs.apply_baseline()
         print('ICA finished!')
 
+        ar = AutoReject(verbose=True)
+        self.epochs = ar.fit_transform(self.epochs)
+        
 
     def processing_pipeline(self):
         '''
@@ -274,7 +282,7 @@ class EEG:
         
         self._apply_ica()
         # Save cleaned epochs as .npy file
-        EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg')
+        EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg', session_number=self._session_number)
         # Create CSP object
         self._extract_csp_and_save(self.epochs)
 

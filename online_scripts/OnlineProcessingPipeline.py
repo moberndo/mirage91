@@ -5,7 +5,7 @@ Authors: Mirage 91
 
 import numpy as np
 import scipy.signal as signal
-from scipy.signal import butter, filtfilt
+from scipy.signal import butter, lfilter
 
 
 class OnlineProcessingPipeline:
@@ -69,7 +69,7 @@ class OnlineProcessingPipeline:
             b, a = butter_bandpass(lowpass, highpass, fs, order=order)
             
             # Apply the filter along the second axis (axis=1) for each channel
-            filtered_data = filtfilt(b, a, data, axis=1)
+            filtered_data = lfilter(b, a, data, axis=1)
             
             return filtered_data
         # Cut buffer to buffer size
