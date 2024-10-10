@@ -15,11 +15,11 @@ from torch import load, from_numpy
 # import classifier ...
 ...
 ''' CUSTOM IMPORTS'''
-from classifier_functions.LMDA_modified import LMDA, EEGNetModel
+from classifier_functions import EEGNetModel
 
 
 ''' SETTINGS '''
-classifier_params = Path(__file__).parent / 'classifier_params' / 'lmda_params.pt'
+classifier_params = Path(__file__).parent / 'classifier_params' /  '4classes_eegnet_model.pth'# 'lmda_params.pt'
 eeg_fs = 100 # 512 # Hz
 cutoff_freq1 = [1, 45] # Hz
 filterorder = 4

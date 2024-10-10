@@ -1,3 +1,6 @@
+import torch.nn as nn
+from torch import renorm
+
 class EEGNetModel(nn.Module): # EEGNET-8,2
     def __init__(self, chans=32, classes=4, time_points=267, temp_kernel=32,
                  f1=16, f2=32, d=2, pk1=8, pk2=16, dropout_rate=0.5, max_norm1=1, max_norm2=0.25):
@@ -38,7 +41,7 @@ class EEGNetModel(nn.Module): # EEGNET-8,2
     def _apply_max_norm(self, layer, max_norm):
         for name, param in layer.named_parameters():
             if 'weight' in name:
-                param.data = torch.renorm(param.data, p=2, dim=0, maxnorm=max_norm)
+                param.data = renorm(param.data, p=2, dim=0, maxnorm=max_norm)
 
     def forward(self, x):
         x = self.block1(x)
