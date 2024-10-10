@@ -15,7 +15,7 @@ from torch import load, from_numpy
 # import classifier ...
 ...
 ''' CUSTOM IMPORTS'''
-from classifier_functions.LMDA_modified import LMDA
+from classifier_functions.LMDA_modified import LMDA, EEGNetModel
 
 
 ''' SETTINGS '''
@@ -59,7 +59,8 @@ outlet_classifier = StreamOutlet(info)
 ''' #     INITIALIZE CLASSIFIER                                        '''
 ''' ################################################################## '''
 # Define architecture
-model = LMDA(num_classes=4, chans=32, samples=267, channel_depth1=24, channel_depth2=7)
+# model = LMDA(num_classes=4, chans=32, samples=267, channel_depth1=24, channel_depth2=7)
+model = EEGNetModel(chans=32, classes=4, time_points=267)
 # Load the saved weights into the model
 model.load_state_dict(load(classifier_params, weights_only=True))
 
