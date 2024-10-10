@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2024.1.5),
-    on July 22, 2024, at 16:34
+    on October 10, 2024, at 10:23
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -142,7 +142,7 @@ def setupData(expInfo, dataDir=None):
     thisExp = data.ExperimentHandler(
         name=expName, version='',
         extraInfo=expInfo, runtimeInfo=None,
-        originPath='C:\\Users\\Markus\\Mirage91\\Program\\mirage91\\paradigm\\bci_racingteam_lastrun.py',
+        originPath='C:\\Users\\Mirage91\\Documents\\github\\mirage91\\paradigm\\bci_racingteam_lastrun.py',
         savePickle=True, saveWideText=True,
         dataFileName=dataDir + os.sep + filename, sortColumns='time'
     )
@@ -725,7 +725,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         # set up handler to look after randomisation of conditions etc
         trial = data.TrialHandler(nReps=5.0, method='fullRandom', 
             extraInfo=expInfo, originPath=-1,
-            trialList=data.importConditions('classes.xlsx'),
+            trialList=data.importConditions('classes.csv'),
             seed=None, name='trial')
         thisExp.addLoop(trial)  # add the loop to the experiment
         thisTrial = trial.trialList[0]  # so we can initialise stimuli with some values
