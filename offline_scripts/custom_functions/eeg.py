@@ -8,7 +8,7 @@ import mne
 from mne import read_epochs
 from mne.time_frequency import tfr_multitaper, psd_array_welch
 from mne.preprocessing import ICA
-#from mne_icalabel import label_components
+from mne_icalabel import label_components
 from mne.decoding import CSP
 from pyxdf import load_xdf
 from autoreject import AutoReject
@@ -70,9 +70,6 @@ class EEG:
                             new_paradigm_stream['time_series'][idx_] = ['left_hand']
                 paradigm_streams.append(new_paradigm_stream)
                 session_numbers.append(idx+1)
-                
-                
-
 
         return eeg_streams, paradigm_streams, session_numbers
     
@@ -146,7 +143,7 @@ class EEG:
             # epoch_data: the actual EEG data for the epoch
             # epoch_event: the event_id for the corresponding event
             epochs_data_list.append((epoch_event, epoch_data, session_num))
-            print(f"{epoch_event.size} {epoch_data.shape} {session_num}")
+            # print(f"{epoch_event.size} {epoch_data.shape} {session_num}")
 
         filepath = './features/' + filename + '.npy'
         epochs_data_list = np.array(epochs_data_list, dtype=object)
@@ -252,20 +249,20 @@ class EEG:
         # Fit ICA to epochs
         ica.fit(self.epochs)
         # Get labels of ICA and print them
-        # ic_labels = label_components(self.epochs, ica, method="iclabel")
-        # print(ic_labels["labels"])
+        ic_labels = label_components(self.epochs, ica, method="iclabel")
+        print(ic_labels["labels"])
         # Plot ICA components, sources and properties
         # ica.plot_components()
         # ica.plot_sources(self.epochs, show=True)
         # ica.plot_properties(self.epochs, show=True)
 
         # Define the ICA components that should be excluded
-        # lst_exclude = []
-        # for num, label in zip(list(range(32)), ic_labels["labels"]):
-        #     if label != 'brain' and label != 'other':
-        #         lst_exclude.append(num)
+        lst_exclude = []
+        for num, label in zip(list(range(32)), ic_labels["labels"]):
+            if label != 'brain' and label != 'other':
+                lst_exclude.append(num)
                 
-        ica.exclude = [0]
+        ica.exclude = lst_exclude
 
         # Apply ICA to epochs
         print('Apply ICA now')
@@ -291,7 +288,7 @@ class EEG:
         # Save cleaned epochs as .npy file
         EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg', session_number=self._session_number)
         # Create CSP object
-        self._extract_csp_and_save(self.epochs)
+        # self._extract_csp_and_save(self.epochs)
 
 
     def _extract_csp_and_save(self, epochs, n_components=4, file_name='csp_features.npy'):
