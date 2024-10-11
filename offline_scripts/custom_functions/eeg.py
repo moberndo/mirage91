@@ -146,8 +146,10 @@ class EEG:
             # epoch_data: the actual EEG data for the epoch
             # epoch_event: the event_id for the corresponding event
             epochs_data_list.append((epoch_event, epoch_data, session_num))
+            print(f"{epoch_event.size} {epoch_data.shape} {session_num}")
 
         filepath = './features/' + filename + '.npy'
+        epochs_data_list = np.array(epochs_data_list, dtype=object)
         save(filepath, epochs_data_list)
     
     def preprocessing(self, plot=True):
@@ -240,7 +242,7 @@ class EEG:
         '''
         # After concatenating the epochs Autoreject the bad trials
         ica = ICA(
-            n_components=len(self.epochs.ch_names),
+            n_components=None,
             method='fastica',
             fit_params=None,
             max_iter='auto',
@@ -316,6 +318,7 @@ class EEG:
 
         # Save the CSP features as .npy file
         file_path = './features/' + file_name
+        features_with_labels = np.array(features_with_labels, dtype=object)
         save(file_path, features_with_labels)
         print(f'CSP features saved to {file_path}')
         
