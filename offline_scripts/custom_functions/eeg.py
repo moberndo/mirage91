@@ -50,6 +50,7 @@ class EEG:
         '''
         eeg_streams = []
         paradigm_streams = []
+        session_numbers = []
 
         # Find all the different session days
         folders = [os.path.join(self._path, f) for f in os.listdir(self._path) if os.path.isdir(os.path.join(self._path, f))]
@@ -68,11 +69,12 @@ class EEG:
                         if elem == ['right_hand']:
                             new_paradigm_stream['time_series'][idx_] = ['left_hand']
                 paradigm_streams.append(new_paradigm_stream)
+                session_numbers.append(idx+1)
                 
                 
 
 
-        return eeg_streams, paradigm_streams
+        return eeg_streams, paradigm_streams, session_numbers
     
     def _get_correct_streams(self, path:str):
         '''
@@ -101,7 +103,7 @@ class EEG:
             - raw: MNE object that contains the [list of mne.io.RawArray]
         '''
         raw_mnes = []
-        for eeg_stream, paradigm_stream, session_number in zip(self._eeg_stream, self._paradigm_stream, self._session_number):
+        for eeg_stream, paradigm_stream, session_num in zip(self._eeg_stream, self._paradigm_stream, self._session_number):
             eeg_data = eeg_stream['time_series'].T
             eeg_time = eeg_stream['time_stamps']
             paradigm_data = paradigm_stream['time_series']
@@ -134,16 +136,16 @@ class EEG:
                                                 sfreq=fs,
                                                 ch_types='eeg'),
                                 verbose=False)
-            raw_mnes.append((raw, stream_dict, session_number))
+            raw_mnes.append((raw, stream_dict, session_num))
         return raw_mnes
     
     @staticmethod
     def _save_epochs_as_npy(epochs, filename, session_number):
         epochs_data_list = []
-        for epoch_data, epoch_event in zip(epochs.get_data(copy=True), epochs.events[:, -1]):
+        for epoch_data, epoch_event, session_num in zip(epochs.get_data(copy=True), epochs.events[:, -1], session_number):
             # epoch_data: the actual EEG data for the epoch
             # epoch_event: the event_id for the corresponding event
-            epochs_data_list.append((epoch_event, epoch_data))
+            epochs_data_list.append((epoch_event, epoch_data, session_num))
 
         filepath = './features/' + filename + '.npy'
         save(filepath, epochs_data_list)
@@ -189,8 +191,7 @@ class EEG:
         '''
         epochs_list = []
         session_numbers = []
-        for _, (raw_mne, streams, session_nums) in enumerate(self._raw_mne):
-            session_numbers.append(session_nums)
+        for _, (raw_mne, streams, session_num) in enumerate(self._raw_mne):
             cue_names = [element[0] for element in streams['paradigm_data']]
             cue_durations = [self._paradigm_cues[cue] for cue in cue_names]
             annotations = mne.Annotations(onset=streams['paradigm_time'],
@@ -221,10 +222,15 @@ class EEG:
 
             epochs_list.append(new_epoch)
 
+            # append session numbers
+            new_session_nums = [session_num]*len(new_epoch)
+            session_numbers.extend(new_session_nums)
 
         # Concatenate epochs for further processing in MNE, if needed
         self.epochs = mne.concatenate_epochs([new_epoch for new_epoch in epochs_list])
+        self._session_numbers = session_numbers
         EEG._save_epochs_as_npy(epochs=self.epochs, filename='epoched_eeg', session_number=session_numbers)
+        
 
     def _apply_ica(self):
         '''
