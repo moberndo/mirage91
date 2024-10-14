@@ -284,11 +284,14 @@ class EEG:
         if np.isnan(self.epochs.get_data(copy=False).any()):
             raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
         
-        self._apply_ica()
+        if 1:
+            self._apply_ica()
+        else:
+            ...
         # Save cleaned epochs as .npy file
-        EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg', session_number=self._session_number)
+        EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg', session_number=self._session_numbers)
         # Create CSP object
-        # self._extract_csp_and_save(self.epochs)
+        self._extract_csp_and_save(self.epochs)
 
 
     def _extract_csp_and_save(self, epochs, n_components=4, file_name='csp_features.npy'):
@@ -301,7 +304,31 @@ class EEG:
         Output:
             - 
         '''
+        from scipy.signal import butter, filtfilt
+
+        def bandpass_filter(data, lowcut, highcut, fs, order=4):
+            nyquist = 0.5 * fs  # Nyquist frequency
+            low = lowcut / nyquist
+            high = highcut / nyquist
+            b, a = butter(order, [low, high], btype='band')
+            filtered_data = filtfilt(b, a, data, axis=-1)
+            return filtered_data
+
         x = epochs.get_data()
+
+        filter_start = 1 # Hz
+        filter_stop = 45 # Hz
+        filter_step = 4 # Hz
+        filterbank_freqs = arange(filter_start, filter_stop, filter_step)
+        filterbank_freqs = [(filterbank_freqs[idx], filterbank_freqs[idx+1]) for idx in range(len(filterbank_freqs)-1)]
+
+        x_lst = []
+        for filter_freqs in filterbank_freqs:
+            low_freq = filter_freqs[0]
+            high_freq = filter_freqs[1]
+            filtered_data = bandpass_filter(x, lowcut=low_freq, highcut=high_freq, fs=200, order=4)
+
+
         y = epochs.events[:, -1]
 
         # Initialize CSP object
