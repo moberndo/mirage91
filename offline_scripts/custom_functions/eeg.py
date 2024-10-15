@@ -37,7 +37,7 @@ class EEG:
         self._tasks = tasks
         self._eeg_stream, self._paradigm_stream, self._session_number = self._load_xdf_file()
         self._raw_mne = self._create_mne_objects()
-        self._fs = None
+        self._fs = 500
 
 
     def _load_xdf_file(self):
@@ -284,7 +284,7 @@ class EEG:
         if np.isnan(self.epochs.get_data(copy=False).any()):
             raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
         
-        if 1:
+        if 0:
             self._apply_ica()
         else:
             ...
@@ -294,7 +294,7 @@ class EEG:
         self._extract_csp_and_save(self.epochs)
 
 
-    def _extract_csp_and_save(self, epochs, n_components=4, file_name='csp_features.npy'):
+    def _extract_csp_and_save(self, epochs, n_components=6, file_name='csp_features.npy'):
         '''
         Extract CSP features from MNE epochs object and save them as .npy file
         Input: 
@@ -306,16 +306,19 @@ class EEG:
         '''
         from scipy.signal import butter, filtfilt
 
+        # Define the bandpass filter along the time axis
         def bandpass_filter(data, lowcut, highcut, fs, order=4):
             nyquist = 0.5 * fs  # Nyquist frequency
             low = lowcut / nyquist
             high = highcut / nyquist
             b, a = butter(order, [low, high], btype='band')
-            filtered_data = filtfilt(b, a, data, axis=-1)
+            filtered_data = filtfilt(b, a, data, axis=2)
             return filtered_data
 
+        # Get the numpy file from the epchoched MNE data
         x = epochs.get_data()
 
+        # Apply filterbank to the data to find the best possible filterband combination
         filter_start = 1 # Hz
         filter_stop = 45 # Hz
         filter_step = 4 # Hz
@@ -327,18 +330,27 @@ class EEG:
             low_freq = filter_freqs[0]
             high_freq = filter_freqs[1]
             filtered_data = bandpass_filter(x, lowcut=low_freq, highcut=high_freq, fs=200, order=4)
+            # cut out -0.5 before cue onset until 3.5 seconds after cue onset
+            start_cut = int(1.5 * self._fs) # seconds into the signal
+            end_cut = int(5.5 * self._fs) # seconds into the signal
+            filtered_data = filtered_data[:, :, start_cut:end_cut]
+            # append bandpass filtered data
+            x_lst.append(filtered_data)
 
 
         y = epochs.events[:, -1]
-
-        # Initialize CSP object
-        csp = CSP(n_components=n_components, log=True, cov_est='epoch')
-        # Fit CSP on the data and extract features
-        csp.fit(x, y)
-        csp_features = csp.transform(x)
-
-        # Create a list of tuples (label, feature) for each epoch
-        features_with_labels = [(label, feature) for label, feature in zip(y, csp_features)]
+        csp_with_labels = []
+        # Calculate CSP for every filterband
+        for x_ in x_lst:
+            # Initialize CSP object
+            csp = CSP(n_components=n_components, log=True, cov_est='epoch')
+            # Fit CSP on the data and extract features
+            csp.fit(x_, y)
+            csp_features = csp.transform(x_)
+            # Create a list of tuples (label, feature) for each epoch
+            features_with_labels = [(label, feature) for label, feature in zip(y, csp_features)]
+            # Add this filterband CSP to the list
+            csp_with_labels.append(features_with_labels)
 
         # Save the CSP features as .npy file
         file_path = './features/' + file_name
