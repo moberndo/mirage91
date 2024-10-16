@@ -19,6 +19,15 @@ class OnlineProcessingPipeline:
             self.a = a
             self.z = z
 
+    class NotchFilter:
+        def __init__(self, n_channels):
+            b, a = signal.iirnotch(50, 30, fs=512)
+            z = signal.lfilter_zi(b, a)
+            z = np.tile(z, (n_channels, 1))
+            self.b = b
+            self.a = a
+            self.z = z
+
     class ResolveCreateStream:
         # Looking for an EEG-stream
         def __init__(self) -> None:
@@ -56,30 +65,59 @@ class OnlineProcessingPipeline:
             self.ringbuffer = np.roll(self.ringbuffer, length_of_chunk)
             return decimated_chunk
         
-    def apply_pipeline(chunk, filters, dec_filter, buffer_size=350, output_size=267,
-                       lowpass=1, highpass=45):
-        def butter_bandpass(lowpass, highpass, fs, order=4):
-            nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
-            low = lowpass / nyquist
-            high = highpass / nyquist
-            b, a = butter(order, [low, high], btype='band')
-            return b, a
+    # def apply_pipeline(chunk, filters, dec_filter, buffer_size=350, output_size=267,
+    #                    lowpass=1, highpass=45):
+    #     def butter_bandpass(lowpass, highpass, fs, order=4):
+    #         nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
+    #         low = lowpass / nyquist
+    #         high = highpass / nyquist
+    #         b, a = butter(order, [low, high], btype='band')
+    #         return b, a
+    #
+    #     def apply_bandpass_filter(data, lowpass, highpass, fs, order=4):
+    #         # Get the filter coefficients
+    #         b, a = butter_bandpass(lowpass, highpass, fs, order=order)
+    #         # Apply the filter along the second axis (axis=1) for each channel
+    #         filtered_data = lfilter(b, a, data, axis=1)
+    #         return filtered_data
+    #
+    #     # Cut buffer to buffer size
+    #     buffer = chunk[:,-buffer_size:]
+    #     filtered_buffer = apply_bandpass_filter(buffer, lowpass=lowpass, highpass=highpass, fs=512)[:,:output_size]
+    #     filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, output_size)).astype('double')
 
-        def apply_bandpass_filter(data, lowpass, highpass, fs, order=4):
-            # Get the filter coefficients
-            b, a = butter_bandpass(lowpass, highpass, fs, order=order)
-            # Apply the filter along the second axis (axis=1) for each channel
-            filtered_data = lfilter(b, a, data, axis=1)
-            return filtered_data
-        
+
+    def apply_pipeline(chunk, filters, notch_filter, buffer_size=300):
+        # def butter_bandpass(lowpass, highpass, fs, order=4):
+        #     nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
+        #     low = lowpass / nyquist
+        #     high = highpass / nyquist
+        #     b, a = butter(order, [low, high], btype='band')
+        #     return b, a
+        #
+        # def apply_bandpass_filter(data, lowpass, highpass, fs, order=4):
+        #     # Get the filter coefficients
+        #     b, a = butter_bandpass(lowpass, highpass, fs, order=order)
+        #
+        #     # Apply the filter along the second axis (axis=1) for each channel
+        #     filtered_data = filtfilt(b, a, data, axis=1)
+        #
+        #     return filtered_data
+        # 
         # Cut buffer to buffer size
-        buffer = chunk[:,-buffer_size:]
-        filtered_buffer = apply_bandpass_filter(buffer, lowpass=lowpass, highpass=highpass, fs=512)[:,:output_size]
-        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, output_size)).astype('double')
+        # # buffer = chunk[:,-buffer_size:]
+        #
+        # filtered_buffer = apply_bandpass_filter(chunk, lowpass=1, highpass=45, fs=512)[:,:267]
+        # filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, 267)).astype('double')
 
-        return filtered_buffer # shape of filtered_buffer is [1, 1, 32, 267]
+        ####edited
+        #Apply the filter along the second axis (axis=1) for each channel
+        filtered_chunk, notch_filter.z = signal.lfilter(notch_filter.b, notch_filter.a, chunk, axis=1, zi=notch_filter.z)
+        filtered_buffer, filters.z = signal.lfilter(filters.b, filters.a, filtered_chunk, axis=1, zi=filters.z)
+        filtered_buffer = filtered_buffer[:, -267:]
+        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, 267)).astype('double')
 
-
+        return filtered_buffer  # shape of filtered_buffer is [1, 1, 32, 267]
 
     def run_pipeline_dummy(chunk, filters, mov_avg_filter, dec_filter):
         # Transpose the chunks into dimensions of (channels x samples)

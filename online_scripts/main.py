@@ -41,6 +41,7 @@ stream_eeg = pipe.ResolveCreateStream()
 bandpass_filter = pipe.OnlineFilter(filterorder, cutoff_freq1, stream_eeg.fs,
                                     btype, ftype, stream_eeg.n_channels)
 filters = [bandpass_filter]
+notch_filter = pipe.NotchFilter(stream_eeg.n_channels)
 #filter_mov_avg = pipe.MovingAverageFilter(length_of_window, stream_eeg.fs,
 #                                          stream_eeg.n_channels)
 downsampling_ratio = stream_eeg.fs / fs_downsampled  #downsampling ratio must be an integer
@@ -92,8 +93,11 @@ while decoding:
 
         # if chunk:
         buffer = append(buffer, chunk, axis=1)
+        #cut buffer here
+        buffer = buffer[:, -buffer_size]
+
         if buffer.shape[1] >= buffer_size:
-            processed_chunk = pipe.apply_pipeline(buffer, filters, dec_filter)
+            processed_chunk = pipe.apply_pipeline(buffer, filters, notch_filter)
             break
 
     # Create a copy to remove negative strides
