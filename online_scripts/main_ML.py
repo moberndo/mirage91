@@ -12,6 +12,8 @@ import pickle
 from numpy import ones, append, array, copy
 import torch
 from torch import load, from_numpy
+from mne.decoding import CSP
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 # import classifier ...
 ...
 ''' CUSTOM IMPORTS'''
@@ -19,7 +21,10 @@ from classifier_functions import EEGNetModel
 
 
 ''' SETTINGS '''
-classifier_params = Path(__file__).parent / 'classifier_params' /  '4classes_eegnet_model.pth'# 'lmda_params.pt'
+
+
+classifier_params = Path(__file__).parent.parent / 'offline_scripts' / 'classifier_results'
+# Path(__file__).parent / 'classifier_params' /  '4classes_eegnet_model.pth'# 'lmda_params.pt'
 eeg_fs = 100 # 512 # Hz
 cutoff_freq1 = [1, 45] # Hz
 filterorder = 4
@@ -58,7 +63,14 @@ outlet_classifier = StreamOutlet(info)
 ''' ################################################################## '''
 ''' #     INITIALIZE CLASSIFIER                                        '''
 ''' ################################################################## '''
-...
+# Initialize CSP
+# Load the entire CSP model
+with open(classifier_params / 'csp_model.pkl', 'rb') as file:
+    csp = pickle.load(file)
+
+# Initilaize sLDA
+with open(classifier_params / 'slda_weights.pkl', 'rb') as file:
+    slda = pickle.load(file)
 
 ''' ################################################################## '''
 ''' #     START ONLINE PROCESSING                                      '''
@@ -92,12 +104,8 @@ while decoding:
     # Create a copy to remove negative strides
     processed_chunk = copy(processed_chunk)  
 
-    # Convert the NumPy array to a Tensor
-    processed_chunk_tensor = from_numpy(processed_chunk).float()
-    # Make a prediction
-    with torch.no_grad():
-        predicted_class = model(processed_chunk_tensor)
-
+    csp_features = csp.transform(processed_chunk)
+    predicted_class = slda.predict_proba(csp_features)
 
     # print(predicted_class.numpy())
     outlet_classifier.push_chunk(predicted_class.numpy())

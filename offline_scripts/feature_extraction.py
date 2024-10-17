@@ -28,7 +28,6 @@ pilot.set_eeg(path, paradigm, tasks)
 pilot.eeg.preprocessing()
 # Epoch the data and save the epoched data as a .npy file in the "featues" folder
 pilot.eeg.epoching_and_rejecting()
-
 # Apply ICA and then feature extraction (CSP)
 pilot.eeg.processing_pipeline() # change this
 

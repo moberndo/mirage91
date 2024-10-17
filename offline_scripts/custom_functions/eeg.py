@@ -14,13 +14,14 @@ from pyxdf import load_xdf
 from autoreject import AutoReject
 import matplotlib.pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
-from numpy import isin, max, arange, mean, array, reshape, linspace, save
+from numpy import isin, max, arange, mean, array, reshape, linspace, save, std
 import numpy as np
+from collections import defaultdict
 from os.path import isfile
 import os
 from sklearn.model_selection import train_test_split
 from typing import List, Dict
-
+import pickle
     
 # main
 class EEG:
@@ -54,14 +55,13 @@ class EEG:
 
         # Find all the different session days
         folders = [os.path.join(self._path, f) for f in os.listdir(self._path) if os.path.isdir(os.path.join(self._path, f))]
-
-        # If the session date is the 30.08., then change the markers from right_hand to left_hand
         
         for idx, folder in enumerate(folders):
             xdf_paths = [os.path.join(folders[idx], xdf) for xdf in os.listdir(folders[idx]) if xdf.endswith('.xdf')]
             for xdf_path in xdf_paths:
                 new_eeg_stream, new_paradigm_stream = self._get_correct_streams(xdf_path)
                 eeg_streams.append(new_eeg_stream)
+                # If the session date is the 30.08., then change the markers from right_hand to left_hand
                 if folder == './raw_data/2024_08_30':
                     # change paradigm stream
                     for idx_, elem in enumerate(new_paradigm_stream['time_series']):
@@ -69,7 +69,7 @@ class EEG:
                         if elem == ['right_hand']:
                             new_paradigm_stream['time_series'][idx_] = ['left_hand']
                 paradigm_streams.append(new_paradigm_stream)
-                session_numbers.append(idx+1)
+                session_numbers.append(folder[-10:])
 
         return eeg_streams, paradigm_streams, session_numbers
     
@@ -137,7 +137,7 @@ class EEG:
         return raw_mnes
     
     @staticmethod
-    def _save_epochs_as_npy(epochs, filename, session_number):
+    def _save_epochs_as_npy(epochs, filename, session_number=None):
         epochs_data_list = []
         for epoch_data, epoch_event, session_num in zip(epochs.get_data(copy=True), epochs.events[:, -1], session_number):
             # epoch_data: the actual EEG data for the epoch
@@ -219,16 +219,27 @@ class EEG:
             # reject_criteria = dict(eeg=150e-6)  # 100 µV # max(self._eeg_data*0.8)
             # new_epoch.drop_bad(reject=reject_criteria)
 
-            epochs_list.append(new_epoch)
+            epochs_list.append((new_epoch, session_num))
 
             # append session numbers
-            new_session_nums = [session_num]*len(new_epoch)
-            session_numbers.extend(new_session_nums)
+            # new_session_nums = [session_num]*len(new_epoch)
+            # session_numbers.extend(new_session_nums)
 
         # Concatenate epochs for further processing in MNE, if needed
-        self.epochs = mne.concatenate_epochs([new_epoch for new_epoch in epochs_list])
-        self._session_numbers = session_numbers
-        EEG._save_epochs_as_npy(epochs=self.epochs, filename='epoched_eeg', session_number=session_numbers)
+        # self.epochs = mne.concatenate_epochs([new_epoch[0] for new_epoch in epochs_list])
+        self.epochs_list = epochs_list
+        # self._session_numbers = session_numbers
+        # EEG._save_epochs_as_npy(epochs=self.epochs, filename='epoched_eeg', session_number=session_numbers)
+        self.session_epochs = []
+        session_dict = defaultdict(list)
+        for epoch, session_num in self.epochs_list:
+            session_dict[session_num].append(epoch)
+        
+        for key in session_dict.keys():
+            # Concatenate the epochs from every session
+            session_epoch = mne.concatenate_epochs([new_epoch for new_epoch in session_dict[key]])
+            self.session_epochs.append((session_epoch, key))  
+        print('here')  
         
 
     def _apply_ica(self):
@@ -237,42 +248,65 @@ class EEG:
         Input: -
         Output: -
         '''
-        # After concatenating the epochs Autoreject the bad trials
-        ica = ICA(
-            n_components=None,
-            method='fastica',
-            fit_params=None,
-            max_iter='auto',
-            random_state=91
-        )
+        self.ica_session_epochs = []
+        for epoch, session_num in self.session_epochs:
+            # After concatenating the epochs Autoreject the bad trials
+            ica = ICA(
+                n_components=None,
+                method='fastica',
+                fit_params=None,
+                max_iter='auto',
+                random_state=91
+            )
+            
+            # Fit ICA to epochs
+            ica.fit(epoch)
+            # Get labels of ICA and print them
+            ic_labels = label_components(epoch, ica, method="iclabel")
+            print(ic_labels["labels"])
+            # Plot ICA components, sources and properties
+            # ica.plot_components()
+            # ica.plot_sources(self.epochs, show=True)
+            # ica.plot_properties(self.epochs, show=True)
+
+            # Define the ICA components that should be excluded
+            lst_exclude = []
+            for num, label in zip(list(range(32)), ic_labels["labels"]):
+                if label != 'brain' and label != 'other':
+                    lst_exclude.append(num)
+                    
+            ica.exclude = lst_exclude
+
+            # Apply ICA to epochs
+            print('Apply ICA now')
+            epoch = ica.apply(epoch)
+            epoch.apply_baseline()
+            print('ICA finished!')
+
+            #ar = AutoReject(verbose=True)
+            #epoch = ar.fit_transform(epoch)
+
+            self.ica_session_epochs.append((epoch, session_num))
+
+    def _normalize(self):
         
-        # Fit ICA to epochs
-        ica.fit(self.epochs)
-        # Get labels of ICA and print them
-        ic_labels = label_components(self.epochs, ica, method="iclabel")
-        print(ic_labels["labels"])
-        # Plot ICA components, sources and properties
-        # ica.plot_components()
-        # ica.plot_sources(self.epochs, show=True)
-        # ica.plot_properties(self.epochs, show=True)
+        
+        # self.norm_dict = defaultdict(list)
+        self.norm_epochs = []
+        norm_session_epoch = []
+        norm_session_event = []
+        for session, session_num in self.ica_session_epochs:
+            # Normalize all epochs
+            session_mean = mean(session.get_data(), axis=2, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+            session_std = std(session.get_data(), axis=2, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
 
-        # Define the ICA components that should be excluded
-        lst_exclude = []
-        for num, label in zip(list(range(32)), ic_labels["labels"]):
-            if label != 'brain' and label != 'other':
-                lst_exclude.append(num)
-                
-        ica.exclude = lst_exclude
-
-        # Apply ICA to epochs
-        print('Apply ICA now')
-        self.epochs = ica.apply(self.epochs)
-        self.epochs.apply_baseline()
-        print('ICA finished!')
-
-        ar = AutoReject(verbose=True)
-        self.epochs = ar.fit_transform(self.epochs)
-
+            norm_session_epoch.append((session.get_data() - session_mean) / session_std)
+            norm_session_event.append(session.events[:, -1])
+            # self.norm_dict[session_num] = (norm_session_epoch, session.events[:, -1])
+            print('here')
+        self.norm_session_epoch = np.vstack(norm_session_epoch)
+        self.norm_session_event = np.hstack(norm_session_event)
+    
     def processing_pipeline(self):
         '''
         Pipeline function that is called to apply the preprocessing, epoching, epoch-rejecting and ICA.
@@ -280,21 +314,25 @@ class EEG:
         Output: -
         '''
 
-        print(f'EVENT IDs: {self.epochs.event_id}')
-        if np.isnan(self.epochs.get_data(copy=False).any()):
-            raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
+        #print(f'EVENT IDs: {self.epochs_list[0].event_id}')
+        #if np.isnan(self.epochs_list[0].get_data(copy=False).any()):
+        #    raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
         
-        if 0:
+        if 1:
             self._apply_ica()
         else:
             ...
         # Save cleaned epochs as .npy file
-        EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg', session_number=self._session_numbers)
-        # Create CSP object
-        self._extract_csp_and_save(self.epochs)
+        # EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg', session_number=self._session_numbers)
+
+        # Normalize data
+        self._normalize()
+        # EEG._save_epochs_as_npy(self.epochs, 'normalized_cleaned_epoched_eeg', session_number=self._session_numbers)
+        # Create CSP data and save it
+        self._extract_csp_and_save()
 
 
-    def _extract_csp_and_save(self, epochs, n_components=6, file_name='csp_features.npy'):
+    def _extract_csp_and_save(self, n_components=6, file_name='csp_features.npy'):
         '''
         Extract CSP features from MNE epochs object and save them as .npy file
         Input: 
@@ -316,46 +354,56 @@ class EEG:
             return filtered_data
 
         # Get the numpy file from the epchoched MNE data
-        x = epochs.get_data()
-
+        x = self.norm_session_epoch # epochs.get_data()
+        y = self.norm_session_event
         # Apply filterbank to the data to find the best possible filterband combination
         filter_start = 1 # Hz
         filter_stop = 45 # Hz
-        filter_step = 4 # Hz
+        filter_step = 10 # Hz
         filterbank_freqs = arange(filter_start, filter_stop, filter_step)
         filterbank_freqs = [(filterbank_freqs[idx], filterbank_freqs[idx+1]) for idx in range(len(filterbank_freqs)-1)]
-
-        x_lst = []
-        for filter_freqs in filterbank_freqs:
+        # filtered_session_data = []
+        # for key in epochs.keys():
+        #     session_data = epochs[key]
+        #     filtered_per_session = []
+        csp_features = []
+        for idx, filter_freqs in enumerate(filterbank_freqs):
             low_freq = filter_freqs[0]
             high_freq = filter_freqs[1]
             filtered_data = bandpass_filter(x, lowcut=low_freq, highcut=high_freq, fs=200, order=4)
             # cut out -0.5 before cue onset until 3.5 seconds after cue onset
-            start_cut = int(1.5 * self._fs) # seconds into the signal
-            end_cut = int(5.5 * self._fs) # seconds into the signal
+            start_cut = int(1.5 * self._fs) # 1.5 seconds into the signal
+            end_cut = int(5.5 * self._fs) # 5.5 seconds into the signal
             filtered_data = filtered_data[:, :, start_cut:end_cut]
             # append bandpass filtered data
-            x_lst.append(filtered_data)
 
-
-        y = epochs.events[:, -1]
-        csp_with_labels = []
-        # Calculate CSP for every filterband
-        for x_ in x_lst:
+            print('All filterbank filters applied.')
+            # num_epochs = filtered_data.shape[0]
+            # Calculate CSP for every filterband
+            # for idx in range(num_epochs):
+            # print(f'Calculating {idx+1}/{len(filtered_per_session)} filterbank CSP now... ')
             # Initialize CSP object
             csp = CSP(n_components=n_components, log=True, cov_est='epoch')
             # Fit CSP on the data and extract features
-            csp.fit(x_, y)
-            csp_features = csp.transform(x_)
-            # Create a list of tuples (label, feature) for each epoch
-            features_with_labels = [(label, feature) for label, feature in zip(y, csp_features)]
-            # Add this filterband CSP to the list
-            csp_with_labels.append(features_with_labels)
-
+            csp.fit(filtered_data, y)
+            if idx == 0:
+                # Save the CSP model weights
+                # Save the entire CSP object
+                with open('classifier_results/csp_model.pkl', 'wb') as f:
+                    pickle.dump(csp, f)
+            csp_features.append(csp.transform(filtered_data))
+        # Create a list of tuples (label, feature) for each epoch
+        # features_with_labels = [(feature, y) for feature in csp_features]
+        # Add this filterband CSP to the list
+        csp_features = array(csp_features)
+        print('Finished')
         # Save the CSP features as .npy file
-        file_path = './features/' + file_name
-        features_with_labels = np.array(features_with_labels, dtype=object)
-        save(file_path, features_with_labels)
+        file_path = './features/'
+        filename_features = file_path + 'csp_features.npy'
+        filename_labels =  file_path + 'csp_labels.npy'
+        # features_with_labels = np.array(features_with_labels, dtype=object)
+        save(filename_features, csp_features)
+        save(filename_labels, y)
         print(f'CSP features saved to {file_path}')
         
     

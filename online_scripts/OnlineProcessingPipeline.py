@@ -112,8 +112,8 @@ class OnlineProcessingPipeline:
 
         ####edited
         #Apply the filter along the second axis (axis=1) for each channel
-        filtered_chunk, notch_filter.z = signal.lfilter(notch_filter.b, notch_filter.a, chunk, axis=1, zi=notch_filter.z)
-        filtered_buffer, filters.z = signal.lfilter(filters.b, filters.a, filtered_chunk, axis=1, zi=filters.z)
+        # chunk, notch_filter.z = signal.lfilter(notch_filter.b, notch_filter.a, chunk, axis=1, zi=notch_filter.z)
+        filtered_buffer, filters.z = signal.lfilter(filters.b, filters.a, chunk, axis=1, zi=filters.z)
         filtered_buffer = filtered_buffer[:, -267:]
         filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, 267)).astype('double')
 
