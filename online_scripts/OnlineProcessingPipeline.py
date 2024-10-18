@@ -15,6 +15,7 @@ class OnlineProcessingPipeline:
             b, a = signal.iirfilter(filterorder, Wn=cutoff_freq, fs=fs, btype=btype, ftype=ftype)
             z = signal.lfilter_zi(b, a)
             z = np.tile(z, (n_channels, 1))
+            print('here')
             self.b = b
             self.a = a
             self.z = z
@@ -112,10 +113,16 @@ class OnlineProcessingPipeline:
 
         ####edited
         #Apply the filter along the second axis (axis=1) for each channel
-        # chunk, notch_filter.z = signal.lfilter(notch_filter.b, notch_filter.a, chunk, axis=1, zi=notch_filter.z)
+        chunk, notch_filter.z = signal.lfilter(notch_filter.b, notch_filter.a, chunk, axis=1, zi=notch_filter.z)
         filtered_buffer, filters.z = signal.lfilter(filters.b, filters.a, chunk, axis=1, zi=filters.z)
         filtered_buffer = filtered_buffer[:, -267:]
-        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, 267)).astype('double')
+        # Normalize buffer
+        buffer_mean = np.mean(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+        buffer_std = np.std(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+
+        filtered_buffer = (filtered_buffer - buffer_mean) / buffer_std
+        
+        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 32, 267)).astype('double')
 
         return filtered_buffer  # shape of filtered_buffer is [1, 1, 32, 267]
 

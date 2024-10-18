@@ -50,10 +50,10 @@ with open('classifier_results/slda_weights.pkl', 'wb') as f:
 
 
 # Save CSP params
-csp = CSP(n_components=6, log=True, cov_est='epoch')
-csp.fit(features, labels)
-csp_params = csp.get_params()
+#csp = CSP(n_components=6, log=True, cov_est='epoch')
+#csp.fit(features, labels)
+#csp_params = csp.get_params()
 
 # Save the CSP model weights
-with open('classifier_results/csp_params.pkl', 'wb') as f:
-    pickle.dump(csp_params, f)
+#with open('classifier_results/csp_params.pkl', 'wb') as f:
+#    pickle.dump(csp_params, f)

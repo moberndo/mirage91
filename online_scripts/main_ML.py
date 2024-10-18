@@ -9,21 +9,20 @@ from OnlineProcessingPipeline import OnlineProcessingPipeline as pipe
 import time
 from pathlib import Path
 import pickle
-from numpy import ones, append, array, copy
-import torch
-from torch import load, from_numpy
+from numpy import ones, append, array, copy, mean, newaxis, shape, round
+#from torch import load, from_numpy
 from mne.decoding import CSP
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 # import classifier ...
 ...
 ''' CUSTOM IMPORTS'''
-from classifier_functions import EEGNetModel
+# from classifier_functions import EEGNetModel
 
 
 ''' SETTINGS '''
+print('Starting Online Processing File...')
 
-
-classifier_params = Path(__file__).parent.parent / 'offline_scripts' / 'classifier_results'
+classifier_params = Path(__file__).resolve().parent.parent / 'offline_scripts' / 'classifier_results'
 # Path(__file__).parent / 'classifier_params' /  '4classes_eegnet_model.pth'# 'lmda_params.pt'
 eeg_fs = 100 # 512 # Hz
 cutoff_freq1 = [1, 45] # Hz
@@ -45,7 +44,8 @@ stream_eeg = pipe.ResolveCreateStream()
 ''' ################################################################## '''
 bandpass_filter = pipe.OnlineFilter(filterorder, cutoff_freq1, stream_eeg.fs,
                                     btype, ftype, stream_eeg.n_channels)
-filters = [bandpass_filter]
+filters = bandpass_filter
+notch_filter = pipe.NotchFilter(stream_eeg.n_channels)
 #filter_mov_avg = pipe.MovingAverageFilter(length_of_window, stream_eeg.fs,
 #                                          stream_eeg.n_channels)
 downsampling_ratio = stream_eeg.fs / fs_downsampled  #downsampling ratio must be an integer
@@ -55,10 +55,10 @@ dec_filter = pipe.DecimationFilter(downsampling_ratio)
 ''' #     CREATE OUTLET STREAM                                         '''
 ''' ################################################################## '''
 print('Creating the classifier stream info...')
-info = StreamInfo(name='ClassifierOutput', type='ClassProb', nominal_srate=10,
+info2 = StreamInfo(name='ClassifierOutput', type='ClassProb', nominal_srate=10,
                   channel_count=4, channel_format='float32', source_id='classifier91')
 print('Opening the classifier outlet...')
-outlet_classifier = StreamOutlet(info)
+outlet_classifier = StreamOutlet(info2)
 
 ''' ################################################################## '''
 ''' #     INITIALIZE CLASSIFIER                                        '''
@@ -98,18 +98,24 @@ while decoding:
         # if chunk:
         buffer = append(buffer, chunk, axis=1)
         if buffer.shape[1] >= buffer_size:
-            processed_chunk = pipe.apply_pipeline(buffer, filters, dec_filter)
+            processed_chunk = pipe.apply_pipeline(buffer, filters, notch_filter)
             break
 
     # Create a copy to remove negative strides
     processed_chunk = copy(processed_chunk)  
 
     csp_features = csp.transform(processed_chunk)
+    #csp_features = csp_features[:,newaxis]
     predicted_class = slda.predict_proba(csp_features)
-
+    predicted_class = list(predicted_class[0])  #round(predicted_class,1)
+    #predicted_class = predicted_class.T
+    print(predicted_class)
+    
     # print(predicted_class.numpy())
-    outlet_classifier.push_chunk(predicted_class.numpy())
-
+    #outlet_classifier.push_chunk(predicted_class.numpy())
+    #outlet_classifier.push_chunk(predicted_class)
+    outlet_classifier.push_chunk(predicted_class)
+    
         # stop the decoder when no EEG samples received
     t_start_timeout = time.time()
     if time.time() - t_start_timeout > t_timeout:
