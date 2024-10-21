@@ -334,7 +334,7 @@ class EEG:
         self._normalize()
         EEG._save_epochs_as_npy(self, 'normalized_cleaned_eeg')
         # Create CSP data and save it
-        # self._extract_csp_and_save()
+        self._extract_csp_and_save()
 
 
     def _extract_csp_and_save(self, n_components=6, file_name='csp_features.npy'):
@@ -372,6 +372,7 @@ class EEG:
         #     session_data = epochs[key]
         #     filtered_per_session = []
         csp_features = []
+        csp_models = []
         for idx, filter_freqs in enumerate(filterbank_freqs):
             low_freq = filter_freqs[0]
             high_freq = filter_freqs[1]
@@ -388,15 +389,21 @@ class EEG:
             # for idx in range(num_epochs):
             # print(f'Calculating {idx+1}/{len(filtered_per_session)} filterbank CSP now... ')
             # Initialize CSP object
-            csp = CSP(n_components=n_components, log=True, cov_est='epoch')
+            csp = CSP(n_components=n_components, reg='shrinkage', log=True, cov_est='epoch')
             # Fit CSP on the data and extract features
             csp.fit(filtered_data, y)
-            if idx == 0:
+            # csp.plot_patterns(self._raw_mne[0][0].info, ch_type="eeg", units="Patterns (AU)")
+
+            csp_models.append(csp)
+            # if idx == 0:
                 # Save the CSP model weights
                 # Save the entire CSP object
-                with open('classifier_results/csp_model.pkl', 'wb') as f:
-                    pickle.dump(csp, f)
+                # with open('classifier_results/csp_model.pkl', 'wb') as f:
+                #     pickle.dump(csp, f)
             csp_features.append(csp.transform(filtered_data))
+        
+        with open('classifier_results/csp_model.pkl', 'wb') as f:
+            pickle.dump(csp, f)
         # Create a list of tuples (label, feature) for each epoch
         # features_with_labels = [(feature, y) for feature in csp_features]
         # Add this filterband CSP to the list
