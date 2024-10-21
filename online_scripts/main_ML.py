@@ -98,7 +98,7 @@ while decoding:
         # if chunk:
         buffer = append(buffer, chunk, axis=1)
         if buffer.shape[1] >= buffer_size:
-            processed_chunk = pipe.apply_pipeline(buffer, filters, notch_filter)
+            processed_chunk, notch_filter, filters = pipe.apply_pipeline(buffer, filters, notch_filter, CSP_filter=[(1, 10)])
             break
 
     # Create a copy to remove negative strides

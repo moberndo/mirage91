@@ -5,7 +5,7 @@ Authors: Mirage 91
 
 import numpy as np
 import scipy.signal as signal
-from scipy.signal import butter, lfilter
+from scipy.signal import butter, lfilter, resample
 
 
 class OnlineProcessingPipeline:
@@ -88,22 +88,22 @@ class OnlineProcessingPipeline:
     #     filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, output_size)).astype('double')
 
 
-    def apply_pipeline(chunk, filters, notch_filter, buffer_size=300):
-        # def butter_bandpass(lowpass, highpass, fs, order=4):
-        #     nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
-        #     low = lowpass / nyquist
-        #     high = highpass / nyquist
-        #     b, a = butter(order, [low, high], btype='band')
-        #     return b, a
-        #
-        # def apply_bandpass_filter(data, lowpass, highpass, fs, order=4):
-        #     # Get the filter coefficients
-        #     b, a = butter_bandpass(lowpass, highpass, fs, order=order)
-        #
-        #     # Apply the filter along the second axis (axis=1) for each channel
-        #     filtered_data = filtfilt(b, a, data, axis=1)
-        #
-        #     return filtered_data
+    def apply_pipeline(chunk, filters, notch_filter, buffer_size=300, CSP_filter=[]):
+        def butter_bandpass(lowpass, highpass, fs, order=4):
+            nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
+            low = lowpass / nyquist
+            high = highpass / nyquist
+            b, a = butter(order, [low, high], btype='band')
+            return b, a
+        
+        def apply_bandpass_filter(data, lowpass, highpass, fs, order=4):
+            # Get the filter coefficients
+            b, a = butter_bandpass(lowpass, highpass, fs, order=order)
+        
+            # Apply the filter along the second axis (axis=1) for each channel
+            filtered_data = lfilter(b, a, data, axis=2)
+        
+            return filtered_data
         # 
         # Cut buffer to buffer size
         # # buffer = chunk[:,-buffer_size:]
@@ -113,24 +113,29 @@ class OnlineProcessingPipeline:
 
         ####edited
         #Apply the filter along the second axis (axis=1) for each channel
-        print('here')
+        # print('here')
         chunk, notch_filter.z = signal.lfilter(notch_filter.b, notch_filter.a, chunk, axis=1, zi=notch_filter.z)
         filtered_buffer, filters.z = signal.lfilter(filters.b, filters.a, chunk, axis=1, zi=filters.z)
-        filtered_buffer = filtered_buffer[:, -267:]
+        filtered_buffer = filtered_buffer[:, -buffer_size:]
         # Normalize buffer
         buffer_mean = np.mean(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
         buffer_std = np.std(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
 
         filtered_buffer = (filtered_buffer - buffer_mean) / buffer_std
         
-        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 32, 267))
+        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 32, buffer_size))
         # Resample to 200 Hz
-        ...
-
+        num_new_samples = int(buffer_size * 200 / 500)
+        buffer = resample(filtered_buffer, num=num_new_samples, axis=2)
         # Filter for CSP
+        for filter in CSP_filter:
+            buffer = apply_bandpass_filter(data=buffer, lowpass=filter[0], highpass=filter[1], fs=200)
+
+        # Option 1:
+        # Return filter state
         ...
 
-        return filtered_buffer  # shape of filtered_buffer is [1, 1, 32, 267]
+        return buffer, notch_filter, filters  # shape of filtered_buffer is [1, 1, 32, 267]
 
     def run_pipeline_dummy(chunk, filters, mov_avg_filter, dec_filter):
         # Transpose the chunks into dimensions of (channels x samples)
