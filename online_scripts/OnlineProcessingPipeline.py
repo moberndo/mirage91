@@ -113,6 +113,7 @@ class OnlineProcessingPipeline:
 
         ####edited
         #Apply the filter along the second axis (axis=1) for each channel
+        print('here')
         chunk, notch_filter.z = signal.lfilter(notch_filter.b, notch_filter.a, chunk, axis=1, zi=notch_filter.z)
         filtered_buffer, filters.z = signal.lfilter(filters.b, filters.a, chunk, axis=1, zi=filters.z)
         filtered_buffer = filtered_buffer[:, -267:]
@@ -122,7 +123,12 @@ class OnlineProcessingPipeline:
 
         filtered_buffer = (filtered_buffer - buffer_mean) / buffer_std
         
-        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 32, 267)).astype('double')
+        filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 32, 267))
+        # Resample to 200 Hz
+        ...
+
+        # Filter for CSP
+        ...
 
         return filtered_buffer  # shape of filtered_buffer is [1, 1, 32, 267]
 

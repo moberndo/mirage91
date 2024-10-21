@@ -10,7 +10,7 @@ from pylsl import StreamInfo, StreamOutlet
 
 ''' SETTINGS '''
 # Define the number of channels and sampling rate
-n_channels = 32
+n_channels = 35
 sampling_rate = 100  # Hz
 
 ''' MAIN '''

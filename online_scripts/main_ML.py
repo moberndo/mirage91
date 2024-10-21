@@ -43,9 +43,9 @@ stream_eeg = pipe.ResolveCreateStream()
 ''' #     INITIALIZE ONLINE FILTERING                                  '''
 ''' ################################################################## '''
 bandpass_filter = pipe.OnlineFilter(filterorder, cutoff_freq1, stream_eeg.fs,
-                                    btype, ftype, stream_eeg.n_channels)
+                                    btype, ftype, stream_eeg.n_channels - 3)  # drop the x, y, z channels
 filters = bandpass_filter
-notch_filter = pipe.NotchFilter(stream_eeg.n_channels)
+notch_filter = pipe.NotchFilter(stream_eeg.n_channels - 3) # drop the x, y, z channels
 #filter_mov_avg = pipe.MovingAverageFilter(length_of_window, stream_eeg.fs,
 #                                          stream_eeg.n_channels)
 downsampling_ratio = stream_eeg.fs / fs_downsampled  #downsampling ratio must be an integer
