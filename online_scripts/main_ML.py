@@ -8,8 +8,9 @@ from pylsl import StreamInfo, StreamOutlet
 from OnlineProcessingPipeline import OnlineProcessingPipeline as pipe
 import time
 from pathlib import Path
+import matplotlib.pyplot as plt
 import pickle
-from numpy import ones, append, array, copy, mean, newaxis, shape, round
+from numpy import ones, append, array, copy, mean, newaxis, shape, round, save
 #from torch import load, from_numpy
 from mne.decoding import CSP
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
@@ -26,6 +27,11 @@ classifier_params = Path(__file__).resolve().parent.parent / 'offline_scripts' /
 # Path(__file__).parent / 'classifier_params' /  '4classes_eegnet_model.pth'# 'lmda_params.pt'
 eeg_fs = 100 # 512 # Hz
 cutoff_freq1 = [1, 45] # Hz
+low_alpha = [8, 10] # Hz
+high_alpha = [10, 13] # Hz
+low_beta = [13, 20] #Hz
+high_beta = [20, 35] #Hz
+csp_filters = [low_alpha, high_alpha, low_beta, high_beta]
 filterorder = 4
 fs_downsampled = 2
 ftype = 'butter' # Butterworth
@@ -45,6 +51,8 @@ stream_eeg = pipe.ResolveCreateStream()
 bandpass_filter = pipe.OnlineFilter(filterorder, cutoff_freq1, stream_eeg.fs,
                                     btype, ftype, stream_eeg.n_channels - 3)  # drop the x, y, z channels
 filters = bandpass_filter
+
+# csp_filters = pipe.OnlineFilter(filterorder, )
 notch_filter = pipe.NotchFilter(stream_eeg.n_channels - 3) # drop the x, y, z channels
 #filter_mov_avg = pipe.MovingAverageFilter(length_of_window, stream_eeg.fs,
 #                                          stream_eeg.n_channels)
@@ -80,6 +88,9 @@ buffer_size = 300
 buffer = ones(shape=(32,1))
 t_start_timeout = time.time()
 
+unfiltered_data = []
+filtered_data = []
+
 # Pull the first chunk 
 chunk, timestamps = stream_eeg.inlet.pull_chunk()
 # Wait for 2 seconds
@@ -88,12 +99,13 @@ time.sleep(2)
 while decoding:
     # Get a new chunk, load buffer and apply preprocessing
     while 1:
-        time.sleep(0.5)
+        time.sleep(0.1)
         chunk, timestamps = stream_eeg.inlet.pull_chunk()
 
         chunk = array(chunk).T
         chunk = chunk[0:32,:]
         # print(chunk.shape)
+        # unfiltered_data.append(chunk)
 
         # if chunk:
         buffer = append(buffer, chunk, axis=1)
@@ -103,6 +115,12 @@ while decoding:
 
     # Create a copy to remove negative strides
     processed_chunk = copy(processed_chunk)  
+    # filtered_data.append(processed_chunk)
+
+    #plt.figure()
+    #plt.plot(processed_chunk)
+    #plt.show()
+
 
     csp_features = csp.transform(processed_chunk)
     #csp_features = csp_features[:,newaxis]
@@ -121,3 +139,9 @@ while decoding:
     if time.time() - t_start_timeout > t_timeout:
         print("No EEG samples received for %s seconds... decoding is stopped" % t_timeout)
         decoding = False
+
+
+filtered_data = array(filtered_data)
+save('filered_data.npy', filtered_data)
+unfiltered_data = array(unfiltered_data)
+save('unfiltered_data.npy', unfiltered_data)

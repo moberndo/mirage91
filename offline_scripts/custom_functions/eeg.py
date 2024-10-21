@@ -359,7 +359,7 @@ class EEG:
         # Apply filterbank to the data to find the best possible filterband combination
         filter_start = 1 # Hz
         filter_stop = 45 # Hz
-        filter_step = 10 # Hz
+        filter_step = 4 # Hz
         filterbank_freqs = arange(filter_start, filter_stop, filter_step)
         filterbank_freqs = [(filterbank_freqs[idx], filterbank_freqs[idx+1]) for idx in range(len(filterbank_freqs)-1)]
         # filtered_session_data = []

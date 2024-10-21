@@ -118,10 +118,10 @@ class OnlineProcessingPipeline:
         filtered_buffer, filters.z = signal.lfilter(filters.b, filters.a, chunk, axis=1, zi=filters.z)
         filtered_buffer = filtered_buffer[:, -buffer_size:]
         # Normalize buffer
-        buffer_mean = np.mean(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
-        buffer_std = np.std(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+        #buffer_mean = np.mean(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+        #buffer_std = np.std(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
 
-        filtered_buffer = (filtered_buffer - buffer_mean) / buffer_std
+        #filtered_buffer = (filtered_buffer - buffer_mean) / buffer_std
         
         filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 32, buffer_size))
         # Resample to 200 Hz
