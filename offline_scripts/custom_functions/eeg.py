@@ -137,17 +137,22 @@ class EEG:
         return raw_mnes
     
     @staticmethod
-    def _save_epochs_as_npy(epochs, filename, session_number=None):
-        epochs_data_list = []
-        for epoch_data, epoch_event, session_num in zip(epochs.get_data(copy=True), epochs.events[:, -1], session_number):
-            # epoch_data: the actual EEG data for the epoch
-            # epoch_event: the event_id for the corresponding event
-            epochs_data_list.append((epoch_event, epoch_data, session_num))
-            # print(f"{epoch_event.size} {epoch_data.shape} {session_num}")
+    def _save_epochs_as_npy(self, filename, session_number=None):
+        features = self.norm_session_epoch
+        path = './features/' + filename + '_data.npy'
+        save(path, features)
+        labels = self.norm_session_event
+        path = './features/' + filename + '_labels.npy'
+        save(path, labels)
+        # for epoch_data, epoch_event, session_num in zip(epochs.get_data(copy=True), epochs.events[:, -1], session_number):
+        #     # epoch_data: the actual EEG data for the epoch
+        #     # epoch_event: the event_id for the corresponding event
+        #     epochs_data_list.append((epoch_event, epoch_data, session_num))
+        #     # print(f"{epoch_event.size} {epoch_data.shape} {session_num}")
 
-        filepath = './features/' + filename + '.npy'
-        epochs_data_list = np.array(epochs_data_list, dtype=object)
-        save(filepath, epochs_data_list)
+        # filepath = './features/' + filename + '.npy'
+        # epochs_data_list = np.array(epochs_data_list, dtype=object)
+        # save(filepath, epochs_data_list)
     
     def preprocessing(self, plot=True):
         '''
@@ -283,8 +288,8 @@ class EEG:
             epoch.apply_baseline()
             print('ICA finished!')
 
-            #ar = AutoReject(verbose=True)
-            #epoch = ar.fit_transform(epoch)
+            ar = AutoReject(verbose=True)
+            epoch = ar.fit_transform(epoch)
 
             self.ica_session_epochs.append((epoch, session_num))
 
@@ -327,9 +332,9 @@ class EEG:
 
         # Normalize data
         self._normalize()
-        # EEG._save_epochs_as_npy(self.epochs, 'normalized_cleaned_epoched_eeg', session_number=self._session_numbers)
+        EEG._save_epochs_as_npy(self, 'normalized_cleaned_eeg')
         # Create CSP data and save it
-        self._extract_csp_and_save()
+        # self._extract_csp_and_save()
 
 
     def _extract_csp_and_save(self, n_components=6, file_name='csp_features.npy'):
