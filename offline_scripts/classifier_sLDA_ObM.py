@@ -18,16 +18,17 @@ import pickle
 ''' MAIN '''    
 
 # data = load('./features/csp_features.npy', allow_pickle=True)
-features = load('./features/csp_features.npy', allow_pickle=True)
-# take the 0th frequency band
-features = features[0, :, :]
+features = load('./features/normalized_cleaned_eeg_data.npy', allow_pickle=True)
 # Load the labels
-labels = load('./features/csp_labels.npy', allow_pickle=True)
+labels = load('./features/normalized_cleaned_eeg_labels.npy', allow_pickle=True)
 
 # Calculate CSP features
-# n_classes = 4 # Assuming 4 classes
-# n_components = 10  # Number of components for CSP
-# csp = CSP(n_components=n_components, log=True, cov_est='epoch')
+n_classes = 4 # Assuming 4 classes
+n_components = 6  # Number of components for CSP
+csp = CSP(n_components=n_components, log=True, cov_est='epoch')
+
+
+
 
 # Define sLDA
 slda = LDA(shrinkage='auto', solver='eigen')
@@ -44,16 +45,10 @@ if testing:
 slda.fit(features, labels)
 # slda.predict(X_test)
 
-# Save the sLDA model weights
-with open('classifier_results/slda_weights.pkl', 'wb') as f:
+# Save the sLDA model
+with open('classifier_results/slda.pkl', 'wb') as f:
     pickle.dump(slda, f)
 
-
-# Save CSP params
-#csp = CSP(n_components=6, log=True, cov_est='epoch')
-#csp.fit(features, labels)
-#csp_params = csp.get_params()
-
-# Save the CSP model weights
-#with open('classifier_results/csp_params.pkl', 'wb') as f:
-#    pickle.dump(csp_params, f)
+# Save the CSP model
+with open('classifier_results/csp.pkl', 'wb') as f:
+   pickle.dump(csp, f)

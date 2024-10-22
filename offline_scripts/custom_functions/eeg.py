@@ -137,17 +137,22 @@ class EEG:
         return raw_mnes
     
     @staticmethod
-    def _save_epochs_as_npy(epochs, filename, session_number=None):
-        epochs_data_list = []
-        for epoch_data, epoch_event, session_num in zip(epochs.get_data(copy=True), epochs.events[:, -1], session_number):
-            # epoch_data: the actual EEG data for the epoch
-            # epoch_event: the event_id for the corresponding event
-            epochs_data_list.append((epoch_event, epoch_data, session_num))
-            # print(f"{epoch_event.size} {epoch_data.shape} {session_num}")
+    def _save_epochs_as_npy(self, filename, session_number=None):
+        features = self.norm_session_epoch
+        path = './features/' + filename + '_data.npy'
+        save(path, features)
+        labels = self.norm_session_event
+        path = './features/' + filename + '_labels.npy'
+        save(path, labels)
+        # for epoch_data, epoch_event, session_num in zip(epochs.get_data(copy=True), epochs.events[:, -1], session_number):
+        #     # epoch_data: the actual EEG data for the epoch
+        #     # epoch_event: the event_id for the corresponding event
+        #     epochs_data_list.append((epoch_event, epoch_data, session_num))
+        #     # print(f"{epoch_event.size} {epoch_data.shape} {session_num}")
 
-        filepath = './features/' + filename + '.npy'
-        epochs_data_list = np.array(epochs_data_list, dtype=object)
-        save(filepath, epochs_data_list)
+        # filepath = './features/' + filename + '.npy'
+        # epochs_data_list = np.array(epochs_data_list, dtype=object)
+        # save(filepath, epochs_data_list)
     
     def preprocessing(self, plot=True):
         '''
@@ -283,8 +288,8 @@ class EEG:
             epoch.apply_baseline()
             print('ICA finished!')
 
-            #ar = AutoReject(verbose=True)
-            #epoch = ar.fit_transform(epoch)
+            ar = AutoReject(verbose=True)
+            epoch = ar.fit_transform(epoch)
 
             self.ica_session_epochs.append((epoch, session_num))
 
@@ -327,7 +332,7 @@ class EEG:
 
         # Normalize data
         self._normalize()
-        # EEG._save_epochs_as_npy(self.epochs, 'normalized_cleaned_epoched_eeg', session_number=self._session_numbers)
+        EEG._save_epochs_as_npy(self, 'normalized_cleaned_eeg')
         # Create CSP data and save it
         self._extract_csp_and_save()
 
@@ -367,6 +372,7 @@ class EEG:
         #     session_data = epochs[key]
         #     filtered_per_session = []
         csp_features = []
+        csp_models = []
         for idx, filter_freqs in enumerate(filterbank_freqs):
             low_freq = filter_freqs[0]
             high_freq = filter_freqs[1]
@@ -383,15 +389,21 @@ class EEG:
             # for idx in range(num_epochs):
             # print(f'Calculating {idx+1}/{len(filtered_per_session)} filterbank CSP now... ')
             # Initialize CSP object
-            csp = CSP(n_components=n_components, log=True, cov_est='epoch')
+            csp = CSP(n_components=n_components, reg='shrinkage', log=True, cov_est='epoch')
             # Fit CSP on the data and extract features
             csp.fit(filtered_data, y)
-            if idx == 0:
+            # csp.plot_patterns(self._raw_mne[0][0].info, ch_type="eeg", units="Patterns (AU)")
+
+            csp_models.append(csp)
+            # if idx == 0:
                 # Save the CSP model weights
                 # Save the entire CSP object
-                with open('classifier_results/csp_model.pkl', 'wb') as f:
-                    pickle.dump(csp, f)
+                # with open('classifier_results/csp_model.pkl', 'wb') as f:
+                #     pickle.dump(csp, f)
             csp_features.append(csp.transform(filtered_data))
+        
+        with open('classifier_results/csp_model.pkl', 'wb') as f:
+            pickle.dump(csp, f)
         # Create a list of tuples (label, feature) for each epoch
         # features_with_labels = [(feature, y) for feature in csp_features]
         # Add this filterband CSP to the list
