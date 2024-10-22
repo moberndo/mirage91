@@ -4,7 +4,7 @@ Authors: Mirage 91
 """
 ''' IMPORTS PYTHON'''
 import numpy as np
-from numpy import load, arange
+from numpy import load, arange, array, reshape
 import mne
 from itertools import combinations
 from mne.decoding import CSP
@@ -43,6 +43,8 @@ filter_step = 4 # Hz
 filterbank_freqs = arange(filter_start, filter_stop, filter_step)
 filterbank_freqs = [(filterbank_freqs[idx], filterbank_freqs[idx+1]) for idx in range(len(filterbank_freqs)-1)]
 
+# Iterate over all combinations of 2 classes
+
 csp_features = []
 csp_models = []
 for idx, filter_freqs in enumerate(filterbank_freqs):
@@ -62,8 +64,9 @@ for idx, filter_freqs in enumerate(filterbank_freqs):
     csp_features.append(csp.transform(filtered_data))
 
 # Make all CSP combinations
+num_combs = 4
 num_fbands_idx = list(range(len(csp_features)))
-fband_combinations = list(combinations(num_fbands_idx, 4))
+fband_combinations = list(combinations(num_fbands_idx, num_combs))
 
 csp_combinations = []
 for fband_comb in fband_combinations:
@@ -71,27 +74,29 @@ for fband_comb in fband_combinations:
     for band_idx in fband_comb:
         feature.append(csp_features[band_idx])
     # check shape and reshape ...
-    ...
+    feature = array(feature)
     csp_combinations.append(feature)
 # check csp_combinations shape, should be (feautres, n_comps, n_timepoints)
-...
+csp_combinations = reshape(array(csp_combinations), (len(fband_combinations), -1, num_combs, 6))
 
 # Define sLDA
-best_bands = (0, []) # stores 10 fold cross val acc and the band combinations
-for idx, csp_bands in enumerate(csp_combinations):
+best_bands = [0, []] # stores 10 fold cross val acc and the band combinations
+for idx in range(csp_combinations.shape[0]):
     # Initialize sLDA
     slda = LDA(shrinkage='auto', solver='eigen')
     cv = StratifiedKFold(n_splits=10)
     # Calcualte cross-val
-    cross_val_scores = cross_val_score(estimator=slda, X=csp_bands, y=labels, cv=cv, scoring='accuracy')
+    X_ = csp_combinations[idx, :, :, :]
+    X_ = reshape(X_, (-1, int(X_.shape[1] * X_.shape[2])))
+    cross_val_scores = cross_val_score(estimator=slda, X=X_, y=labels, cv=cv, scoring='accuracy')
     print(f'sLDA 10-fold cross-validation accuracy: {cross_val_scores.mean():.4f} ± {cross_val_scores.std():.4f}')
-    if cross_val_score.mean() > best_bands[0]:
-        best_bands[0] = cross_val_score.mean()
+    if cross_val_scores.mean() > best_bands[0]:
+        best_bands[0] = cross_val_scores.mean()
         best_bands[1] = fband_combinations[idx] # save the indices of the best feature freq bands
 
 # Print results:
-print(f'Best accuracy is acchieved for {best_bands[1]} with an accuracy of {best_bands[0]*100}%.')
-print(f'The filterbank bands are:\n')
+print(f'\n Best accuracy is acchieved for {best_bands[1]} with an accuracy of {best_bands[0]*100:.2f}%.')
+print(f'The filterbank bands are:')
 for idx in best_bands[1]:
     print(f'{filterbank_freqs[idx]} Hz')
     
