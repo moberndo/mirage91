@@ -127,7 +127,7 @@ def classify_binary_inputs(sample):
     return binary_inputs.to_bytes(2, byteorder= 'big') # little = little-endian
 
 # Function to encode analogue inputs into the range [00h, FFh] (1 byte per axis)
-def encode_analogue_input(value,thresh):
+def encode_analogue_input(value,thresh,direction='positive'):
     # analogue input from [-1.0, 1.0] to [00h, FFh]
     # print(value)
     max_prob = 0.8
@@ -136,9 +136,15 @@ def encode_analogue_input(value,thresh):
         # encoded_value = int((((value -0.5)/0.25)*128)+127)
         if thresh <= value < max_prob:
             # print(value)
-            encoded_value = int((((value - thresh)/(max_prob-thresh))*128)+127)  # y = 0.5 for 0.5 <= x < 0.7
+            if direction == 'positive':
+                encoded_value = int((((value - thresh)/(max_prob-thresh))*128)+127)  # y = 0.5 for 0.5 <= x < 0.7
+            else direction == 'negative':
+                encoded_value = int(((-(value - thresh)/(max_prob-thresh))*128)+127)  # y = 0.5 for 0.5 <= x < 0.7
         elif max_prob <= value <= 1:
-            encoded_value = int(255)
+            if direction == 'positive':
+                encoded_value = int(255)
+            else direction == 'negative':
+                encoded_value = int(0)
         # encoded_value = max(0, min(255, encoded_value))
     else:
         encoded_value = int(127)
@@ -151,8 +157,9 @@ def create_payload(sample):
     thresh = 0.5
     # Analogue Inputs (X and Y axes) mapping
 
-    x_axis = encode_analogue_input(sample[2],thresh)  # 3rd value to X-axis
-    y_axis = encode_analogue_input(sample[3],thresh)  # 4th value to Y-axis
+    # the negative parameter should flip the output in the opposite direction
+    x_axis = encode_analogue_input(sample[0],thresh,direction = 'negative')  # 3rd value to X-axis
+    y_axis = encode_analogue_input(sample[1],thresh)  # 4th value to Y-axis
 
     # print(f"{sample[2]} : {x_axis}")
     # print(f"{sample[3]} : {y_axis}")
