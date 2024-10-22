@@ -22,7 +22,7 @@ class OnlineProcessingPipeline:
 
     class NotchFilter:
         def __init__(self, n_channels):
-            b, a = signal.iirnotch(50, 30, fs=512)
+            b, a = signal.iirnotch(50, 30, fs=500)
             z = signal.lfilter_zi(b, a)
             z = np.tile(z, (n_channels, 1))
             self.b = b
@@ -87,8 +87,36 @@ class OnlineProcessingPipeline:
     #     filtered_buffer = apply_bandpass_filter(buffer, lowpass=lowpass, highpass=highpass, fs=512)[:,:output_size]
     #     filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, output_size)).astype('double')
 
+    # Normalize buffer
+    #buffer_mean = np.mean(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+    #buffer_std = np.std(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+    #filtered_buffer = (filtered_buffer - buffer_mean) / buffer_std
+    #filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 32, buffer_size))
 
-    def apply_pipeline(chunk, filters, notch_filter, buffer_size=300, CSP_filter=[], CSP_models=[]):
+    def apply_pipeline(chunk, filters, filter_states, buffer_size=2000):
+        ###########################
+        # Filtering
+        # Define filter params
+        b_notch, a_notch = filters[0]
+        notch_state = filter_states[0]
+        b_bp, a_bp = filters[1]
+        bp_state = filter_states[1]
+
+        # Apply notch
+        if notch_state is not None:
+            chunk, notch_state = signal.lfilter(b_notch, a_notch, chunk, zi=notch_state)
+
+        # Apply bandpass
+        if bp_state is not None:
+            filtered_data, bp_state = signal.lfilter(b_bp, a_bp, chunk, zi=bp_state)
+        
+        # Resample to 200 Hz
+        num_new_samples = int(buffer_size * 125 / 500)
+        filtered_data = resample(filtered_data, num=num_new_samples, axis=1)
+
+        return filtered_data, [notch_state, bp_state]
+
+    def apply_pipeline_ML(chunk, filters, notch_filter, buffer_size=300, CSP_filter=[], CSP_models=[]):
         def butter_bandpass(lowpass, highpass, fs, order=4):
             nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
             low = lowpass / nyquist

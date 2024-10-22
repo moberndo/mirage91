@@ -684,19 +684,19 @@
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="random" valType="str"/>
-      <Param name="nReps" updates="None" val="4" valType="num"/>
+      <Param name="nReps" updates="None" val="3" valType="num"/>
       <Param name="name" updates="None" val="run" valType="code"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
     </LoopInitiator>
     <Routine name="wait_screen"/>
     <LoopInitiator loopType="TrialHandler" name="trial">
       <Param name="Selected rows" updates="None" val="" valType="str"/>
-      <Param name="conditions" updates="None" val="[OrderedDict([('pic_name', 'pics/mental_singing.JPG'), ('class_mi', 'mental_singing')]), OrderedDict([('pic_name', 'pics/right_hand.JPG'), ('class_mi', 'right_hand')]), OrderedDict([('pic_name', 'pics/left_hand.JPG'), ('class_mi', 'left_hand')]), OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])]" valType="str"/>
-      <Param name="conditionsFile" updates="None" val="classes.csv" valType="file"/>
+      <Param name="conditions" updates="None" val="[OrderedDict([('pic_name', 'pics/left_hand.JPG'), ('class_mi', 'left_hand')]), OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])]" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="C:/Users/Mirage91/Documents/github/mirage91/paradigm/classes.csv" valType="file"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="loopType" updates="None" val="fullRandom" valType="str"/>
-      <Param name="nReps" updates="None" val="5" valType="num"/>
+      <Param name="nReps" updates="None" val="20" valType="num"/>
       <Param name="name" updates="None" val="trial" valType="code"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
     </LoopInitiator>

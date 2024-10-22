@@ -1,2 +1,2 @@
 from .LMDA_modified import LMDA
-from .EEGNet import EEGNetModel
+from .EEGNet import EEGNet

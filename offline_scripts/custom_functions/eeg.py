@@ -19,6 +19,7 @@ import numpy as np
 from collections import defaultdict
 from os.path import isfile
 import os
+from scipy.signal import butter, lfilter, iirnotch
 from sklearn.model_selection import train_test_split
 from typing import List, Dict
 import pickle
@@ -93,6 +94,32 @@ class EEG:
         return eeg_stream, paradigm_stream
 
     def _create_mne_objects(self):
+
+        def butter_bandpass(lowpass, highpass, fs, order=4):
+            nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
+            low = lowpass / nyquist
+            high = highpass / nyquist
+            b, a = butter(order, [low, high], btype='band')
+            return b, a
+        
+        def notch_filter(w0, Q, fs):
+            b, a = iirnotch(w0=w0, Q=Q, fs=fs)
+            return b, a
+        
+        def apply_notch_filter(data, w0, Q=30, fs=500, axis=2):
+            b, a = notch_filter(w0=w0, Q=Q, fs=fs)
+            filtered_data = lfilter(b, a, data, axis=axis)
+            return filtered_data
+        
+        def apply_bandpass_filter(data, lowpass, highpass, fs, order=4, axis=2):
+            # Get the filter coefficients
+            b, a = butter_bandpass(lowpass, highpass, fs, order=order)
+        
+            # Apply the filter along the second axis (axis=1) for each channel
+            filtered_data = lfilter(b, a, data, axis=axis)
+        
+            return filtered_data
+        
         '''
         Create an MNE object for the EEG data for easier use of the built in methods.
         Input: -
@@ -122,6 +149,12 @@ class EEG:
 
             eeg_time -= absolut_startpoint
             paradigm_time -= absolut_startpoint
+            
+            # Filter eeg data here
+            eeg_data = apply_bandpass_filter(data=eeg_data, lowpass=0.5, highpass=35,
+                                             fs=500, order=4, axis=1)
+            
+            eeg_data = apply_notch_filter(data=eeg_data, w0=50, Q=30, fs=500, axis=1)
 
             stream_dict = {'eeg_data':eeg_data, 'eeg_time':eeg_time,
                            'paradigm_data':paradigm_data, 'paradigm_time':paradigm_time}
@@ -167,25 +200,26 @@ class EEG:
             self._raw_mne[idx][0].set_montage("standard_1020")
 
             # find bad channels and interpolate them for replacement
-            bad_channels = mne.preprocessing.find_bad_channels_lof(self._raw_mne[idx][0])
-            self._raw_mne[idx][0].info['bads'].extend(bad_channels)
-            self._raw_mne[idx][0].interpolate_bads()
+            #bad_channels = mne.preprocessing.find_bad_channels_lof(self._raw_mne[idx][0])
+            #self._raw_mne[idx][0].info['bads'].extend(bad_channels)
+            #self._raw_mne[idx][0].interpolate_bads()
 
             # rereference with common average reference (CAR)
-            self._raw_mne[idx][0].set_eeg_reference("average",projection=False)
+            # self._raw_mne[idx][0].set_eeg_reference("average",projection=False)
 
             # apply standard high, low and notch filters
-            self._raw_mne[idx][0].filter(1., None, method='iir')  # verbose=False)  # Highpass filter at 1 Hz
-            self._raw_mne[idx][0].notch_filter(50., method='iir')  # verbose=False)  # Notch filter at 50 Hz
-            self._raw_mne[idx][0].filter(None, 45., method='iir')  # , verbose=False)  # Anti-aliasing filter at 45 Hz
+            #self._raw_mne[idx][0].filter(1., None, method='iir')  # verbose=False)  # Highpass filter at 1 Hz
+            #self._raw_mne[idx][0].notch_filter(50., method='iir')  # verbose=False)  # Notch filter at 50 Hz
+            #self._raw_mne[idx][0].filter(None, 45., method='iir')  # , verbose=False)  # Anti-aliasing filter at 45 Hz
 
             # after applying the highpass, we can resample to 200Hz
-            self._raw_mne[idx][0].resample(200)
+            self._raw_mne[idx][0].resample(125)
 
             #if plot:
             #    scale=dict(eeg=100e-6, eog=150e-6)
             #    self._raw_mne.plot(n_channels=32,scalings=scale,start=36, duration=16, show_scrollbars=False)
             #    self._raw_mne.plot_sensors(show_names=True)
+
 
     def epoching_and_rejecting(self, save_eeglab=False, save_npy=False):
         '''
@@ -245,6 +279,9 @@ class EEG:
             session_epoch = mne.concatenate_epochs([new_epoch for new_epoch in session_dict[key]])
             self.session_epochs.append((session_epoch, key))  
         print('here')  
+
+        # Save epochs
+
         
 
     def _apply_ica(self):
@@ -253,7 +290,7 @@ class EEG:
         Input: -
         Output: -
         '''
-        self.ica_session_epochs = []
+        self.epochs = []
         for epoch, session_num in self.session_epochs:
             # After concatenating the epochs Autoreject the bad trials
             ica = ICA(
@@ -291,7 +328,7 @@ class EEG:
             # ar = AutoReject(verbose=True)
             # epoch = ar.fit_transform(epoch)
 
-            self.ica_session_epochs.append((epoch, session_num))
+            self.epochs.append((epoch, session_num))
 
     def _normalize(self):
         
@@ -300,7 +337,7 @@ class EEG:
         self.norm_epochs = []
         norm_session_epoch = []
         norm_session_event = []
-        for session, session_num in self.ica_session_epochs:
+        for session, session_num in self.epochs:
             # Normalize all epochs
             session_mean = mean(session.get_data(), axis=2, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
             session_std = std(session.get_data(), axis=2, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
@@ -323,16 +360,14 @@ class EEG:
         #if np.isnan(self.epochs_list[0].get_data(copy=False).any()):
         #    raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
         
-        if 1:
+        if 0:
             self._apply_ica()
-        else:
-            ...
         # Save cleaned epochs as .npy file
         # EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg', session_number=self._session_numbers)
 
         # Normalize data
-        self._normalize()
-        EEG._save_epochs_as_npy(self, 'normalized_cleaned_eeg')
+        # self._normalize()
+        # EEG._save_epochs_as_npy(self, 'normalized_cleaned_eeg')
         # Create CSP data and save it
         # self._extract_csp_and_save()
 
@@ -347,7 +382,7 @@ class EEG:
         Output:
             - 
         '''
-        from scipy.signal import butter, filtfilt
+        from scipy.signal import butter, lfilter
 
         # Define the bandpass filter along the time axis
         def bandpass_filter(data, lowcut, highcut, fs, order=4):
@@ -355,7 +390,7 @@ class EEG:
             low = lowcut / nyquist
             high = highcut / nyquist
             b, a = butter(order, [low, high], btype='band')
-            filtered_data = filtfilt(b, a, data, axis=2)
+            filtered_data = lfilter(b, a, data, axis=2)
             return filtered_data
 
         # Get the numpy file from the epchoched MNE data

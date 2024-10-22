@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2024.1.5),
-    on October 21, 2024, at 11:19
+    on October 22, 2024, at 14:24
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -601,7 +601,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
     routineTimer.reset()
     
     # set up handler to look after randomisation of conditions etc
-    run = data.TrialHandler(nReps=4.0, method='random', 
+    run = data.TrialHandler(nReps=3.0, method='random', 
         extraInfo=expInfo, originPath=-1,
         trialList=[None],
         seed=None, name='run')
@@ -723,9 +723,9 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
             routineTimer.addTime(-3.000000)
         
         # set up handler to look after randomisation of conditions etc
-        trial = data.TrialHandler(nReps=5.0, method='fullRandom', 
+        trial = data.TrialHandler(nReps=20.0, method='fullRandom', 
             extraInfo=expInfo, originPath=-1,
-            trialList=data.importConditions('classes.csv'),
+            trialList=data.importConditions('C:/Users/Mirage91/Documents/github/mirage91/paradigm/classes.csv'),
             seed=None, name='trial')
         thisExp.addLoop(trial)  # add the loop to the experiment
         thisTrial = trial.trialList[0]  # so we can initialise stimuli with some values
@@ -1068,7 +1068,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
             if thisSession is not None:
                 # if running in a Session with a Liaison client, send data up to now
                 thisSession.sendExperimentData()
-        # completed 5.0 repeats of 'trial'
+        # completed 20.0 repeats of 'trial'
         
         
         # --- Prepare to start Routine "run_break" ---
@@ -1191,7 +1191,7 @@ def run(expInfo, thisExp, win, globalClock=None, thisSession=None):
         if thisSession is not None:
             # if running in a Session with a Liaison client, send data up to now
             thisSession.sendExperimentData()
-    # completed 4.0 repeats of 'run'
+    # completed 3.0 repeats of 'run'
     
     
     # --- Prepare to start Routine "post_block" ---
