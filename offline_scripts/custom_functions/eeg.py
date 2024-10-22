@@ -292,38 +292,38 @@ class EEG:
         '''
         self.epochs = []
         for epoch, session_num in self.session_epochs:
-            # After concatenating the epochs Autoreject the bad trials
-            ica = ICA(
-                n_components=None,
-                method='fastica',
-                fit_params=None,
-                max_iter='auto',
-                random_state=91
-            )
+            # # After concatenating the epochs Autoreject the bad trials
+            # ica = ICA(
+            #     n_components=None,
+            #     method='fastica',
+            #     fit_params=None,
+            #     max_iter='auto',
+            #     random_state=91
+            # )
             
-            # Fit ICA to epochs
-            ica.fit(epoch)
-            # Get labels of ICA and print them
-            ic_labels = label_components(epoch, ica, method="iclabel")
-            print(ic_labels["labels"])
-            # Plot ICA components, sources and properties
-            # ica.plot_components()
-            # ica.plot_sources(self.epochs, show=True)
-            # ica.plot_properties(self.epochs, show=True)
+            # # Fit ICA to epochs
+            # ica.fit(epoch)
+            # # Get labels of ICA and print them
+            # ic_labels = label_components(epoch, ica, method="iclabel")
+            # print(ic_labels["labels"])
+            # # Plot ICA components, sources and properties
+            # # ica.plot_components()
+            # # ica.plot_sources(self.epochs, show=True)
+            # # ica.plot_properties(self.epochs, show=True)
 
-            # Define the ICA components that should be excluded
-            lst_exclude = []
-            for num, label in zip(list(range(32)), ic_labels["labels"]):
-                if label != 'brain' and label != 'other':
-                    lst_exclude.append(num)
+            # # Define the ICA components that should be excluded
+            # lst_exclude = []
+            # for num, label in zip(list(range(32)), ic_labels["labels"]):
+            #     if label != 'brain' and label != 'other':
+            #         lst_exclude.append(num)
                     
-            ica.exclude = lst_exclude
+            # ica.exclude = lst_exclude
 
-            # Apply ICA to epochs
-            print('Apply ICA now')
-            epoch = ica.apply(epoch)
-            epoch.apply_baseline()
-            print('ICA finished!')
+            # # Apply ICA to epochs
+            # print('Apply ICA now')
+            # epoch = ica.apply(epoch)
+            # epoch.apply_baseline()
+            # print('ICA finished!')
 
             # ar = AutoReject(verbose=True)
             # epoch = ar.fit_transform(epoch)
@@ -342,7 +342,8 @@ class EEG:
             session_mean = mean(session.get_data(), axis=2, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
             session_std = std(session.get_data(), axis=2, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
 
-            norm_session_epoch.append((session.get_data() - session_mean) / session_std)
+            # norm_session_epoch.append((session.get_data() - session_mean) / session_std)
+            norm_session_epoch.append(session.get_data())
             norm_session_event.append(session.events[:, -1])
             # self.norm_dict[session_num] = (norm_session_epoch, session.events[:, -1])
             print('here')
@@ -360,14 +361,14 @@ class EEG:
         #if np.isnan(self.epochs_list[0].get_data(copy=False).any()):
         #    raise ValueError('Epochs contain NaNs, please check the processing pipeline.')
         
-        if 0:
+        if 1:
             self._apply_ica()
         # Save cleaned epochs as .npy file
         # EEG._save_epochs_as_npy(self.epochs, 'cleaned_epoched_eeg', session_number=self._session_numbers)
 
         # Normalize data
-        # self._normalize()
-        # EEG._save_epochs_as_npy(self, 'normalized_cleaned_eeg')
+        self._normalize()
+        EEG._save_epochs_as_npy(self, 'normalized_cleaned_eeg')
         # Create CSP data and save it
         # self._extract_csp_and_save()
 

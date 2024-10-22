@@ -13,8 +13,8 @@ from custom_functions import Pilot
 pilot_name = 'Antonio'
 
 #Session data
-# path = r'./raw_data'
-path = r'./raw_data_fake'
+path = r'./raw_data'
+# path = r'./raw_data_fake'
 paradigm = {'pre_cue':2.0, 'left_hand':4.5, 'right_hand':4.5, 'feet':4.5, 'mental_singing':4.5, 'pause':2.5, 'post_block':0.0}
 tasks = ['left_hand', 'right_hand', 'feet', 'mental_singing']
 
@@ -38,7 +38,7 @@ print('\n BANDPOWER + LDA: \n ')
 modality = 'bp'
 pilot.eeg.extract_features(modality=modality)
 # save features in "feature" folder
-...
+# ...
 
 # extract features csp
 print('\n CSP + LDA: \n')
