@@ -72,9 +72,10 @@ outlet_classifier = StreamOutlet(info2)
 ''' #     INITIALIZE CLASSIFIER                                        '''
 ''' ################################################################## '''
 # Initialize CSP
+CSP_filter = [(1, 10)] # CHANGE HERE
 # Load the entire CSP model
 with open(classifier_params / 'csp_model.pkl', 'rb') as file:
-    csp = pickle.load(file)
+    csp_models = pickle.load(file)
 
 # Initilaize sLDA
 with open(classifier_params / 'slda_weights.pkl', 'rb') as file:
@@ -110,7 +111,8 @@ while decoding:
         # if chunk:
         buffer = append(buffer, chunk, axis=1)
         if buffer.shape[1] >= buffer_size:
-            processed_chunk, notch_filter, filters = pipe.apply_pipeline(buffer, filters, notch_filter, CSP_filter=[(1, 10)])
+            processed_chunk, notch_filter, filters = pipe.apply_pipeline(buffer, filters, notch_filter,
+                                                                         CSP_filter=CSP_filter, CSP_models=csp_models)
             break
 
     # Create a copy to remove negative strides

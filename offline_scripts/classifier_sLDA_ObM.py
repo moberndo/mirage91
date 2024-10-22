@@ -67,12 +67,12 @@ fband_combinations = list(combinations(num_fbands_idx, 4))
 
 csp_combinations = []
 for fband_comb in fband_combinations:
-    features = []
+    feature = []
     for band_idx in fband_comb:
-        features.append(csp_features[band_idx])
+        feature.append(csp_features[band_idx])
     # check shape and reshape ...
     ...
-    csp_combinations.append(features)
+    csp_combinations.append(feature)
 # check csp_combinations shape, should be (feautres, n_comps, n_timepoints)
 ...
 
@@ -91,7 +91,14 @@ for idx, csp_bands in enumerate(csp_combinations):
 
 # Print results:
 print(f'Best accuracy is acchieved for {best_bands[1]} with an accuracy of {best_bands[0]*100}%.')
-
+print(f'The filterbank bands are:\n')
+for idx in best_bands[1]:
+    print(f'{filterbank_freqs[idx]} Hz')
+    
+features = [csp_features[idx] for idx in best_bands[1]]
+# change shape of features
+...
+csps = [csp_models[idx] for idx in best_bands[1]]
 
 # Train the best sLDA model
 slda = LDA(shrinkage='auto', solver='eigen')
@@ -102,4 +109,4 @@ with open('classifier_results/slda.pkl', 'wb') as f:
 
 # Save the CSP model
 with open('classifier_results/csp.pkl', 'wb') as f:
-   pickle.dump(csp, f)
+   pickle.dump(csps, f)

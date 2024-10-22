@@ -88,7 +88,7 @@ class OnlineProcessingPipeline:
     #     filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 1, 32, output_size)).astype('double')
 
 
-    def apply_pipeline(chunk, filters, notch_filter, buffer_size=300, CSP_filter=[]):
+    def apply_pipeline(chunk, filters, notch_filter, buffer_size=300, CSP_filter=[], CSP_models=[]):
         def butter_bandpass(lowpass, highpass, fs, order=4):
             nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
             low = lowpass / nyquist
@@ -118,19 +118,24 @@ class OnlineProcessingPipeline:
         filtered_buffer, filters.z = signal.lfilter(filters.b, filters.a, chunk, axis=1, zi=filters.z)
         filtered_buffer = filtered_buffer[:, -buffer_size:]
         # Normalize buffer
-        #buffer_mean = np.mean(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
-        #buffer_std = np.std(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
-
-        #filtered_buffer = (filtered_buffer - buffer_mean) / buffer_std
-        
+        buffer_mean = np.mean(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+        buffer_std = np.std(filtered_buffer, axis=1, keepdims=True) # [:, :, self._fs*0.5 : self._fs*2]
+        filtered_buffer = (filtered_buffer - buffer_mean) / buffer_std
         filtered_buffer = np.reshape(filtered_buffer, newshape=(1, 32, buffer_size))
         # Resample to 200 Hz
         num_new_samples = int(buffer_size * 200 / 500)
         buffer = resample(filtered_buffer, num=num_new_samples, axis=2)
         # Filter for CSP
+        csp_buffer = []
         for filter in CSP_filter:
-            buffer = apply_bandpass_filter(data=buffer, lowpass=filter[0], highpass=filter[1], fs=200)
+            csp_buffer.append(apply_bandpass_filter(data=buffer, lowpass=filter[0], highpass=filter[1], fs=200))
 
+        csp_features = []
+        for idx, buff in enumerate(csp_buffer):
+            csp_features.append(CSP_models[idx](buff))
+
+        # reshape csp_features
+        buffer = ...
         # Option 1:
         # Return filter state
         ...
