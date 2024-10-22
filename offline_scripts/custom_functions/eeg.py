@@ -288,8 +288,8 @@ class EEG:
             epoch.apply_baseline()
             print('ICA finished!')
 
-            ar = AutoReject(verbose=True)
-            epoch = ar.fit_transform(epoch)
+            # ar = AutoReject(verbose=True)
+            # epoch = ar.fit_transform(epoch)
 
             self.ica_session_epochs.append((epoch, session_num))
 
@@ -334,7 +334,7 @@ class EEG:
         self._normalize()
         EEG._save_epochs_as_npy(self, 'normalized_cleaned_eeg')
         # Create CSP data and save it
-        self._extract_csp_and_save()
+        # self._extract_csp_and_save()
 
 
     def _extract_csp_and_save(self, n_components=6, file_name='csp_features.npy'):
