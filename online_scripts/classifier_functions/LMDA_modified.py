@@ -35,8 +35,8 @@ class LMDA(nn.Module):
         self.norm = nn.Sequential(
             nn.AvgPool3d(kernel_size=(1, 1, avepool)),
             # nn.AdaptiveAvgPool3d((9, 1, 35)),
-            nn.Dropout(p=0.75),
-            # nn.Dropout(p=0.65)
+            # nn.Dropout(p=0.8),
+            nn.Dropout(p=0.85)
         )
 
         # 定义自动填充模块
@@ -77,5 +77,4 @@ class LMDA(nn.Module):
 
         features = torch.flatten(x, 1)
         cls = self.classifier(features)
-        cls = nn.functional.softmax(cls, dim=-1)
         return cls

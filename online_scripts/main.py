@@ -17,7 +17,7 @@ import scipy.signal as signal
 # import classifier ...
 ...
 ''' CUSTOM IMPORTS'''
-from classifier_functions import EEGNet
+from classifier_functions import EEGNet, LMDA
 
 
 ''' SETTINGS '''
@@ -31,6 +31,7 @@ btype = 'band'  # or 'lowpass', 'highpass'
 channel_count = 4  # for the classifier stream according to the game and predictor
 length_of_window = 0.5  # second window moving average
 t_timeout = 5
+use_eegnet = False
 
 ''' ################################################################## '''
 ''' #      READ EEG STREAM                                             '''
@@ -90,21 +91,24 @@ outlet_classifier = StreamOutlet(info)
 ''' #     INITIALIZE CLASSIFIER                                        '''
 ''' ################################################################## '''
 # Define architecture
-# model = LMDA(num_classes=4, chans=32, samples=267, channel_depth1=24, channel_depth2=7)
-n_classes, dropoutRate, kernelLength, kernelLength2, F1, D = 2, 0.5, 64, 16, 8, 2
-F2 = F1 * D
-chans = 32
-samples = 500
-model = EEGNet(n_classes, chans, samples, dropoutRate, kernelLength, kernelLength2, F1, D, F2)
-# model = EEGNet(channels=32, n_classes=2, samples=500)
-# Load the saved weights into the model
-# model.load_state_dict(load(classifier_params, weights_only=True))
-checkpoint = torch.load('./classifier_params/model_and_optimizer.pth', map_location=torch.device('cpu'))
+if use_eegnet:
+    n_classes, dropoutRate, kernelLength, kernelLength2, F1, D = 2, 0.5, 64, 16, 8, 2
+    F2 = F1 * D
+    chans = 32
+    samples = 500
+    model = EEGNet(n_classes, chans, samples, dropoutRate, kernelLength, kernelLength2, F1, D, F2)
+    checkpoint = torch.load('./classifier_params/model_and_optimizer_eegnet.pth', map_location=torch.device('cpu'))
+
+else:
+    model = LMDA(num_classes=2, chans=32, samples=500, channel_depth1=24, channel_depth2=7)
+    checkpoint = torch.load('./classifier_params/model_and_optimizer_lmda.pth', map_location=torch.device('cpu'))
+
+
+
 model.load_state_dict(checkpoint['model_state_dict'])
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-3)
 optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
-# model = torch.load('./classifier_params/entire_model.pth')
 # Initialize
 model.eval()
 
