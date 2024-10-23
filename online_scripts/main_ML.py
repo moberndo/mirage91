@@ -8,7 +8,9 @@ from pylsl import StreamInfo, StreamOutlet
 from OnlineProcessingPipeline import OnlineProcessingPipeline as pipe
 import time
 from pathlib import Path
+import numpy as np
 import matplotlib.pyplot as plt
+import scipy.signal as signal
 import pickle
 from numpy import ones, append, array, copy, mean, newaxis, shape, round, save
 #from torch import load, from_numpy
@@ -48,23 +50,34 @@ stream_eeg = pipe.ResolveCreateStream()
 ''' ################################################################## '''
 ''' #     INITIALIZE ONLINE FILTERING                                  '''
 ''' ################################################################## '''
-bandpass_filter = pipe.OnlineFilter(filterorder, cutoff_freq1, stream_eeg.fs,
-                                    btype, ftype, stream_eeg.n_channels - 3)  # drop the x, y, z channels
-filters = bandpass_filter
+def butter_bandpass(lowpass, highpass, fs, order=4):
+    nyquist = 0.5 * fs  # Nyquist frequency is half the sampling rate
+    low = lowpass / nyquist
+    high = highpass / nyquist
+    b, a = signal.butter(order, [low, high], btype='band')
+    return b, a
 
-# csp_filters = pipe.OnlineFilter(filterorder, )
-notch_filter = pipe.NotchFilter(stream_eeg.n_channels - 3) # drop the x, y, z channels
-#filter_mov_avg = pipe.MovingAverageFilter(length_of_window, stream_eeg.fs,
-#                                          stream_eeg.n_channels)
-downsampling_ratio = stream_eeg.fs / fs_downsampled  #downsampling ratio must be an integer
-dec_filter = pipe.DecimationFilter(downsampling_ratio)
+def notch_filter(w0, Q, fs):
+    b, a = signal.iirnotch(w0=w0, Q=Q, fs=fs)
+    return b, a
+
+b_bp, a_bp = butter_bandpass(cutoff_freq1[0], cutoff_freq1[1], fs=500, order=4)
+bp_state = signal.lfilter_zi(b_bp, a_bp)
+bp_state = np.tile(bp_state, (32, 1))
+
+b_notch, a_notch = notch_filter(w0=50, Q=30, fs=500)
+notch_state = signal.lfilter_zi(b_notch, a_notch)
+notch_state = np.tile(notch_state, (32, 1))
+
+filters = [(b_notch, a_notch), (b_bp, a_bp)]
+filter_state = [notch_state, bp_state]
 
 ''' ################################################################## '''
 ''' #     CREATE OUTLET STREAM                                         '''
 ''' ################################################################## '''
 print('Creating the classifier stream info...')
 info2 = StreamInfo(name='ClassifierOutput', type='ClassProb', nominal_srate=10,
-                  channel_count=4, channel_format='float32', source_id='classifier91')
+                  channel_count=2, channel_format='float32', source_id='classifier91')
 print('Opening the classifier outlet...')
 outlet_classifier = StreamOutlet(info2)
 
@@ -111,21 +124,16 @@ while decoding:
         # if chunk:
         buffer = append(buffer, chunk, axis=1)
         if buffer.shape[1] >= buffer_size:
-            processed_chunk, notch_filter, filters = pipe.apply_pipeline_ML(buffer, filters, notch_filter,
-                                                                         CSP_filter=CSP_filter, CSP_models=csp_models)
+            processed_chunk, notch_filter, filters = pipe.apply_pipeline(buffer, filters, notch_filter)
             break
 
     # Create a copy to remove negative strides
     processed_chunk = copy(processed_chunk)  
-    # filtered_data.append(processed_chunk)
 
-    #plt.figure()
-    #plt.plot(processed_chunk)
-    #plt.show()
-
-
-    csp_features = csp.transform(processed_chunk)
-    #csp_features = csp_features[:,newaxis]
+    # Apply CSP transform
+    ... # TODO: Call / Write function in OnlineProcessingPipeline.py 
+    #csp_features = csp.transform(processed_chunk)
+    csp_features = ...
     predicted_class = slda.predict_proba(csp_features)
     predicted_class = list(predicted_class[0])  #round(predicted_class,1)
     #predicted_class = predicted_class.T
