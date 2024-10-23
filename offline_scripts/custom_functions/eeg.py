@@ -239,7 +239,7 @@ class EEG:
             raw_mne.set_annotations(annotations)
 
             # extract events from annotations
-            event_id = {'left_hand': 1, 'right_hand': 2, 'feet':3, 'mental_singing':4}
+            event_id = {'left_hand': 1, 'right_hand': 2, 'feet':3, 'mental_singing':4, 'rest':5}
             events, event_id = mne.events_from_annotations(raw_mne, event_id=event_id)
 
             # create mne Epochs object
@@ -295,8 +295,8 @@ class EEG:
         all_events = array(all_events)
         all_data = array(all_data)
 
-        save('./features/preprocessed_epochs.npy', all_data)
-        save('./features/preprocessed_labels.npy', all_events)
+        save('./features/shayan_preprocessed_epochs.npy', all_data)
+        save('./features/shayan_preprocessed_labels.npy', all_events)
         print('here')
         
 

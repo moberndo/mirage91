@@ -5,5 +5,5 @@ call vars\subjectconfig.bat
 cd ../online_scripts
 rem call activate opencv
 
-call python main_ML.py
+call python main.py
 pause

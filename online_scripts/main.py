@@ -82,7 +82,7 @@ filter_state = [notch_state, bp_state]
 ''' ################################################################## '''
 print('Creating the classifier stream info...')
 info = StreamInfo(name='ClassifierOutput', type='ClassProb', nominal_srate=10,
-                  channel_count=2, channel_format='float32', source_id='classifier91')
+                  channel_count=3, channel_format='float32', source_id='classifier91')
 print('Opening the classifier outlet...')
 outlet_classifier = StreamOutlet(info)
 
@@ -91,7 +91,7 @@ outlet_classifier = StreamOutlet(info)
 ''' ################################################################## '''
 # Define architecture
 # model = LMDA(num_classes=4, chans=32, samples=267, channel_depth1=24, channel_depth2=7)
-n_classes, dropoutRate, kernelLength, kernelLength2, F1, D = 2, 0.5, 64, 16, 8, 2
+n_classes, dropoutRate, kernelLength, kernelLength2, F1, D = 3, 0.5, 64, 16, 8, 2
 F2 = F1 * D
 chans = 32
 samples = 500
@@ -99,7 +99,7 @@ model = EEGNet(n_classes, chans, samples, dropoutRate, kernelLength, kernelLengt
 # model = EEGNet(channels=32, n_classes=2, samples=500)
 # Load the saved weights into the model
 # model.load_state_dict(load(classifier_params, weights_only=True))
-checkpoint = torch.load('./classifier_params/model_and_optimizer.pth', map_location=torch.device('cpu'))
+checkpoint = torch.load('./classifier_params/model_and_optimizer_3class.pth', map_location=torch.device('cpu'))
 model.load_state_dict(checkpoint['model_state_dict'])
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-3)
 optimizer.load_state_dict(checkpoint['optimizer_state_dict'])

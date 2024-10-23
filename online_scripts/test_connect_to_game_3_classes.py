@@ -159,7 +159,7 @@ def create_payload(sample):
     rest_thresh = 0.8
     if sample[2] < rest_thresh:
         # the negative parameter should flip the output in the opposite direction
-        x_axis = encode_analogue_input(sample[0],thresh,direction = 'negative')  # 3rd value to X-axis
+        x_axis = encode_analogue_input(sample[0],thresh,direction = 'positive')  # 3rd value to X-axis
         y_axis = encode_analogue_input(sample[1],thresh)  # 4th value to Y-axis
     else:
         x_axis = int(127).to_bytes(1, byteorder= 'little')
