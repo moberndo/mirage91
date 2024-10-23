@@ -33,12 +33,12 @@ labels = load('./features/normalized_cleaned_eeg_labels.npy', allow_pickle=True)
 # Sample frequency
 fs = 200
 # Calculate CSP features
-n_classes = 4 # Assuming 4 classes
+n_classes = 2 # Assuming 4 classes
 n_components = 6  # Number of components for CSP
 
 # Apply filterbank to the data to find the best possible filterband combination
-filter_start = 1 # Hz
-filter_stop = 45 # Hz
+filter_start = 5 # Hz
+filter_stop = 40 # Hz
 filter_step = 4 # Hz
 filterbank_freqs = arange(filter_start, filter_stop, filter_step)
 filterbank_freqs = [(filterbank_freqs[idx], filterbank_freqs[idx+1]) for idx in range(len(filterbank_freqs)-1)]
@@ -65,7 +65,7 @@ for idx, filter_freqs in enumerate(filterbank_freqs):
     csp_features.append(csp.transform(filtered_data))
 
 # Make all CSP combinations
-num_combs = 4
+num_combs = 6
 num_fbands_idx = list(range(len(csp_features)))
 fband_combinations = list(combinations(num_fbands_idx, num_combs))
 

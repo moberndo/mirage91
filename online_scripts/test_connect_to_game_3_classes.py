@@ -154,12 +154,16 @@ def create_payload(sample):
     # Binary Inputs A,B (2 bytes for 16-bit mask)
     binary_inputs = classify_binary_inputs(sample)
 
-    thresh = 0.5
+    thresh = 0.8
     # Analogue Inputs (X and Y axes) mapping
-
-    # the negative parameter should flip the output in the opposite direction
-    x_axis = encode_analogue_input(sample[0],thresh,direction = 'negative')  # 3rd value to X-axis
-    y_axis = encode_analogue_input(sample[1],thresh)  # 4th value to Y-axis
+    rest_thresh = 0.8
+    if sample[2] < rest_thresh:
+        # the negative parameter should flip the output in the opposite direction
+        x_axis = encode_analogue_input(sample[0],thresh,direction = 'negative')  # 3rd value to X-axis
+        y_axis = encode_analogue_input(sample[1],thresh)  # 4th value to Y-axis
+    else:
+        x_axis = int(127).to_bytes(1, byteorder= 'little')
+        y_axis = int(127).to_bytes(1, byteorder= 'little')
 
     # print(f"{sample[2]} : {x_axis}")
     # print(f"{sample[3]} : {y_axis}")
