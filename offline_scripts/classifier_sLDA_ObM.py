@@ -45,6 +45,7 @@ filterbank_freqs = [(filterbank_freqs[idx], filterbank_freqs[idx+1]) for idx in 
 
 # Iterate over all combinations of 2 classes
 
+
 csp_features = []
 csp_models = []
 for idx, filter_freqs in enumerate(filterbank_freqs):

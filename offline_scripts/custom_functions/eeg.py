@@ -281,7 +281,23 @@ class EEG:
         print('here')  
 
         # Save epochs
+        all_events = []
+        all_data = []
+        for sess_epoch in self.session_epochs:
+            session = sess_epoch[1]
+            epochs = sess_epoch[0]
 
+            events = epochs.events[:, 2]
+            all_events.append(events)
+            data = epochs.get_data(copy=True)
+            all_data.append(data)
+
+        all_events = array(all_events)
+        all_data = array(all_data)
+
+        save('./features/preprocessed_epochs.npy', all_data)
+        save('./features/preprocessed_labels.npy', all_events)
+        print('here')
         
 
     def _apply_ica(self):
