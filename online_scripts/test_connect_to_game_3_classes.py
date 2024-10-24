@@ -1,4 +1,4 @@
-# # from UDPHandler import GameUDPInterface
+'''# # from UDPHandler import GameUDPInterface
 
 # # udp_handler = GameUDPInterface(verbose = True)
 
@@ -81,9 +81,9 @@
 #     except Exception as e:
 #         print(f"Error occurred: {e}. The game may have closed or is unreachable.")
 #         udp_handler.disconnect() 
-#         break
+#         break'''
 
-from numpy import ones, append, array, copy, reshape, expand_dims, zeros_like, zeros
+from numpy import ones, append, array, copy, reshape, expand_dims, zeros_like, zeros, mean
 
 
 from UDPHandler import GameUDPInterface
@@ -158,10 +158,13 @@ def encode_analogue_input(value,thresh,direction='positive'):
     return encoded_value.to_bytes(1, byteorder= 'little')
 
 def create_payload(sample_buffer):
+    def encode_turning(value, thresh_x, min_speed=0.5, max_speed=0.7):
+        x_axis = int(((value-thresh_x) / (1 - thresh_x) * (128*max_speed)) + (127))
+        return x_axis
     # Binary Inputs A,B (2 bytes for 16-bit mask)
     binary_inputs = classify_binary_inputs(sample_buffer)
 
-    thresh_x = 0.92
+    thresh_x = 0.75
     thresh_y = 0.85
 
     rest_thresh = 0.75
@@ -170,9 +173,22 @@ def create_payload(sample_buffer):
     index_F = 1
     index_rest =2
 
+    counter = 0
+
     if sample[index_rest] < rest_thresh:
         # for y axis (LH)
-        if sum(sample_buffer[index_LH,:] > thresh_x) < buffer_size:
+        if sum(sample_buffer[index_LH,:] > thresh_x) == buffer_size:
+            # send x axis command
+            x_axis = encode_turning(value=mean(sample_buffer[index_LH,:]), thresh_x=thresh_x)
+        else:
+            x_axis = int(127).to_bytes(1, byteorder= 'little')
+
+        if sample_buffer[index_F,-1] > thresh_y:
+            # send x axis command
+            y_axis = int(255*0.7).to_bytes(1, byteorder= 'little')
+        else:
+            y_axis = int(127).to_bytes(1, byteorder= 'little')
+
     else:
         x_axis = int(127).to_bytes(1, byteorder= 'little')
         y_axis = int(127).to_bytes(1, byteorder= 'little')
@@ -202,6 +218,7 @@ def create_payload(sample_buffer):
 while True:
     try:
         sample, timestamp = inlet.pull_sample()  # Pull the latest sample from LSL stream
+        sample = array(sample).reshape((3, 1))
         # print(f"Received classification: {sample} at {timestamp}")  # Log
 
         # session_token = udp_handler.client_token  # Client token from handler
@@ -212,21 +229,19 @@ while True:
 
         if buffer.shape[1] >= buffer_size:
             buffer = buffer[:, -buffer_size:]
-            # processed_chunk, filter_state = pipe.apply_pipeline(buffer, filters=filters, filter_states=filter_state)
-            break
 
-        session_token = bytes.fromhex(udp_handler.client_token)  # transform to bytes
-        connection_token = bytes.fromhex(udp_handler.host_token)  # transform to bytes
+            session_token = bytes.fromhex(udp_handler.client_token)  # transform to bytes
+            connection_token = bytes.fromhex(udp_handler.host_token)  # transform to bytes
 
-        # Step 3: Create the packet header
-        header = udp_handler.create_packet_header(packet_type=0x04, session_token=connection_token, has_token=True)
+            # Step 3: Create the packet header
+            header = udp_handler.create_packet_header(packet_type=0x04, session_token=connection_token, has_token=True)
 
-        payload = create_payload(buffer)
-        # print(f'Payload: {payload}')
-        message = header + payload # UDP message
-        print(message.hex())
-        udp_handler._send_message(message.hex())  # Send message to the game via UDP in hex format
-        # print(f"Sent BCI data to game: {message.hex()}")  # Log
+            payload = create_payload(buffer)
+            # print(f'Payload: {payload}')
+            message = header + payload # UDP message
+            print(message.hex())
+            udp_handler._send_message(message.hex())  # Send message to the game via UDP in hex format
+            # print(f"Sent BCI data to game: {message.hex()}")  # Log
 
     # Error handling
     except KeyboardInterrupt:
