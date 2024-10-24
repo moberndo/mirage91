@@ -166,14 +166,19 @@ def create_payload(sample_buffer):
 
     rest_thresh = 0.75
 
-    if sample[2] < rest_thresh:
-        
+    index_LH = 0
+    index_F = 1
+    index_rest =2
+
+    if sample[index_rest] < rest_thresh:
+        # for y axis (LH)
+        if sum(sample_buffer[index_LH,:] > thresh_x) < buffer_size:
     else:
         x_axis = int(127).to_bytes(1, byteorder= 'little')
         y_axis = int(127).to_bytes(1, byteorder= 'little')
 
 
-    if sum(sample_buffer[0,:] > thresh_x) < buffer_size:
+    
         
     # Analogue Inputs (X and Y axes) mapping
     
