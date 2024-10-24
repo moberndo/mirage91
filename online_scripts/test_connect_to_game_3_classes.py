@@ -83,10 +83,17 @@
 #         udp_handler.disconnect() 
 #         break
 
+from numpy import ones, append, array, copy, reshape, expand_dims, zeros_like, zeros
+
 
 from UDPHandler import GameUDPInterface
 from pylsl import StreamInlet, resolve_stream
 import struct
+
+# initialize the buffer
+num_class = 3
+buffer_size = 5
+buffer = ones(shape=(num_class,1))
 
 # Initialize the UDP handler
 udp_handler = GameUDPInterface(verbose=True)
@@ -150,17 +157,30 @@ def encode_analogue_input(value,thresh,direction='positive'):
         encoded_value = int(127)
     return encoded_value.to_bytes(1, byteorder= 'little')
 
-def create_payload(sample):
+def create_payload(sample_buffer):
     # Binary Inputs A,B (2 bytes for 16-bit mask)
-    binary_inputs = classify_binary_inputs(sample)
+    binary_inputs = classify_binary_inputs(sample_buffer)
 
-    thresh = 0.8
+    thresh_x = 0.92
+    thresh_y = 0.85
+
+    rest_thresh = 0.75
+
+    if sample[2] < rest_thresh:
+        
+    else:
+        x_axis = int(127).to_bytes(1, byteorder= 'little')
+        y_axis = int(127).to_bytes(1, byteorder= 'little')
+
+
+    if sum(sample_buffer[0,:] > thresh_x) < buffer_size:
+        
     # Analogue Inputs (X and Y axes) mapping
-    rest_thresh = 0.8
+    
     if sample[2] < rest_thresh:
         # the negative parameter should flip the output in the opposite direction
-        x_axis = encode_analogue_input(sample[0],thresh,direction = 'negative')  # 3rd value to X-axis
-        y_axis = encode_analogue_input(sample[1],thresh)  # 4th value to Y-axis
+        x_axis = encode_analogue_input(sample[1],thresh_x,direction = 'negative')  # 3rd value to X-axis
+        y_axis = encode_analogue_input(sample[0],thresh_y)  # 4th value to Y-axis
     else:
         x_axis = int(127).to_bytes(1, byteorder= 'little')
         y_axis = int(127).to_bytes(1, byteorder= 'little')
@@ -183,13 +203,20 @@ while True:
         # connection_token = udp_handler.host_token  # Host token
         # header = udp_handler.create_packet_header(packet_type=0x04, session_token=session_token, has_token=True)
         
+        buffer = append(buffer, sample, axis=1)
+
+        if buffer.shape[1] >= buffer_size:
+            buffer = buffer[:, -buffer_size:]
+            # processed_chunk, filter_state = pipe.apply_pipeline(buffer, filters=filters, filter_states=filter_state)
+            break
+
         session_token = bytes.fromhex(udp_handler.client_token)  # transform to bytes
         connection_token = bytes.fromhex(udp_handler.host_token)  # transform to bytes
 
         # Step 3: Create the packet header
         header = udp_handler.create_packet_header(packet_type=0x04, session_token=connection_token, has_token=True)
 
-        payload = create_payload(sample)
+        payload = create_payload(buffer)
         # print(f'Payload: {payload}')
         message = header + payload # UDP message
         print(message.hex())
