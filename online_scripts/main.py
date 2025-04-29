@@ -99,7 +99,7 @@ model = EEGNet(n_classes, chans, samples, dropoutRate, kernelLength, kernelLengt
 # model = EEGNet(channels=32, n_classes=2, samples=500)
 # Load the saved weights into the model
 # model.load_state_dict(load(classifier_params, weights_only=True))
-checkpoint = torch.load('./classifier_params/model_and_optimizer_3class.pth', map_location=torch.device('cpu'))
+checkpoint = torch.load('./classifier_params/model_and_optimizer_3class_EEGNet_comp_all.pth', map_location=torch.device('cpu'))
 model.load_state_dict(checkpoint['model_state_dict'])
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-3)
 optimizer.load_state_dict(checkpoint['optimizer_state_dict'])

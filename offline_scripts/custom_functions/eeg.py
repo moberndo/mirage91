@@ -295,8 +295,8 @@ class EEG:
         all_events = array(all_events)
         all_data = array(all_data)
 
-        save('./features/shayan_preprocessed_epochs.npy', all_data)
-        save('./features/shayan_preprocessed_labels.npy', all_events)
+        save('./features/comp_preprocessed_epochs.npy', all_data)
+        save('./features/comp_preprocessed_labels.npy', all_events)
         print('here')
         
 
