@@ -1,0 +1,181 @@
+8.7986 	DEBUG 	Fullscreen settings ignored as running in pilot mode.
+8.7996 	INFO 	Loaded monitor calibration from ['2024_06_06 13:54']
+9.2198 	EXP 	Created window1 = Window(allowGUI=True, allowStencil=False, autoLog=True, backendConf=UNKNOWN, backgroundFit=<method-wrapper '__getattribute__' of attributeSetter object at 0x0000020166BD6220>, backgroundImage=<method-wrapper '__getattribute__' of attributeSetter object at 0x0000020166BD61C0>, bitsMode=UNKNOWN, blendMode='avg', bpc=(8, 8, 8), color=array([0, 0, 0]), colorSpace='rgb', depthBits=8, fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x0000020166BD3760>, gamma=None, gammaErrorPolicy='raise', infoMsg=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x0000020166E73100>, multiSample=False, name='window1', numSamples=2, pos=[368.0, 132.0], screen=0, size=array([800, 600]), stencilBits=0, stereo=False, title='PsychoPy', units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+9.2200 	EXP 	window1: mouseVisible = True
+9.2200 	EXP 	window1: backgroundImage = ''
+9.2200 	EXP 	window1: backgroundFit = 'none'
+9.2203 	EXP 	window1: mouseVisible = True
+9.2206 	EXP 	window1: mouseVisible = True
+9.2237 	EXP 	window1: mouseVisible = True
+9.2247 	EXP 	window1: mouseVisible = True
+9.2357 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2376 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2393 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2414 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2434 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2446 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2462 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2481 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2493 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2505 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2521 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2539 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2556 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2573 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2587 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2603 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2619 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2630 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2642 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2663 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2676 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2680 	DEBUG 	Uploading Texture Font fontname to graphics card
+9.2692 	DEBUG 	Upload of Texture Font fontname complete
+9.2713 	EXP 	window1: mouseVisible = True
+9.2715 	EXP 	window1: mouseVisible = True
+9.2724 	EXP 	window1: mouseVisible = True
+9.2733 	EXP 	window1: mouseVisible = True
+9.2786 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2805 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2824 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.2828 	DEBUG 	Uploading Texture Font fontname to graphics card
+9.2837 	DEBUG 	Upload of Texture Font fontname complete
+9.2868 	EXP 	window1: Attempting to measure frame rate of screen (0) ...
+9.2868 	EXP 	window1: recordFrameIntervals = False
+9.4697 	EXP 	window1: recordFrameIntervals = True
+9.6531 	EXP 	Screen (0) actual frame rate measured at 59.97Hz
+9.6531 	EXP 	window1: recordFrameIntervals = False
+9.6533 	EXP 	window1: mouseVisible = False
+9.6545 	EXP 	window1: mouseVisible = True
+9.6550 	EXP 	window1: mouseVisible = True
+9.6563 	EXP 	window1: mouseVisible = True
+9.6574 	EXP 	window1: mouseVisible = True
+9.6644 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6661 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6684 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6710 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6735 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6760 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6778 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6800 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6824 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6847 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.6854 	DEBUG 	Uploading Texture Font fontname to graphics card
+9.6864 	DEBUG 	Upload of Texture Font fontname complete
+9.6895 	EXP 	window1: mouseVisible = True
+9.6897 	EXP 	window1: mouseVisible = True
+9.6910 	EXP 	window1: mouseVisible = True
+9.6922 	EXP 	window1: mouseVisible = True
+9.7564 	WARNING 	launchHubServer: If using the iohub mouse or eyetracker devices, fullScr should be True.
+14.3227 	INFO 	keyboard.Keyboard is using iohub backend.
+14.3228 	INFO 	keyboard.Keyboard is using iohub backend.
+14.3229 	INFO 	keyboard.Keyboard is using iohub backend.
+14.3229 	INFO 	keyboard.Keyboard is using iohub backend.
+14.3230 	EXP 	online_paradigm: status = STARTED
+14.3234 	EXP 	window1: mouseVisible = True
+14.4314 	EXP 	Created text_pre_block = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_pre_block', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Press space to start online measurement\n', units='height', win=Window(...), wrapWidth=1)
+14.4316 	EXP 	window1: mouseVisible = True
+14.4341 	EXP 	Created text_2 = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_2', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='', units='height', win=Window(...), wrapWidth=1)
+14.4343 	EXP 	window1: mouseVisible = True
+14.4378 	EXP 	Created hor_line_precue = Line(__class__=<class 'psychopy.visual.line.Line'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=None, depth=0.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=5.0, name='hor_line_precue', opacity=0.5, ori=0.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+14.4380 	EXP 	window1: mouseVisible = True
+14.4414 	EXP 	Created ver_line_precue = Line(__class__=<class 'psychopy.visual.line.Line'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=None, depth=-1.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=5.0, name='ver_line_precue', opacity=0.5, ori=90.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+14.4416 	EXP 	window1: mouseVisible = True
+14.4465 	EXP 	Created image_mi = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, anchor=('center', 'center'), autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, image='default.png', interpolate=True, mask=None, maskParams=None, name='image_mi', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([0.5, 0.5]), texRes=128.0, units='height', win=Window(...))
+14.4467 	EXP 	window1: mouseVisible = True
+14.4483 	EXP 	Created polygon_2 = Rect(__class__=<class 'psychopy.visual.rect.Rect'>, anchor=('left', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-2.0, draggable=False, fillColor=array([0., 0., 0.]), fillColorSpace='rgb', fillRGB=array([0., 0., 0.]), interpolate=True, lineColor=array([-1., -1., -1.]), lineColorSpace='rgb', lineRGB=array([-1., -1., -1.]), lineWidth=1.0, name='polygon_2', opacity=1.0, ori=0.0, pos=array([-0.5,  0.3]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...))
+14.4484 	EXP 	window1: mouseVisible = True
+14.4500 	EXP 	Created polygon_3 = Rect(__class__=<class 'psychopy.visual.rect.Rect'>, anchor=('left', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-3.0, draggable=False, fillColor=array([0., 0., 0.]), fillColorSpace='rgb', fillRGB=array([0., 0., 0.]), interpolate=True, lineColor=array([-1., -1., -1.]), lineColorSpace='rgb', lineRGB=array([-1., -1., -1.]), lineWidth=0.5, name='polygon_3', opacity=1.0, ori=0.0, pos=array([-0.5,  0.3]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...))
+14.4501 	EXP 	window1: mouseVisible = True
+14.4518 	EXP 	Created polygon = Rect(__class__=<class 'psychopy.visual.rect.Rect'>, anchor=('left', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-4.0, draggable=False, fillColor=array([1, 1, 1]), fillColorSpace='rgb', fillRGB=array([1, 1, 1]), interpolate=True, lineColor=array([-1., -1., -1.]), lineColorSpace='rgb', lineRGB=array([-1., -1., -1.]), lineWidth=1.0, name='polygon', opacity=1.0, ori=0.0, pos=array([-0.5,  0.3]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...))
+14.4519 	EXP 	window1: mouseVisible = True
+14.4539 	EXP 	Created text_pause = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_pause', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='', units='height', win=Window(...), wrapWidth=1)
+14.4541 	EXP 	window1: mouseVisible = True
+14.4624 	EXP 	Created text = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Run Finished', units='height', win=Window(...), wrapWidth=1)
+14.4626 	EXP 	window1: mouseVisible = True
+14.4697 	EXP 	Created text_post_run = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_post_run', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Block Finished. Yuhu!', units='height', win=Window(...), wrapWidth=1)
+14.4698 	EXP 	window1: mouseVisible = True
+14.4739 	EXP 	Created text_post_run_2 = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=-1.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_post_run_2', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Block Finished. Yuhu!', units='height', win=Window(...), wrapWidth=1)
+0.0285 	INFO 	Keyboard events cleared
+0.0282 	EXP 	text_pre_block: autoDraw = True
+47.2033 	EXP 	Created sequence: random, trialTypes=1, nReps=4, seed=None
+47.2037 	EXP 	New trial (rep=0, index=0): None
+47.2059 	DATA 	Keypress: space
+47.2257 	EXP 	text_pre_block: autoDraw = False
+47.2257 	EXP 	text_2: autoDraw = True
+50.2194 	DEBUG 	Read csv file with pandas: classes.csv
+50.2206 	DEBUG 	Clearing unnamed columns from classes.csv
+50.2210 	EXP 	Imported classes.csv as conditions, 4 conditions, 2 params
+50.2214 	EXP 	Created sequence: fullRandom, trialTypes=4, nReps=5, seed=None
+50.2216 	EXP 	New trial (rep=0, index=0): OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])
+50.2424 	EXP 	text_2: autoDraw = False
+50.2424 	EXP 	hor_line_precue: autoDraw = True
+50.2424 	EXP 	ver_line_precue: autoDraw = True
+52.2593 	EXP 	hor_line_precue: autoDraw = False
+52.2593 	EXP 	ver_line_precue: autoDraw = False
+52.2593 	EXP 	hor_line_precue: autoDraw = False
+52.2593 	EXP 	ver_line_precue: autoDraw = False
+52.2593 	EXP 	image_mi: image = 'pics/feet.JPG'
+52.2593 	EXP 	image_mi: autoDraw = True
+52.2593 	EXP 	polygon_2: autoDraw = True
+52.2593 	EXP 	polygon_3: autoDraw = True
+52.2593 	EXP 	polygon: autoDraw = True
+56.7605 	EXP 	image_mi: autoDraw = False
+56.7605 	EXP 	polygon_2: autoDraw = False
+56.7605 	EXP 	polygon_3: autoDraw = False
+56.7605 	EXP 	polygon: autoDraw = False
+56.7605 	EXP 	image_mi: autoDraw = False
+56.7605 	EXP 	polygon_2: autoDraw = False
+56.7605 	EXP 	polygon_3: autoDraw = False
+56.7605 	EXP 	polygon: autoDraw = False
+56.7605 	EXP 	text_pause: autoDraw = True
+59.2479 	EXP 	New trial (rep=0, index=1): OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])
+59.2604 	EXP 	text_pause: autoDraw = False
+59.2604 	EXP 	text_pause: autoDraw = False
+59.2604 	EXP 	hor_line_precue: autoDraw = True
+59.2604 	EXP 	ver_line_precue: autoDraw = True
+60.3846 	DATA 	Keypress: lalt
+61.3072 	EXP 	hor_line_precue: autoDraw = False
+61.3072 	EXP 	ver_line_precue: autoDraw = False
+61.3072 	EXP 	hor_line_precue: autoDraw = False
+61.3072 	EXP 	ver_line_precue: autoDraw = False
+61.3072 	EXP 	image_mi: image = 'pics/feet.JPG'
+61.3072 	EXP 	image_mi: autoDraw = True
+61.3072 	EXP 	polygon_2: autoDraw = True
+61.3072 	EXP 	polygon_3: autoDraw = True
+61.3072 	EXP 	polygon: autoDraw = True
+65.8095 	EXP 	image_mi: autoDraw = False
+65.8095 	EXP 	polygon_2: autoDraw = False
+65.8095 	EXP 	polygon_3: autoDraw = False
+65.8095 	EXP 	polygon: autoDraw = False
+65.8095 	EXP 	image_mi: autoDraw = False
+65.8095 	EXP 	polygon_2: autoDraw = False
+65.8095 	EXP 	polygon_3: autoDraw = False
+65.8095 	EXP 	polygon: autoDraw = False
+65.8095 	EXP 	text_pause: autoDraw = True
+68.2494 	DATA 	Keypress: lalt
+68.2989 	EXP 	New trial (rep=0, index=2): OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])
+68.3102 	EXP 	text_pause: autoDraw = False
+68.3102 	EXP 	text_pause: autoDraw = False
+68.3102 	EXP 	hor_line_precue: autoDraw = True
+68.3102 	EXP 	ver_line_precue: autoDraw = True
+70.3251 	EXP 	hor_line_precue: autoDraw = False
+70.3251 	EXP 	ver_line_precue: autoDraw = False
+70.3251 	EXP 	hor_line_precue: autoDraw = False
+70.3251 	EXP 	ver_line_precue: autoDraw = False
+70.3251 	EXP 	image_mi: image = 'pics/feet.JPG'
+70.3251 	EXP 	image_mi: autoDraw = True
+70.3251 	EXP 	polygon_2: autoDraw = True
+70.3251 	EXP 	polygon_3: autoDraw = True
+70.3251 	EXP 	polygon: autoDraw = True
+70.3854 	DATA 	Keypress: escape
+70.4815 	EXP 	online_paradigm: status = STOPPED
+70.4943 	EXP 	image_mi: autoDraw = False
+70.4943 	EXP 	polygon_2: autoDraw = False
+70.4943 	EXP 	polygon_3: autoDraw = False
+70.4943 	EXP 	polygon: autoDraw = False
+70.4992 	EXP 	online_paradigm: status = STOPPED
+70.5066 	INFO 	saved data to 'C:\\Users\\Mirage91\\Documents\\github\\mirage91\\online_scripts\\online_paradigm\\data/078798_online_paradigm_2024-10-17_13h48.04.084.csv'
+70.5082 	INFO 	saved data to C:\Users\Mirage91\Documents\github\mirage91\online_scripts\online_paradigm\data/078798_online_paradigm_2024-10-17_13h48.04.084.psydat
+70.5513 	EXP 	window1: mouseVisible = True
+70.9333 	DEBUG 	Saving data for online_paradigm ExperimentHandler

@@ -1,0 +1,582 @@
+8.5205 	DEBUG 	Fullscreen settings ignored as running in pilot mode.
+8.5214 	INFO 	Loaded monitor calibration from ['2024_06_06 13:54']
+8.9502 	EXP 	Created window1 = Window(allowGUI=True, allowStencil=False, autoLog=True, backendConf=UNKNOWN, backgroundFit=<method-wrapper '__getattribute__' of attributeSetter object at 0x000002664F992D30>, backgroundImage=<method-wrapper '__getattribute__' of attributeSetter object at 0x000002664F992CD0>, bitsMode=UNKNOWN, blendMode='avg', bpc=(8, 8, 8), color=array([0, 0, 0]), colorSpace='rgb', depthBits=8, fullscr=<method-wrapper '__getattribute__' of attributeSetter object at 0x000002664F992AF0>, gamma=None, gammaErrorPolicy='raise', infoMsg=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x000002664FCBDB20>, multiSample=False, name='window1', numSamples=2, pos=[560.0, 240.0], screen=1, size=array([800, 600]), stencilBits=0, stereo=False, title='PsychoPy', units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+8.9503 	EXP 	window1: mouseVisible = True
+8.9503 	EXP 	window1: backgroundImage = ''
+8.9503 	EXP 	window1: backgroundFit = 'none'
+8.9505 	EXP 	window1: mouseVisible = True
+8.9508 	EXP 	window1: mouseVisible = True
+8.9537 	EXP 	window1: mouseVisible = True
+8.9546 	EXP 	window1: mouseVisible = True
+8.9655 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9672 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9689 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9708 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9727 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9739 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9755 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9775 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9784 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9795 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9812 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9829 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9844 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9860 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9875 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9892 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9908 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9920 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9932 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9955 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9968 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+8.9973 	DEBUG 	Uploading Texture Font fontname to graphics card
+8.9986 	DEBUG 	Upload of Texture Font fontname complete
+9.0009 	EXP 	window1: mouseVisible = True
+9.0012 	EXP 	window1: mouseVisible = True
+9.0024 	EXP 	window1: mouseVisible = True
+9.0033 	EXP 	window1: mouseVisible = True
+9.0089 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.0110 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.0131 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.0135 	DEBUG 	Uploading Texture Font fontname to graphics card
+9.0146 	DEBUG 	Upload of Texture Font fontname complete
+9.0194 	EXP 	window1: Attempting to measure frame rate of screen (1) ...
+9.0195 	EXP 	window1: recordFrameIntervals = False
+9.2194 	EXP 	window1: recordFrameIntervals = True
+9.2787 	WARNING 	t of last frame was 25.87ms (=1/38)
+9.3118 	WARNING 	t of last frame was 20.19ms (=1/49)
+9.5030 	EXP 	Screen (1) actual frame rate measured at 60.16Hz
+9.5031 	EXP 	window1: recordFrameIntervals = False
+9.5031 	EXP 	window1: mouseVisible = False
+9.5036 	EXP 	window1: mouseVisible = True
+9.5038 	EXP 	window1: mouseVisible = True
+9.5050 	EXP 	window1: mouseVisible = True
+9.5059 	EXP 	window1: mouseVisible = True
+9.5126 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5141 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5160 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5184 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5206 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5228 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5240 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5260 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5281 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5301 	DEBUG 	TextBox2 loaded 1 chars with 0 blanks and 1 valid
+9.5306 	DEBUG 	Uploading Texture Font fontname to graphics card
+9.5316 	DEBUG 	Upload of Texture Font fontname complete
+9.5340 	EXP 	window1: mouseVisible = True
+9.5342 	EXP 	window1: mouseVisible = True
+9.5350 	EXP 	window1: mouseVisible = True
+9.5358 	EXP 	window1: mouseVisible = True
+9.5870 	WARNING 	launchHubServer: If using the iohub mouse or eyetracker devices, fullScr should be True.
+14.0213 	INFO 	keyboard.Keyboard is using iohub backend.
+14.0215 	INFO 	keyboard.Keyboard is using iohub backend.
+14.0217 	INFO 	keyboard.Keyboard is using iohub backend.
+14.0218 	INFO 	keyboard.Keyboard is using iohub backend.
+14.0219 	EXP 	online_paradigm: status = STARTED
+14.0226 	EXP 	window1: mouseVisible = True
+14.1149 	EXP 	Created text_pre_block = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_pre_block', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Press space to start online measurement\n', units='height', win=Window(...), wrapWidth=1)
+14.1151 	EXP 	window1: mouseVisible = True
+14.1196 	EXP 	Created text_2 = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_2', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='', units='height', win=Window(...), wrapWidth=1)
+14.1199 	EXP 	window1: mouseVisible = True
+14.1248 	EXP 	Created hor_line_precue = Line(__class__=<class 'psychopy.visual.line.Line'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=None, depth=0.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=5.0, name='hor_line_precue', opacity=0.5, ori=0.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+14.1251 	EXP 	window1: mouseVisible = True
+14.1288 	EXP 	Created ver_line_precue = Line(__class__=<class 'psychopy.visual.line.Line'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=None, depth=-1.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=5.0, name='ver_line_precue', opacity=0.5, ori=90.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+14.1290 	EXP 	window1: mouseVisible = True
+14.1343 	EXP 	Created image_mi = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, anchor=('center', 'center'), autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, image='default.png', interpolate=True, mask=None, maskParams=None, name='image_mi', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([0.5, 0.5]), texRes=128.0, units='height', win=Window(...))
+14.1345 	EXP 	window1: mouseVisible = True
+14.1361 	EXP 	Created polygon_2 = Rect(__class__=<class 'psychopy.visual.rect.Rect'>, anchor=('left', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-2.0, draggable=False, fillColor=array([0., 0., 0.]), fillColorSpace='rgb', fillRGB=array([0., 0., 0.]), interpolate=True, lineColor=array([-1., -1., -1.]), lineColorSpace='rgb', lineRGB=array([-1., -1., -1.]), lineWidth=1.0, name='polygon_2', opacity=1.0, ori=0.0, pos=array([-0.5,  0.3]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...))
+14.1362 	EXP 	window1: mouseVisible = True
+14.1378 	EXP 	Created polygon_3 = Rect(__class__=<class 'psychopy.visual.rect.Rect'>, anchor=('left', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-3.0, draggable=False, fillColor=array([0., 0., 0.]), fillColorSpace='rgb', fillRGB=array([0., 0., 0.]), interpolate=True, lineColor=array([-1., -1., -1.]), lineColorSpace='rgb', lineRGB=array([-1., -1., -1.]), lineWidth=0.5, name='polygon_3', opacity=1.0, ori=0.0, pos=array([-0.5,  0.3]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...))
+14.1379 	EXP 	window1: mouseVisible = True
+14.1395 	EXP 	Created polygon = Rect(__class__=<class 'psychopy.visual.rect.Rect'>, anchor=('left', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-4.0, draggable=False, fillColor=array([1, 1, 1]), fillColorSpace='rgb', fillRGB=array([1, 1, 1]), interpolate=True, lineColor=array([-1., -1., -1.]), lineColorSpace='rgb', lineRGB=array([-1., -1., -1.]), lineWidth=1.0, name='polygon', opacity=1.0, ori=0.0, pos=array([-0.5,  0.3]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...))
+14.1397 	EXP 	window1: mouseVisible = True
+14.1417 	EXP 	Created text_pause = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_pause', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='', units='height', win=Window(...), wrapWidth=1)
+14.1418 	EXP 	window1: mouseVisible = True
+14.1522 	EXP 	Created text = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Run Finished', units='height', win=Window(...), wrapWidth=1)
+14.1524 	EXP 	window1: mouseVisible = True
+14.1613 	EXP 	Created text_post_run = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_post_run', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Block Finished. Yuhu!', units='height', win=Window(...), wrapWidth=1)
+14.1614 	EXP 	window1: mouseVisible = True
+14.1656 	EXP 	Created text_post_run_2 = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=-1.0, draggable=False, flipHoriz=False, flipVert=False, font='Open Sans', fontFiles=[], height=0.05, italic=False, languageStyle='LTR', name='text_post_run_2', opacity=1.0, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Block Finished. Yuhu!', units='height', win=Window(...), wrapWidth=1)
+0.0209 	INFO 	Keyboard events cleared
+0.0205 	EXP 	text_pre_block: autoDraw = True
+0.8950 	DATA 	Keypress: space
+0.9148 	EXP 	Created sequence: random, trialTypes=1, nReps=4, seed=None
+0.9152 	EXP 	New trial (rep=0, index=0): None
+0.9370 	EXP 	text_pre_block: autoDraw = False
+0.9370 	EXP 	text_2: autoDraw = True
+3.9270 	DEBUG 	Read csv file with pandas: classes.csv
+3.9282 	DEBUG 	Clearing unnamed columns from classes.csv
+3.9286 	EXP 	Imported classes.csv as conditions, 4 conditions, 2 params
+3.9290 	EXP 	Created sequence: fullRandom, trialTypes=4, nReps=5, seed=None
+3.9293 	EXP 	New trial (rep=0, index=0): OrderedDict([('pic_name', 'pics/left_hand.JPG'), ('class_mi', 'left_hand')])
+3.9376 	EXP 	text_2: autoDraw = False
+3.9376 	EXP 	hor_line_precue: autoDraw = True
+3.9376 	EXP 	ver_line_precue: autoDraw = True
+5.9541 	EXP 	hor_line_precue: autoDraw = False
+5.9541 	EXP 	ver_line_precue: autoDraw = False
+5.9541 	EXP 	hor_line_precue: autoDraw = False
+5.9541 	EXP 	ver_line_precue: autoDraw = False
+5.9541 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+5.9541 	EXP 	image_mi: autoDraw = True
+5.9541 	EXP 	polygon_2: autoDraw = True
+5.9541 	EXP 	polygon_3: autoDraw = True
+5.9541 	EXP 	polygon: autoDraw = True
+10.4698 	EXP 	image_mi: autoDraw = False
+10.4698 	EXP 	polygon_2: autoDraw = False
+10.4698 	EXP 	polygon_3: autoDraw = False
+10.4698 	EXP 	polygon: autoDraw = False
+10.4698 	EXP 	image_mi: autoDraw = False
+10.4698 	EXP 	polygon_2: autoDraw = False
+10.4698 	EXP 	polygon_3: autoDraw = False
+10.4698 	EXP 	polygon: autoDraw = False
+10.4698 	EXP 	text_pause: autoDraw = True
+12.9758 	EXP 	New trial (rep=0, index=1): OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])
+12.9933 	EXP 	text_pause: autoDraw = False
+12.9933 	EXP 	text_pause: autoDraw = False
+12.9933 	EXP 	hor_line_precue: autoDraw = True
+12.9933 	EXP 	ver_line_precue: autoDraw = True
+15.0205 	EXP 	hor_line_precue: autoDraw = False
+15.0205 	EXP 	ver_line_precue: autoDraw = False
+15.0205 	EXP 	hor_line_precue: autoDraw = False
+15.0205 	EXP 	ver_line_precue: autoDraw = False
+15.0205 	EXP 	image_mi: image = 'pics/feet.JPG'
+15.0205 	EXP 	image_mi: autoDraw = True
+15.0205 	EXP 	polygon_2: autoDraw = True
+15.0205 	EXP 	polygon_3: autoDraw = True
+15.0205 	EXP 	polygon: autoDraw = True
+19.5204 	EXP 	image_mi: autoDraw = False
+19.5204 	EXP 	polygon_2: autoDraw = False
+19.5204 	EXP 	polygon_3: autoDraw = False
+19.5204 	EXP 	polygon: autoDraw = False
+19.5204 	EXP 	image_mi: autoDraw = False
+19.5204 	EXP 	polygon_2: autoDraw = False
+19.5204 	EXP 	polygon_3: autoDraw = False
+19.5204 	EXP 	polygon: autoDraw = False
+19.5204 	EXP 	text_pause: autoDraw = True
+22.0083 	EXP 	New trial (rep=0, index=2): OrderedDict([('pic_name', 'pics/mental_singing.JPG'), ('class_mi', 'mental_singing')])
+22.0205 	EXP 	text_pause: autoDraw = False
+22.0205 	EXP 	text_pause: autoDraw = False
+22.0205 	EXP 	hor_line_precue: autoDraw = True
+22.0205 	EXP 	ver_line_precue: autoDraw = True
+24.0359 	EXP 	hor_line_precue: autoDraw = False
+24.0359 	EXP 	ver_line_precue: autoDraw = False
+24.0359 	EXP 	hor_line_precue: autoDraw = False
+24.0359 	EXP 	ver_line_precue: autoDraw = False
+24.0359 	EXP 	image_mi: image = 'pics/mental_singing.JPG'
+24.0359 	EXP 	image_mi: autoDraw = True
+24.0359 	EXP 	polygon_2: autoDraw = True
+24.0359 	EXP 	polygon_3: autoDraw = True
+24.0359 	EXP 	polygon: autoDraw = True
+28.5368 	EXP 	image_mi: autoDraw = False
+28.5368 	EXP 	polygon_2: autoDraw = False
+28.5368 	EXP 	polygon_3: autoDraw = False
+28.5368 	EXP 	polygon: autoDraw = False
+28.5368 	EXP 	image_mi: autoDraw = False
+28.5368 	EXP 	polygon_2: autoDraw = False
+28.5368 	EXP 	polygon_3: autoDraw = False
+28.5368 	EXP 	polygon: autoDraw = False
+28.5368 	EXP 	text_pause: autoDraw = True
+31.0244 	EXP 	New trial (rep=0, index=3): OrderedDict([('pic_name', 'pics/right_hand.JPG'), ('class_mi', 'right_hand')])
+31.0369 	EXP 	text_pause: autoDraw = False
+31.0369 	EXP 	text_pause: autoDraw = False
+31.0369 	EXP 	hor_line_precue: autoDraw = True
+31.0369 	EXP 	ver_line_precue: autoDraw = True
+33.0368 	EXP 	hor_line_precue: autoDraw = False
+33.0368 	EXP 	ver_line_precue: autoDraw = False
+33.0368 	EXP 	hor_line_precue: autoDraw = False
+33.0368 	EXP 	ver_line_precue: autoDraw = False
+33.0368 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+33.0368 	EXP 	image_mi: autoDraw = True
+33.0368 	EXP 	polygon_2: autoDraw = True
+33.0368 	EXP 	polygon_3: autoDraw = True
+33.0368 	EXP 	polygon: autoDraw = True
+37.5524 	EXP 	image_mi: autoDraw = False
+37.5524 	EXP 	polygon_2: autoDraw = False
+37.5524 	EXP 	polygon_3: autoDraw = False
+37.5524 	EXP 	polygon: autoDraw = False
+37.5524 	EXP 	image_mi: autoDraw = False
+37.5524 	EXP 	polygon_2: autoDraw = False
+37.5524 	EXP 	polygon_3: autoDraw = False
+37.5524 	EXP 	polygon: autoDraw = False
+37.5524 	EXP 	text_pause: autoDraw = True
+40.0535 	EXP 	New trial (rep=1, index=0): OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])
+40.0777 	EXP 	text_pause: autoDraw = False
+40.0777 	EXP 	text_pause: autoDraw = False
+40.0777 	EXP 	hor_line_precue: autoDraw = True
+40.0777 	EXP 	ver_line_precue: autoDraw = True
+42.1041 	EXP 	hor_line_precue: autoDraw = False
+42.1041 	EXP 	ver_line_precue: autoDraw = False
+42.1041 	EXP 	hor_line_precue: autoDraw = False
+42.1041 	EXP 	ver_line_precue: autoDraw = False
+42.1041 	EXP 	image_mi: image = 'pics/feet.JPG'
+42.1041 	EXP 	image_mi: autoDraw = True
+42.1041 	EXP 	polygon_2: autoDraw = True
+42.1041 	EXP 	polygon_3: autoDraw = True
+42.1041 	EXP 	polygon: autoDraw = True
+46.6280 	EXP 	image_mi: autoDraw = False
+46.6280 	EXP 	polygon_2: autoDraw = False
+46.6280 	EXP 	polygon_3: autoDraw = False
+46.6280 	EXP 	polygon: autoDraw = False
+46.6280 	EXP 	image_mi: autoDraw = False
+46.6280 	EXP 	polygon_2: autoDraw = False
+46.6280 	EXP 	polygon_3: autoDraw = False
+46.6280 	EXP 	polygon: autoDraw = False
+46.6280 	EXP 	text_pause: autoDraw = True
+49.1255 	EXP 	New trial (rep=1, index=1): OrderedDict([('pic_name', 'pics/left_hand.JPG'), ('class_mi', 'left_hand')])
+49.1376 	EXP 	text_pause: autoDraw = False
+49.1376 	EXP 	text_pause: autoDraw = False
+49.1376 	EXP 	hor_line_precue: autoDraw = True
+49.1376 	EXP 	ver_line_precue: autoDraw = True
+51.1525 	EXP 	hor_line_precue: autoDraw = False
+51.1525 	EXP 	ver_line_precue: autoDraw = False
+51.1525 	EXP 	hor_line_precue: autoDraw = False
+51.1525 	EXP 	ver_line_precue: autoDraw = False
+51.1525 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+51.1525 	EXP 	image_mi: autoDraw = True
+51.1525 	EXP 	polygon_2: autoDraw = True
+51.1525 	EXP 	polygon_3: autoDraw = True
+51.1525 	EXP 	polygon: autoDraw = True
+55.6768 	EXP 	image_mi: autoDraw = False
+55.6768 	EXP 	polygon_2: autoDraw = False
+55.6768 	EXP 	polygon_3: autoDraw = False
+55.6768 	EXP 	polygon: autoDraw = False
+55.6768 	EXP 	image_mi: autoDraw = False
+55.6768 	EXP 	polygon_2: autoDraw = False
+55.6768 	EXP 	polygon_3: autoDraw = False
+55.6768 	EXP 	polygon: autoDraw = False
+55.6768 	EXP 	text_pause: autoDraw = True
+58.1761 	EXP 	New trial (rep=1, index=2): OrderedDict([('pic_name', 'pics/right_hand.JPG'), ('class_mi', 'right_hand')])
+58.1882 	EXP 	text_pause: autoDraw = False
+58.1882 	EXP 	text_pause: autoDraw = False
+58.1882 	EXP 	hor_line_precue: autoDraw = True
+58.1882 	EXP 	ver_line_precue: autoDraw = True
+60.2099 	EXP 	hor_line_precue: autoDraw = False
+60.2099 	EXP 	ver_line_precue: autoDraw = False
+60.2099 	EXP 	hor_line_precue: autoDraw = False
+60.2099 	EXP 	ver_line_precue: autoDraw = False
+60.2099 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+60.2099 	EXP 	image_mi: autoDraw = True
+60.2099 	EXP 	polygon_2: autoDraw = True
+60.2099 	EXP 	polygon_3: autoDraw = True
+60.2099 	EXP 	polygon: autoDraw = True
+64.7269 	EXP 	image_mi: autoDraw = False
+64.7269 	EXP 	polygon_2: autoDraw = False
+64.7269 	EXP 	polygon_3: autoDraw = False
+64.7269 	EXP 	polygon: autoDraw = False
+64.7269 	EXP 	image_mi: autoDraw = False
+64.7269 	EXP 	polygon_2: autoDraw = False
+64.7269 	EXP 	polygon_3: autoDraw = False
+64.7269 	EXP 	polygon: autoDraw = False
+64.7269 	EXP 	text_pause: autoDraw = True
+67.2686 	EXP 	New trial (rep=1, index=3): OrderedDict([('pic_name', 'pics/mental_singing.JPG'), ('class_mi', 'mental_singing')])
+67.2839 	EXP 	text_pause: autoDraw = False
+67.2839 	EXP 	text_pause: autoDraw = False
+67.2839 	EXP 	hor_line_precue: autoDraw = True
+67.2839 	EXP 	ver_line_precue: autoDraw = True
+69.3199 	EXP 	hor_line_precue: autoDraw = False
+69.3199 	EXP 	ver_line_precue: autoDraw = False
+69.3199 	EXP 	hor_line_precue: autoDraw = False
+69.3199 	EXP 	ver_line_precue: autoDraw = False
+69.3199 	EXP 	image_mi: image = 'pics/mental_singing.JPG'
+69.3199 	EXP 	image_mi: autoDraw = True
+69.3199 	EXP 	polygon_2: autoDraw = True
+69.3199 	EXP 	polygon_3: autoDraw = True
+69.3199 	EXP 	polygon: autoDraw = True
+73.8728 	EXP 	image_mi: autoDraw = False
+73.8728 	EXP 	polygon_2: autoDraw = False
+73.8728 	EXP 	polygon_3: autoDraw = False
+73.8728 	EXP 	polygon: autoDraw = False
+73.8728 	EXP 	image_mi: autoDraw = False
+73.8728 	EXP 	polygon_2: autoDraw = False
+73.8728 	EXP 	polygon_3: autoDraw = False
+73.8728 	EXP 	polygon: autoDraw = False
+73.8728 	EXP 	text_pause: autoDraw = True
+76.3752 	EXP 	New trial (rep=2, index=0): OrderedDict([('pic_name', 'pics/right_hand.JPG'), ('class_mi', 'right_hand')])
+76.3947 	EXP 	text_pause: autoDraw = False
+76.3947 	EXP 	text_pause: autoDraw = False
+76.3947 	EXP 	hor_line_precue: autoDraw = True
+76.3947 	EXP 	ver_line_precue: autoDraw = True
+78.4200 	EXP 	hor_line_precue: autoDraw = False
+78.4200 	EXP 	ver_line_precue: autoDraw = False
+78.4200 	EXP 	hor_line_precue: autoDraw = False
+78.4200 	EXP 	ver_line_precue: autoDraw = False
+78.4200 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+78.4200 	EXP 	image_mi: autoDraw = True
+78.4200 	EXP 	polygon_2: autoDraw = True
+78.4200 	EXP 	polygon_3: autoDraw = True
+78.4200 	EXP 	polygon: autoDraw = True
+82.9363 	EXP 	image_mi: autoDraw = False
+82.9363 	EXP 	polygon_2: autoDraw = False
+82.9363 	EXP 	polygon_3: autoDraw = False
+82.9363 	EXP 	polygon: autoDraw = False
+82.9363 	EXP 	image_mi: autoDraw = False
+82.9363 	EXP 	polygon_2: autoDraw = False
+82.9363 	EXP 	polygon_3: autoDraw = False
+82.9363 	EXP 	polygon: autoDraw = False
+82.9363 	EXP 	text_pause: autoDraw = True
+85.4257 	EXP 	New trial (rep=2, index=1): OrderedDict([('pic_name', 'pics/right_hand.JPG'), ('class_mi', 'right_hand')])
+85.4359 	EXP 	text_pause: autoDraw = False
+85.4359 	EXP 	text_pause: autoDraw = False
+85.4359 	EXP 	hor_line_precue: autoDraw = True
+85.4359 	EXP 	ver_line_precue: autoDraw = True
+87.4516 	EXP 	hor_line_precue: autoDraw = False
+87.4516 	EXP 	ver_line_precue: autoDraw = False
+87.4516 	EXP 	hor_line_precue: autoDraw = False
+87.4516 	EXP 	ver_line_precue: autoDraw = False
+87.4516 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+87.4516 	EXP 	image_mi: autoDraw = True
+87.4516 	EXP 	polygon_2: autoDraw = True
+87.4516 	EXP 	polygon_3: autoDraw = True
+87.4516 	EXP 	polygon: autoDraw = True
+91.9530 	EXP 	image_mi: autoDraw = False
+91.9530 	EXP 	polygon_2: autoDraw = False
+91.9530 	EXP 	polygon_3: autoDraw = False
+91.9530 	EXP 	polygon: autoDraw = False
+91.9530 	EXP 	image_mi: autoDraw = False
+91.9530 	EXP 	polygon_2: autoDraw = False
+91.9530 	EXP 	polygon_3: autoDraw = False
+91.9530 	EXP 	polygon: autoDraw = False
+91.9530 	EXP 	text_pause: autoDraw = True
+94.4403 	EXP 	New trial (rep=2, index=2): OrderedDict([('pic_name', 'pics/mental_singing.JPG'), ('class_mi', 'mental_singing')])
+94.4524 	EXP 	text_pause: autoDraw = False
+94.4524 	EXP 	text_pause: autoDraw = False
+94.4524 	EXP 	hor_line_precue: autoDraw = True
+94.4524 	EXP 	ver_line_precue: autoDraw = True
+96.4717 	EXP 	hor_line_precue: autoDraw = False
+96.4717 	EXP 	ver_line_precue: autoDraw = False
+96.4717 	EXP 	hor_line_precue: autoDraw = False
+96.4717 	EXP 	ver_line_precue: autoDraw = False
+96.4717 	EXP 	image_mi: image = 'pics/mental_singing.JPG'
+96.4717 	EXP 	image_mi: autoDraw = True
+96.4717 	EXP 	polygon_2: autoDraw = True
+96.4717 	EXP 	polygon_3: autoDraw = True
+96.4717 	EXP 	polygon: autoDraw = True
+100.9865 	EXP 	image_mi: autoDraw = False
+100.9865 	EXP 	polygon_2: autoDraw = False
+100.9865 	EXP 	polygon_3: autoDraw = False
+100.9865 	EXP 	polygon: autoDraw = False
+100.9865 	EXP 	image_mi: autoDraw = False
+100.9865 	EXP 	polygon_2: autoDraw = False
+100.9865 	EXP 	polygon_3: autoDraw = False
+100.9865 	EXP 	polygon: autoDraw = False
+100.9865 	EXP 	text_pause: autoDraw = True
+103.4736 	EXP 	New trial (rep=2, index=3): OrderedDict([('pic_name', 'pics/left_hand.JPG'), ('class_mi', 'left_hand')])
+103.4858 	EXP 	text_pause: autoDraw = False
+103.4858 	EXP 	text_pause: autoDraw = False
+103.4858 	EXP 	hor_line_precue: autoDraw = True
+103.4858 	EXP 	ver_line_precue: autoDraw = True
+105.5027 	EXP 	hor_line_precue: autoDraw = False
+105.5027 	EXP 	ver_line_precue: autoDraw = False
+105.5027 	EXP 	hor_line_precue: autoDraw = False
+105.5027 	EXP 	ver_line_precue: autoDraw = False
+105.5027 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+105.5027 	EXP 	image_mi: autoDraw = True
+105.5027 	EXP 	polygon_2: autoDraw = True
+105.5027 	EXP 	polygon_3: autoDraw = True
+105.5027 	EXP 	polygon: autoDraw = True
+110.0015 	EXP 	image_mi: autoDraw = False
+110.0015 	EXP 	polygon_2: autoDraw = False
+110.0015 	EXP 	polygon_3: autoDraw = False
+110.0015 	EXP 	polygon: autoDraw = False
+110.0015 	EXP 	image_mi: autoDraw = False
+110.0015 	EXP 	polygon_2: autoDraw = False
+110.0015 	EXP 	polygon_3: autoDraw = False
+110.0015 	EXP 	polygon: autoDraw = False
+110.0015 	EXP 	text_pause: autoDraw = True
+112.4908 	EXP 	New trial (rep=3, index=0): OrderedDict([('pic_name', 'pics/mental_singing.JPG'), ('class_mi', 'mental_singing')])
+112.5018 	EXP 	text_pause: autoDraw = False
+112.5018 	EXP 	text_pause: autoDraw = False
+112.5018 	EXP 	hor_line_precue: autoDraw = True
+112.5018 	EXP 	ver_line_precue: autoDraw = True
+114.5336 	EXP 	hor_line_precue: autoDraw = False
+114.5336 	EXP 	ver_line_precue: autoDraw = False
+114.5336 	EXP 	hor_line_precue: autoDraw = False
+114.5336 	EXP 	ver_line_precue: autoDraw = False
+114.5336 	EXP 	image_mi: image = 'pics/mental_singing.JPG'
+114.5336 	EXP 	image_mi: autoDraw = True
+114.5336 	EXP 	polygon_2: autoDraw = True
+114.5336 	EXP 	polygon_3: autoDraw = True
+114.5336 	EXP 	polygon: autoDraw = True
+119.0346 	EXP 	image_mi: autoDraw = False
+119.0346 	EXP 	polygon_2: autoDraw = False
+119.0346 	EXP 	polygon_3: autoDraw = False
+119.0346 	EXP 	polygon: autoDraw = False
+119.0346 	EXP 	image_mi: autoDraw = False
+119.0346 	EXP 	polygon_2: autoDraw = False
+119.0346 	EXP 	polygon_3: autoDraw = False
+119.0346 	EXP 	polygon: autoDraw = False
+119.0346 	EXP 	text_pause: autoDraw = True
+121.5248 	EXP 	New trial (rep=3, index=1): OrderedDict([('pic_name', 'pics/mental_singing.JPG'), ('class_mi', 'mental_singing')])
+121.5354 	EXP 	text_pause: autoDraw = False
+121.5354 	EXP 	text_pause: autoDraw = False
+121.5354 	EXP 	hor_line_precue: autoDraw = True
+121.5354 	EXP 	ver_line_precue: autoDraw = True
+123.5500 	EXP 	hor_line_precue: autoDraw = False
+123.5500 	EXP 	ver_line_precue: autoDraw = False
+123.5500 	EXP 	hor_line_precue: autoDraw = False
+123.5500 	EXP 	ver_line_precue: autoDraw = False
+123.5500 	EXP 	image_mi: image = 'pics/mental_singing.JPG'
+123.5500 	EXP 	image_mi: autoDraw = True
+123.5500 	EXP 	polygon_2: autoDraw = True
+123.5500 	EXP 	polygon_3: autoDraw = True
+123.5500 	EXP 	polygon: autoDraw = True
+128.0509 	EXP 	image_mi: autoDraw = False
+128.0509 	EXP 	polygon_2: autoDraw = False
+128.0509 	EXP 	polygon_3: autoDraw = False
+128.0509 	EXP 	polygon: autoDraw = False
+128.0509 	EXP 	image_mi: autoDraw = False
+128.0509 	EXP 	polygon_2: autoDraw = False
+128.0509 	EXP 	polygon_3: autoDraw = False
+128.0509 	EXP 	polygon: autoDraw = False
+128.0509 	EXP 	text_pause: autoDraw = True
+130.5403 	EXP 	New trial (rep=3, index=2): OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])
+130.5510 	EXP 	text_pause: autoDraw = False
+130.5510 	EXP 	text_pause: autoDraw = False
+130.5510 	EXP 	hor_line_precue: autoDraw = True
+130.5510 	EXP 	ver_line_precue: autoDraw = True
+132.5666 	EXP 	hor_line_precue: autoDraw = False
+132.5666 	EXP 	ver_line_precue: autoDraw = False
+132.5666 	EXP 	hor_line_precue: autoDraw = False
+132.5666 	EXP 	ver_line_precue: autoDraw = False
+132.5666 	EXP 	image_mi: image = 'pics/feet.JPG'
+132.5666 	EXP 	image_mi: autoDraw = True
+132.5666 	EXP 	polygon_2: autoDraw = True
+132.5666 	EXP 	polygon_3: autoDraw = True
+132.5666 	EXP 	polygon: autoDraw = True
+137.0686 	EXP 	image_mi: autoDraw = False
+137.0686 	EXP 	polygon_2: autoDraw = False
+137.0686 	EXP 	polygon_3: autoDraw = False
+137.0686 	EXP 	polygon: autoDraw = False
+137.0686 	EXP 	image_mi: autoDraw = False
+137.0686 	EXP 	polygon_2: autoDraw = False
+137.0686 	EXP 	polygon_3: autoDraw = False
+137.0686 	EXP 	polygon: autoDraw = False
+137.0686 	EXP 	text_pause: autoDraw = True
+139.5574 	EXP 	New trial (rep=3, index=3): OrderedDict([('pic_name', 'pics/left_hand.JPG'), ('class_mi', 'left_hand')])
+139.5676 	EXP 	text_pause: autoDraw = False
+139.5676 	EXP 	text_pause: autoDraw = False
+139.5676 	EXP 	hor_line_precue: autoDraw = True
+139.5676 	EXP 	ver_line_precue: autoDraw = True
+141.5832 	EXP 	hor_line_precue: autoDraw = False
+141.5832 	EXP 	ver_line_precue: autoDraw = False
+141.5832 	EXP 	hor_line_precue: autoDraw = False
+141.5832 	EXP 	ver_line_precue: autoDraw = False
+141.5832 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+141.5832 	EXP 	image_mi: autoDraw = True
+141.5832 	EXP 	polygon_2: autoDraw = True
+141.5832 	EXP 	polygon_3: autoDraw = True
+141.5832 	EXP 	polygon: autoDraw = True
+146.0839 	EXP 	image_mi: autoDraw = False
+146.0839 	EXP 	polygon_2: autoDraw = False
+146.0839 	EXP 	polygon_3: autoDraw = False
+146.0839 	EXP 	polygon: autoDraw = False
+146.0839 	EXP 	image_mi: autoDraw = False
+146.0839 	EXP 	polygon_2: autoDraw = False
+146.0839 	EXP 	polygon_3: autoDraw = False
+146.0839 	EXP 	polygon: autoDraw = False
+146.0839 	EXP 	text_pause: autoDraw = True
+148.5730 	EXP 	New trial (rep=4, index=0): OrderedDict([('pic_name', 'pics/left_hand.JPG'), ('class_mi', 'left_hand')])
+148.5836 	EXP 	text_pause: autoDraw = False
+148.5836 	EXP 	text_pause: autoDraw = False
+148.5836 	EXP 	hor_line_precue: autoDraw = True
+148.5836 	EXP 	ver_line_precue: autoDraw = True
+150.5993 	EXP 	hor_line_precue: autoDraw = False
+150.5993 	EXP 	ver_line_precue: autoDraw = False
+150.5993 	EXP 	hor_line_precue: autoDraw = False
+150.5993 	EXP 	ver_line_precue: autoDraw = False
+150.5993 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+150.5993 	EXP 	image_mi: autoDraw = True
+150.5993 	EXP 	polygon_2: autoDraw = True
+150.5993 	EXP 	polygon_3: autoDraw = True
+150.5993 	EXP 	polygon: autoDraw = True
+155.1188 	EXP 	image_mi: autoDraw = False
+155.1188 	EXP 	polygon_2: autoDraw = False
+155.1188 	EXP 	polygon_3: autoDraw = False
+155.1188 	EXP 	polygon: autoDraw = False
+155.1188 	EXP 	image_mi: autoDraw = False
+155.1188 	EXP 	polygon_2: autoDraw = False
+155.1188 	EXP 	polygon_3: autoDraw = False
+155.1188 	EXP 	polygon: autoDraw = False
+155.1188 	EXP 	text_pause: autoDraw = True
+157.6205 	EXP 	New trial (rep=4, index=1): OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])
+157.6425 	EXP 	text_pause: autoDraw = False
+157.6425 	EXP 	text_pause: autoDraw = False
+157.6425 	EXP 	hor_line_precue: autoDraw = True
+157.6425 	EXP 	ver_line_precue: autoDraw = True
+159.6665 	EXP 	hor_line_precue: autoDraw = False
+159.6665 	EXP 	ver_line_precue: autoDraw = False
+159.6665 	EXP 	hor_line_precue: autoDraw = False
+159.6665 	EXP 	ver_line_precue: autoDraw = False
+159.6665 	EXP 	image_mi: image = 'pics/feet.JPG'
+159.6665 	EXP 	image_mi: autoDraw = True
+159.6665 	EXP 	polygon_2: autoDraw = True
+159.6665 	EXP 	polygon_3: autoDraw = True
+159.6665 	EXP 	polygon: autoDraw = True
+164.2027 	EXP 	image_mi: autoDraw = False
+164.2027 	EXP 	polygon_2: autoDraw = False
+164.2027 	EXP 	polygon_3: autoDraw = False
+164.2027 	EXP 	polygon: autoDraw = False
+164.2027 	EXP 	image_mi: autoDraw = False
+164.2027 	EXP 	polygon_2: autoDraw = False
+164.2027 	EXP 	polygon_3: autoDraw = False
+164.2027 	EXP 	polygon: autoDraw = False
+164.2027 	EXP 	text_pause: autoDraw = True
+166.7172 	EXP 	New trial (rep=4, index=2): OrderedDict([('pic_name', 'pics/feet.JPG'), ('class_mi', 'feet')])
+166.7353 	EXP 	text_pause: autoDraw = False
+166.7353 	EXP 	text_pause: autoDraw = False
+166.7353 	EXP 	hor_line_precue: autoDraw = True
+166.7353 	EXP 	ver_line_precue: autoDraw = True
+168.7857 	EXP 	hor_line_precue: autoDraw = False
+168.7857 	EXP 	ver_line_precue: autoDraw = False
+168.7857 	EXP 	hor_line_precue: autoDraw = False
+168.7857 	EXP 	ver_line_precue: autoDraw = False
+168.7857 	EXP 	image_mi: image = 'pics/feet.JPG'
+168.7857 	EXP 	image_mi: autoDraw = True
+168.7857 	EXP 	polygon_2: autoDraw = True
+168.7857 	EXP 	polygon_3: autoDraw = True
+168.7857 	EXP 	polygon: autoDraw = True
+173.3017 	EXP 	image_mi: autoDraw = False
+173.3017 	EXP 	polygon_2: autoDraw = False
+173.3017 	EXP 	polygon_3: autoDraw = False
+173.3017 	EXP 	polygon: autoDraw = False
+173.3017 	EXP 	image_mi: autoDraw = False
+173.3017 	EXP 	polygon_2: autoDraw = False
+173.3017 	EXP 	polygon_3: autoDraw = False
+173.3017 	EXP 	polygon: autoDraw = False
+173.3017 	EXP 	text_pause: autoDraw = True
+175.8037 	EXP 	New trial (rep=4, index=3): OrderedDict([('pic_name', 'pics/right_hand.JPG'), ('class_mi', 'right_hand')])
+175.8165 	EXP 	text_pause: autoDraw = False
+175.8165 	EXP 	text_pause: autoDraw = False
+175.8165 	EXP 	hor_line_precue: autoDraw = True
+175.8165 	EXP 	ver_line_precue: autoDraw = True
+177.8397 	EXP 	hor_line_precue: autoDraw = False
+177.8397 	EXP 	ver_line_precue: autoDraw = False
+177.8397 	EXP 	hor_line_precue: autoDraw = False
+177.8397 	EXP 	ver_line_precue: autoDraw = False
+177.8397 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+177.8397 	EXP 	image_mi: autoDraw = True
+177.8397 	EXP 	polygon_2: autoDraw = True
+177.8397 	EXP 	polygon_3: autoDraw = True
+177.8397 	EXP 	polygon: autoDraw = True
+182.3497 	EXP 	image_mi: autoDraw = False
+182.3497 	EXP 	polygon_2: autoDraw = False
+182.3497 	EXP 	polygon_3: autoDraw = False
+182.3497 	EXP 	polygon: autoDraw = False
+182.3497 	EXP 	image_mi: autoDraw = False
+182.3497 	EXP 	polygon_2: autoDraw = False
+182.3497 	EXP 	polygon_3: autoDraw = False
+182.3497 	EXP 	polygon: autoDraw = False
+182.3497 	EXP 	text_pause: autoDraw = True
+184.8496 	INFO 	Keyboard events cleared
+184.8492 	EXP 	text_pause: autoDraw = False
+184.8492 	EXP 	text_pause: autoDraw = False
+184.8492 	EXP 	text: autoDraw = True
+25439.0916 	DATA 	Keypress: escape
+25439.1892 	EXP 	online_paradigm: status = STOPPED
+25439.2011 	EXP 	text: autoDraw = False
+25439.2047 	EXP 	online_paradigm: status = STOPPED
+25439.2273 	INFO 	saved data to 'C:\\Users\\Mirage91\\Documents\\github\\mirage91\\online_scripts\\online_paradigm\\data/427743_online_paradigm_2024-10-17_15h28.46.248.csv'
+25439.2285 	INFO 	saved data to C:\Users\Mirage91\Documents\github\mirage91\online_scripts\online_paradigm\data/427743_online_paradigm_2024-10-17_15h28.46.248.psydat
+25439.2782 	EXP 	window1: mouseVisible = True
+25439.8551 	DEBUG 	Saving data for online_paradigm ExperimentHandler

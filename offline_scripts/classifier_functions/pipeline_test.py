@@ -411,10 +411,6 @@ PARAMETERS in PIPELINE:
         + PowerTransformer: applies a power transformation to make the data more Gaussian-like.
         + QuantileTransformer: transforms features to follow a uniform or normal distribution.
 
-
-
-
-
 '''
 # Define the class with different pipelines
 class AdvancedPipelineEvaluator:

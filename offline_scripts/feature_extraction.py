@@ -14,8 +14,9 @@ pilot_name = 'Antonio'
 
 #Session data
 path = r'./raw_data'
-paradigm = {'pre_cue':2.0, 'left_hand':4.5, 'right_hand':4.5, 'feet':4.5, 'mental_singing':4.5, 'pause':2.5, 'post_block':0.0}
-tasks = ['left_hand', 'right_hand', 'feet', 'mental_singing']
+# path = r'./raw_data_fake'
+paradigm = {'pre_cue':2.0, 'rest':4.5, 'left_hand':4.5, 'right_hand':4.5, 'feet':4.5, 'mental_singing':4.5, 'pause':2.5, 'post_block':0.0}
+tasks = ['left_hand', 'right_hand', 'feet', 'mental_singing', 'rest']
 
 
 ''' MAIN '''
@@ -28,7 +29,6 @@ pilot.set_eeg(path, paradigm, tasks)
 pilot.eeg.preprocessing()
 # Epoch the data and save the epoched data as a .npy file in the "featues" folder
 pilot.eeg.epoching_and_rejecting()
-
 # Apply ICA and then feature extraction (CSP)
 pilot.eeg.processing_pipeline() # change this
 
@@ -38,7 +38,7 @@ print('\n BANDPOWER + LDA: \n ')
 modality = 'bp'
 pilot.eeg.extract_features(modality=modality)
 # save features in "feature" folder
-...
+# ...
 
 # extract features csp
 print('\n CSP + LDA: \n')
