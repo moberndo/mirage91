@@ -23,3 +23,6 @@ paradigm/data/*
 
 # all __pycache__ folders
 __pycache__/
+wandb
+.idea
+*.pt

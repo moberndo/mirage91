@@ -1,0 +1,24 @@
+wandb_disabled: True
+experiment: final
+
+data:
+  dataset_path: /home/philipp/datasets/features/features/cleaned_epoched_eeg.npy
+  validation_size: 0.15
+  test_size: 0.15
+  selected_classes: [1, 2, 3, 4]
+
+training:
+  k_fold_splits: 10
+  epochs: 100
+  batch_size: 25
+  lr: 1e-3
+  weight_decay: 1e-3
+
+final:
+  test_split: 0.2
+
+
+model:
+  load_model: False
+  path: ./classifier_results/LMDA_PhS.pt
+  name: "LMDA"
