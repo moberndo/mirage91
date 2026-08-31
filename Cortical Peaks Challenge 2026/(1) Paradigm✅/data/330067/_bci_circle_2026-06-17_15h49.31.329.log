@@ -1,0 +1,45 @@
+2.5839 	INFO 	Loaded monitor calibration from ['2025_05_09 18:17']
+2.5890 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [2560, 1600]. Using actual size
+2.7002 	INFO 	Using renderer 'AMD Radeon(TM) Graphics' for graphics
+2.7003 	INFO 	OpenGL version supported by driver is 4..
+2.7927 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, autoLog=True, backendConf=UNKNOWN, backgroundFit=<method-wrapper '__getattribute__' of attributeSetter object at 0x000001FA556E6BC0>, backgroundImage=<method-wrapper '__getattribute__' of attributeSetter object at 0x000001FA556E6B60>, bitsMode=UNKNOWN, blendMode='avg', bpc=(8, 8, 8), color=array([0, 0, 0]), colorSpace='rgb', depthBits=8, fullscr=True, gamma=None, gammaErrorPolicy='raise', infoMsg=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x000001FA557D7B80>, multiSample=False, name='window1', numSamples=2, pos=[np.float64(0.0), np.float64(0.0)], screen=0, size=array([2560, 1600]), stencilBits=0, stereo=False, title='PsychoPy', units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+2.7927 	EXP 	window1: backgroundImage = ''
+2.7928 	EXP 	window1: backgroundFit = 'none'
+3.1627 	EXP 	window1: Attempting to measure frame rate of screen (0) ...
+3.1627 	EXP 	window1: recordFrameIntervals = False
+3.3085 	EXP 	window1: recordFrameIntervals = True
+3.6104 	DATA 	Keypress: space
+4.1420 	EXP 	window1: recordFrameIntervals = False
+4.1421 	EXP 	Screen (0) actual frame rate measured at 120.48Hz
+4.3062 	INFO 	keyboard.Keyboard is using ptb backend.
+4.3063 	EXP 	bci_circle: status = STARTED
+4.3477 	EXP 	Created text_pre_block = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_pre_block', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Press any key to start ...', units='height', win=Window(...), wrapWidth=1)
+4.3487 	EXP 	Created text_wait_screen = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_wait_screen', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='', units='height', win=Window(...), wrapWidth=1)
+4.3518 	EXP 	Created move_circle = ShapeStim(__class__=<class 'psychopy.visual.shape.ShapeStim'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=0.0, draggable=False, fillColor=array([1, 1, 1]), fillColorSpace='rgb', fillRGB=array([1, 1, 1]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=1.0, name='move_circle', opacity=1, ori=0.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+4.3543 	EXP 	Created mi_circle = ShapeStim(__class__=<class 'psychopy.visual.shape.ShapeStim'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-1.0, draggable=False, fillColor=array([0., 0., 0.]), fillColorSpace='rgb', fillRGB=array([0., 0., 0.]), interpolate=True, lineColor=array([ 0.7647, -1.    , -1.    ]), lineColorSpace='rgb', lineRGB=array([ 0.7647, -1.    , -1.    ]), lineWidth=8.0, name='mi_circle', opacity=1, ori=0.0, pos=array([0., 0.]), size=array([0.1, 0.1]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+4.3595 	EXP 	Created text_run_break = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_run_break', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Trial finished!', units='height', win=Window(...), wrapWidth=1)
+4.3634 	EXP 	Created text_post_run = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_post_run', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Run finished. Yupii!!', units='height', win=Window(...), wrapWidth=1)
+0.0371 	INFO 	Keyboard events cleared
+0.0370 	EXP 	text_pre_block: autoDraw = True
+0.2244 	EXP 	Device response: <KeyPress from None: t=0.21527570000034757, value=space, duration=None>
+0.2247 	EXP 	New trial (rep=0, index=0): <Trial 0 (0 in rep 0) data={'thisN': 0, 'thisTrialN': 0, 'thisRepN': 0}>
+0.2255 	DATA 	Keypress: space
+0.2373 	EXP 	text_pre_block: autoDraw = False
+0.2373 	EXP 	text_wait_screen: autoDraw = True
+0.2710 	EXP 	Device response: <KeyPress from None: t=0.21527570000034757, value=space, duration=0.05490580000332557>
+3.2257 	EXP 	Imported classes.csv as conditions, 4 conditions, 2 params
+3.2260 	EXP 	New trial (rep=0, index=0): <Trial 0 (0 in rep 0) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 0, 'thisTrialN': 0, 'thisRepN': 0}>
+3.2316 	EXP 	text_wait_screen: autoDraw = False
+3.2316 	EXP 	text_wait_screen: autoDraw = False
+3.2316 	EXP 	move_circle: autoDraw = True
+3.2316 	EXP 	mi_circle: autoDraw = True
+6.0240 	EXP 	Device response: <KeyPress from None: t=6.021891599986702, value=escape, duration=None>
+6.0247 	DATA 	Keypress: escape
+6.0744 	EXP 	Device response: <KeyPress from None: t=6.021891599986702, value=escape, duration=0.05113659999915399>
+6.0744 	EXP 	bci_circle: status = STOPPED
+6.0825 	EXP 	move_circle: autoDraw = False
+6.0825 	EXP 	mi_circle: autoDraw = False
+6.0826 	EXP 	bci_circle: status = STOPPED
+6.0893 	INFO 	saved data to 'D:\\STUDIUM\\TU\\Mirage91\\Brain-Computer Interface Conference\\Code\\data\\330067\\_bci_circle_2026-06-17_15h49.31.329.csv'
+6.0905 	INFO 	saved data to D:\STUDIUM\TU\Mirage91\Brain-Computer Interface Conference\Code\data\330067\_bci_circle_2026-06-17_15h49.31.329.psydat
+6.2808 	WARNING 	Stopping key buffers but this could be dangerous ifother keyboards rely on the same.

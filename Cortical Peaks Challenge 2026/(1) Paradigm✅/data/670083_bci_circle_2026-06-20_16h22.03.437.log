@@ -1,0 +1,499 @@
+17.6569 	INFO 	Loaded monitor calibration from ['2025_05_09 18:17']
+17.6744 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [2560, 1600]. Using actual size
+18.0818 	INFO 	Using renderer 'AMD Radeon(TM) Graphics' for graphics
+18.0819 	INFO 	OpenGL version supported by driver is 4..
+18.1811 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, autoLog=True, backendConf=UNKNOWN, backgroundFit=<method-wrapper '__getattribute__' of attributeSetter object at 0x00000197FBB6CC10>, backgroundImage=<method-wrapper '__getattribute__' of attributeSetter object at 0x00000197FBB6CBB0>, bitsMode=UNKNOWN, blendMode='avg', bpc=(8, 8, 8), color=array([0, 0, 0]), colorSpace='rgb', depthBits=8, fullscr=True, gamma=None, gammaErrorPolicy='raise', infoMsg=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x00000197FBC55BD0>, multiSample=False, name='window1', numSamples=2, pos=[np.float64(0.0), np.float64(0.0)], screen=0, size=array([2560, 1600]), stencilBits=0, stereo=False, title='PsychoPy', units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+18.1812 	EXP 	window1: backgroundImage = ''
+18.1812 	EXP 	window1: backgroundFit = 'none'
+18.5632 	EXP 	window1: Attempting to measure frame rate of screen (0) ...
+18.5633 	EXP 	window1: recordFrameIntervals = False
+18.7337 	EXP 	window1: recordFrameIntervals = True
+19.5671 	EXP 	window1: recordFrameIntervals = False
+19.5672 	EXP 	Screen (0) actual frame rate measured at 120.55Hz
+19.7321 	INFO 	keyboard.Keyboard is using ptb backend.
+19.7321 	EXP 	bci_circle: status = STARTED
+19.8812 	EXP 	Created text_pre_block = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_pre_block', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Press any key to start ...', units='height', win=Window(...), wrapWidth=1)
+19.8822 	EXP 	Created text_wait_screen = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_wait_screen', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='', units='height', win=Window(...), wrapWidth=1)
+19.8937 	EXP 	Created move_circle = ShapeStim(__class__=<class 'psychopy.visual.shape.ShapeStim'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=0.0, draggable=False, fillColor=array([0.9216, 0.9216, 0.9216]), fillColorSpace='rgb', fillRGB=array([0.9216, 0.9216, 0.9216]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=1.0, name='move_circle', opacity=1, ori=0.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+19.8966 	EXP 	Created mi_circle = ShapeStim(__class__=<class 'psychopy.visual.shape.ShapeStim'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-1.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([ 0.0902, -1.    , -1.    ]), lineColorSpace='rgb', lineRGB=array([ 0.0902, -1.    , -1.    ]), lineWidth=8.0, name='mi_circle', opacity=1, ori=0.0, pos=array([0., 0.]), size=array([0.15, 0.15]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+19.9060 	EXP 	Created image_mi = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, anchor=('center', 'center'), autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=-3.0, draggable=False, flipHoriz=np.False_, flipVert=np.False_, image='default.png', interpolate=True, mask=None, maskParams=None, name='image_mi', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([0.5, 0.5]), texRes=128.0, units='height', win=Window(...))
+19.9123 	EXP 	Created text_run_break = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_run_break', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Trial finished!', units='height', win=Window(...), wrapWidth=1)
+19.9174 	EXP 	Created text_post_run = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_post_run', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Run finished. Yupii!!', units='height', win=Window(...), wrapWidth=1)
+0.0333 	INFO 	Keyboard events cleared
+0.0332 	EXP 	text_pre_block: autoDraw = True
+0.4117 	EXP 	Device response: <KeyPress from None: t=0.34223969996673986, value=space, duration=None>
+0.4118 	EXP 	Device response: <KeyPress from None: t=0.34223969996673986, value=space, duration=0.06796310003846884>
+0.4120 	EXP 	New trial (rep=0, index=0): <Trial 0 (0 in rep 0) data={'thisN': 0, 'thisTrialN': 0, 'thisRepN': 0}>
+0.4129 	DATA 	Keypress: space
+0.4176 	EXP 	text_pre_block: autoDraw = False
+0.4176 	EXP 	text_wait_screen: autoDraw = True
+3.4126 	EXP 	Imported classes.csv as conditions, 4 conditions, 2 params
+3.4129 	EXP 	New trial (rep=0, index=0): <Trial 0 (0 in rep 0) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 0, 'thisTrialN': 0, 'thisRepN': 0}>
+3.4262 	EXP 	text_wait_screen: autoDraw = False
+3.4262 	EXP 	text_wait_screen: autoDraw = False
+3.4262 	EXP 	image_mi: image = 'pics/none.JPG'
+3.4262 	EXP 	move_circle: autoDraw = True
+3.4262 	EXP 	mi_circle: autoDraw = True
+3.4262 	EXP 	image_mi: autoDraw = True
+7.9119 	EXP 	New trial (rep=0, index=1): <Trial 1 (1 in rep 0) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 1, 'thisTrialN': 1, 'thisRepN': 0}>
+7.9205 	EXP 	move_circle: autoDraw = False
+7.9205 	EXP 	mi_circle: autoDraw = False
+7.9205 	EXP 	image_mi: autoDraw = False
+7.9205 	EXP 	move_circle: autoDraw = False
+7.9205 	EXP 	mi_circle: autoDraw = False
+7.9205 	EXP 	image_mi: autoDraw = False
+7.9205 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+7.9205 	EXP 	move_circle: autoDraw = True
+7.9205 	EXP 	mi_circle: autoDraw = True
+7.9205 	EXP 	image_mi: autoDraw = True
+12.4048 	EXP 	New trial (rep=1, index=2): <Trial 2 (2 in rep 1) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 2, 'thisTrialN': 2, 'thisRepN': 1}>
+12.4122 	EXP 	move_circle: autoDraw = False
+12.4122 	EXP 	mi_circle: autoDraw = False
+12.4122 	EXP 	image_mi: autoDraw = False
+12.4122 	EXP 	move_circle: autoDraw = False
+12.4122 	EXP 	mi_circle: autoDraw = False
+12.4122 	EXP 	image_mi: autoDraw = False
+12.4122 	EXP 	image_mi: image = 'pics/none.JPG'
+12.4122 	EXP 	move_circle: autoDraw = True
+12.4122 	EXP 	mi_circle: autoDraw = True
+12.4122 	EXP 	image_mi: autoDraw = True
+16.8967 	EXP 	New trial (rep=1, index=3): <Trial 3 (3 in rep 1) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 3, 'thisTrialN': 3, 'thisRepN': 1}>
+16.9038 	EXP 	move_circle: autoDraw = False
+16.9038 	EXP 	mi_circle: autoDraw = False
+16.9038 	EXP 	image_mi: autoDraw = False
+16.9038 	EXP 	move_circle: autoDraw = False
+16.9038 	EXP 	mi_circle: autoDraw = False
+16.9038 	EXP 	image_mi: autoDraw = False
+16.9038 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+16.9038 	EXP 	move_circle: autoDraw = True
+16.9038 	EXP 	mi_circle: autoDraw = True
+16.9038 	EXP 	image_mi: autoDraw = True
+21.3913 	EXP 	New trial (rep=2, index=4): <Trial 4 (4 in rep 2) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 4, 'thisTrialN': 4, 'thisRepN': 2}>
+21.3994 	EXP 	move_circle: autoDraw = False
+21.3994 	EXP 	mi_circle: autoDraw = False
+21.3994 	EXP 	image_mi: autoDraw = False
+21.3994 	EXP 	move_circle: autoDraw = False
+21.3994 	EXP 	mi_circle: autoDraw = False
+21.3994 	EXP 	image_mi: autoDraw = False
+21.3994 	EXP 	image_mi: image = 'pics/none.JPG'
+21.3994 	EXP 	move_circle: autoDraw = True
+21.3994 	EXP 	mi_circle: autoDraw = True
+21.3994 	EXP 	image_mi: autoDraw = True
+25.8832 	EXP 	New trial (rep=2, index=5): <Trial 5 (5 in rep 2) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 5, 'thisTrialN': 5, 'thisRepN': 2}>
+25.8908 	EXP 	move_circle: autoDraw = False
+25.8908 	EXP 	mi_circle: autoDraw = False
+25.8908 	EXP 	image_mi: autoDraw = False
+25.8908 	EXP 	move_circle: autoDraw = False
+25.8908 	EXP 	mi_circle: autoDraw = False
+25.8908 	EXP 	image_mi: autoDraw = False
+25.8908 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+25.8908 	EXP 	move_circle: autoDraw = True
+25.8908 	EXP 	mi_circle: autoDraw = True
+25.8908 	EXP 	image_mi: autoDraw = True
+30.3752 	EXP 	New trial (rep=3, index=6): <Trial 6 (6 in rep 3) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 6, 'thisTrialN': 6, 'thisRepN': 3}>
+30.3824 	EXP 	move_circle: autoDraw = False
+30.3824 	EXP 	mi_circle: autoDraw = False
+30.3824 	EXP 	image_mi: autoDraw = False
+30.3824 	EXP 	move_circle: autoDraw = False
+30.3824 	EXP 	mi_circle: autoDraw = False
+30.3824 	EXP 	image_mi: autoDraw = False
+30.3824 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+30.3824 	EXP 	move_circle: autoDraw = True
+30.3824 	EXP 	mi_circle: autoDraw = True
+30.3824 	EXP 	image_mi: autoDraw = True
+34.8666 	EXP 	New trial (rep=4, index=7): <Trial 7 (7 in rep 4) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 7, 'thisTrialN': 7, 'thisRepN': 4}>
+34.8743 	EXP 	move_circle: autoDraw = False
+34.8743 	EXP 	mi_circle: autoDraw = False
+34.8743 	EXP 	image_mi: autoDraw = False
+34.8743 	EXP 	move_circle: autoDraw = False
+34.8743 	EXP 	mi_circle: autoDraw = False
+34.8743 	EXP 	image_mi: autoDraw = False
+34.8743 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+34.8743 	EXP 	move_circle: autoDraw = True
+34.8743 	EXP 	mi_circle: autoDraw = True
+34.8743 	EXP 	image_mi: autoDraw = True
+39.3584 	EXP 	New trial (rep=0, index=8): <Trial 8 (8 in rep 0) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 8, 'thisTrialN': 8, 'thisRepN': 0}>
+39.3782 	EXP 	move_circle: autoDraw = False
+39.3782 	EXP 	mi_circle: autoDraw = False
+39.3782 	EXP 	image_mi: autoDraw = False
+39.3782 	EXP 	move_circle: autoDraw = False
+39.3782 	EXP 	mi_circle: autoDraw = False
+39.3782 	EXP 	image_mi: autoDraw = False
+39.3782 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+39.3782 	EXP 	move_circle: autoDraw = True
+39.3782 	EXP 	mi_circle: autoDraw = True
+39.3782 	EXP 	image_mi: autoDraw = True
+43.8658 	EXP 	New trial (rep=3, index=9): <Trial 9 (9 in rep 3) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 9, 'thisTrialN': 9, 'thisRepN': 3}>
+43.8732 	EXP 	move_circle: autoDraw = False
+43.8732 	EXP 	mi_circle: autoDraw = False
+43.8732 	EXP 	image_mi: autoDraw = False
+43.8732 	EXP 	move_circle: autoDraw = False
+43.8732 	EXP 	mi_circle: autoDraw = False
+43.8732 	EXP 	image_mi: autoDraw = False
+43.8732 	EXP 	image_mi: image = 'pics/none.JPG'
+43.8732 	EXP 	move_circle: autoDraw = True
+43.8732 	EXP 	mi_circle: autoDraw = True
+43.8732 	EXP 	image_mi: autoDraw = True
+48.3577 	EXP 	New trial (rep=4, index=10): <Trial 10 (10 in rep 4) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 10, 'thisTrialN': 10, 'thisRepN': 4}>
+48.3652 	EXP 	move_circle: autoDraw = False
+48.3652 	EXP 	mi_circle: autoDraw = False
+48.3652 	EXP 	image_mi: autoDraw = False
+48.3652 	EXP 	move_circle: autoDraw = False
+48.3652 	EXP 	mi_circle: autoDraw = False
+48.3652 	EXP 	image_mi: autoDraw = False
+48.3652 	EXP 	image_mi: image = 'pics/none.JPG'
+48.3652 	EXP 	move_circle: autoDraw = True
+48.3652 	EXP 	mi_circle: autoDraw = True
+48.3652 	EXP 	image_mi: autoDraw = True
+52.8495 	EXP 	New trial (rep=1, index=11): <Trial 11 (11 in rep 1) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 11, 'thisTrialN': 11, 'thisRepN': 1}>
+52.8569 	EXP 	move_circle: autoDraw = False
+52.8569 	EXP 	mi_circle: autoDraw = False
+52.8569 	EXP 	image_mi: autoDraw = False
+52.8569 	EXP 	move_circle: autoDraw = False
+52.8569 	EXP 	mi_circle: autoDraw = False
+52.8569 	EXP 	image_mi: autoDraw = False
+52.8569 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+52.8569 	EXP 	move_circle: autoDraw = True
+52.8569 	EXP 	mi_circle: autoDraw = True
+52.8569 	EXP 	image_mi: autoDraw = True
+57.3411 	EXP 	New trial (rep=5, index=12): <Trial 12 (12 in rep 5) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 12, 'thisTrialN': 12, 'thisRepN': 5}>
+57.3485 	EXP 	move_circle: autoDraw = False
+57.3485 	EXP 	mi_circle: autoDraw = False
+57.3485 	EXP 	image_mi: autoDraw = False
+57.3485 	EXP 	move_circle: autoDraw = False
+57.3485 	EXP 	mi_circle: autoDraw = False
+57.3485 	EXP 	image_mi: autoDraw = False
+57.3485 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+57.3485 	EXP 	move_circle: autoDraw = True
+57.3485 	EXP 	mi_circle: autoDraw = True
+57.3485 	EXP 	image_mi: autoDraw = True
+61.8329 	EXP 	New trial (rep=0, index=13): <Trial 13 (13 in rep 0) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 13, 'thisTrialN': 13, 'thisRepN': 0}>
+61.8533 	EXP 	move_circle: autoDraw = False
+61.8533 	EXP 	mi_circle: autoDraw = False
+61.8533 	EXP 	image_mi: autoDraw = False
+61.8533 	EXP 	move_circle: autoDraw = False
+61.8533 	EXP 	mi_circle: autoDraw = False
+61.8533 	EXP 	image_mi: autoDraw = False
+61.8533 	EXP 	image_mi: image = 'pics/feet.JPG'
+61.8533 	EXP 	move_circle: autoDraw = True
+61.8533 	EXP 	mi_circle: autoDraw = True
+61.8533 	EXP 	image_mi: autoDraw = True
+66.3396 	EXP 	New trial (rep=2, index=14): <Trial 14 (14 in rep 2) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 14, 'thisTrialN': 14, 'thisRepN': 2}>
+66.3473 	EXP 	move_circle: autoDraw = False
+66.3473 	EXP 	mi_circle: autoDraw = False
+66.3473 	EXP 	image_mi: autoDraw = False
+66.3473 	EXP 	move_circle: autoDraw = False
+66.3473 	EXP 	mi_circle: autoDraw = False
+66.3473 	EXP 	image_mi: autoDraw = False
+66.3473 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+66.3473 	EXP 	move_circle: autoDraw = True
+66.3473 	EXP 	mi_circle: autoDraw = True
+66.3473 	EXP 	image_mi: autoDraw = True
+70.8312 	EXP 	New trial (rep=6, index=15): <Trial 15 (15 in rep 6) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 15, 'thisTrialN': 15, 'thisRepN': 6}>
+70.8385 	EXP 	move_circle: autoDraw = False
+70.8385 	EXP 	mi_circle: autoDraw = False
+70.8385 	EXP 	image_mi: autoDraw = False
+70.8385 	EXP 	move_circle: autoDraw = False
+70.8385 	EXP 	mi_circle: autoDraw = False
+70.8385 	EXP 	image_mi: autoDraw = False
+70.8385 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+70.8385 	EXP 	move_circle: autoDraw = True
+70.8385 	EXP 	mi_circle: autoDraw = True
+70.8385 	EXP 	image_mi: autoDraw = True
+75.3232 	EXP 	New trial (rep=3, index=16): <Trial 16 (16 in rep 3) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 16, 'thisTrialN': 16, 'thisRepN': 3}>
+75.3306 	EXP 	move_circle: autoDraw = False
+75.3306 	EXP 	mi_circle: autoDraw = False
+75.3306 	EXP 	image_mi: autoDraw = False
+75.3306 	EXP 	move_circle: autoDraw = False
+75.3306 	EXP 	mi_circle: autoDraw = False
+75.3306 	EXP 	image_mi: autoDraw = False
+75.3306 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+75.3306 	EXP 	move_circle: autoDraw = True
+75.3306 	EXP 	mi_circle: autoDraw = True
+75.3306 	EXP 	image_mi: autoDraw = True
+79.8148 	EXP 	New trial (rep=7, index=17): <Trial 17 (17 in rep 7) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 17, 'thisTrialN': 17, 'thisRepN': 7}>
+79.8224 	EXP 	move_circle: autoDraw = False
+79.8224 	EXP 	mi_circle: autoDraw = False
+79.8224 	EXP 	image_mi: autoDraw = False
+79.8224 	EXP 	move_circle: autoDraw = False
+79.8224 	EXP 	mi_circle: autoDraw = False
+79.8224 	EXP 	image_mi: autoDraw = False
+79.8224 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+79.8224 	EXP 	move_circle: autoDraw = True
+79.8224 	EXP 	mi_circle: autoDraw = True
+79.8224 	EXP 	image_mi: autoDraw = True
+84.3064 	EXP 	New trial (rep=5, index=18): <Trial 18 (18 in rep 5) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 18, 'thisTrialN': 18, 'thisRepN': 5}>
+84.3145 	EXP 	move_circle: autoDraw = False
+84.3145 	EXP 	mi_circle: autoDraw = False
+84.3145 	EXP 	image_mi: autoDraw = False
+84.3145 	EXP 	move_circle: autoDraw = False
+84.3145 	EXP 	mi_circle: autoDraw = False
+84.3145 	EXP 	image_mi: autoDraw = False
+84.3145 	EXP 	image_mi: image = 'pics/none.JPG'
+84.3145 	EXP 	move_circle: autoDraw = True
+84.3145 	EXP 	mi_circle: autoDraw = True
+84.3145 	EXP 	image_mi: autoDraw = True
+88.7985 	EXP 	New trial (rep=8, index=19): <Trial 19 (19 in rep 8) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 19, 'thisTrialN': 19, 'thisRepN': 8}>
+88.8061 	EXP 	move_circle: autoDraw = False
+88.8061 	EXP 	mi_circle: autoDraw = False
+88.8061 	EXP 	image_mi: autoDraw = False
+88.8061 	EXP 	move_circle: autoDraw = False
+88.8061 	EXP 	mi_circle: autoDraw = False
+88.8061 	EXP 	image_mi: autoDraw = False
+88.8061 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+88.8061 	EXP 	move_circle: autoDraw = True
+88.8061 	EXP 	mi_circle: autoDraw = True
+88.8061 	EXP 	image_mi: autoDraw = True
+93.2907 	EXP 	New trial (rep=6, index=20): <Trial 20 (20 in rep 6) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 20, 'thisTrialN': 20, 'thisRepN': 6}>
+93.2977 	EXP 	move_circle: autoDraw = False
+93.2977 	EXP 	mi_circle: autoDraw = False
+93.2977 	EXP 	image_mi: autoDraw = False
+93.2977 	EXP 	move_circle: autoDraw = False
+93.2977 	EXP 	mi_circle: autoDraw = False
+93.2977 	EXP 	image_mi: autoDraw = False
+93.2977 	EXP 	image_mi: image = 'pics/none.JPG'
+93.2977 	EXP 	move_circle: autoDraw = True
+93.2977 	EXP 	mi_circle: autoDraw = True
+93.2977 	EXP 	image_mi: autoDraw = True
+97.7826 	EXP 	New trial (rep=1, index=21): <Trial 21 (21 in rep 1) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 21, 'thisTrialN': 21, 'thisRepN': 1}>
+97.7910 	EXP 	move_circle: autoDraw = False
+97.7910 	EXP 	mi_circle: autoDraw = False
+97.7910 	EXP 	image_mi: autoDraw = False
+97.7910 	EXP 	move_circle: autoDraw = False
+97.7910 	EXP 	mi_circle: autoDraw = False
+97.7910 	EXP 	image_mi: autoDraw = False
+97.7910 	EXP 	image_mi: image = 'pics/feet.JPG'
+97.7910 	EXP 	move_circle: autoDraw = True
+97.7910 	EXP 	mi_circle: autoDraw = True
+97.7910 	EXP 	image_mi: autoDraw = True
+102.2753 	EXP 	New trial (rep=2, index=22): <Trial 22 (22 in rep 2) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 22, 'thisTrialN': 22, 'thisRepN': 2}>
+102.2841 	EXP 	move_circle: autoDraw = False
+102.2841 	EXP 	mi_circle: autoDraw = False
+102.2841 	EXP 	image_mi: autoDraw = False
+102.2841 	EXP 	move_circle: autoDraw = False
+102.2841 	EXP 	mi_circle: autoDraw = False
+102.2841 	EXP 	image_mi: autoDraw = False
+102.2841 	EXP 	image_mi: image = 'pics/feet.JPG'
+102.2841 	EXP 	move_circle: autoDraw = True
+102.2841 	EXP 	mi_circle: autoDraw = True
+102.2841 	EXP 	image_mi: autoDraw = True
+106.7683 	EXP 	New trial (rep=4, index=23): <Trial 23 (23 in rep 4) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 23, 'thisTrialN': 23, 'thisRepN': 4}>
+106.7767 	EXP 	move_circle: autoDraw = False
+106.7767 	EXP 	mi_circle: autoDraw = False
+106.7767 	EXP 	image_mi: autoDraw = False
+106.7767 	EXP 	move_circle: autoDraw = False
+106.7767 	EXP 	mi_circle: autoDraw = False
+106.7767 	EXP 	image_mi: autoDraw = False
+106.7767 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+106.7767 	EXP 	move_circle: autoDraw = True
+106.7767 	EXP 	mi_circle: autoDraw = True
+106.7767 	EXP 	image_mi: autoDraw = True
+111.2609 	EXP 	New trial (rep=5, index=24): <Trial 24 (24 in rep 5) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 24, 'thisTrialN': 24, 'thisRepN': 5}>
+111.2686 	EXP 	move_circle: autoDraw = False
+111.2686 	EXP 	mi_circle: autoDraw = False
+111.2686 	EXP 	image_mi: autoDraw = False
+111.2686 	EXP 	move_circle: autoDraw = False
+111.2686 	EXP 	mi_circle: autoDraw = False
+111.2686 	EXP 	image_mi: autoDraw = False
+111.2686 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+111.2686 	EXP 	move_circle: autoDraw = True
+111.2686 	EXP 	mi_circle: autoDraw = True
+111.2686 	EXP 	image_mi: autoDraw = True
+115.7534 	EXP 	New trial (rep=6, index=25): <Trial 25 (25 in rep 6) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 25, 'thisTrialN': 25, 'thisRepN': 6}>
+115.7602 	EXP 	move_circle: autoDraw = False
+115.7602 	EXP 	mi_circle: autoDraw = False
+115.7602 	EXP 	image_mi: autoDraw = False
+115.7602 	EXP 	move_circle: autoDraw = False
+115.7602 	EXP 	mi_circle: autoDraw = False
+115.7602 	EXP 	image_mi: autoDraw = False
+115.7602 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+115.7602 	EXP 	move_circle: autoDraw = True
+115.7602 	EXP 	mi_circle: autoDraw = True
+115.7602 	EXP 	image_mi: autoDraw = True
+120.2450 	EXP 	New trial (rep=3, index=26): <Trial 26 (26 in rep 3) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 26, 'thisTrialN': 26, 'thisRepN': 3}>
+120.2533 	EXP 	move_circle: autoDraw = False
+120.2533 	EXP 	mi_circle: autoDraw = False
+120.2533 	EXP 	image_mi: autoDraw = False
+120.2533 	EXP 	move_circle: autoDraw = False
+120.2533 	EXP 	mi_circle: autoDraw = False
+120.2533 	EXP 	image_mi: autoDraw = False
+120.2533 	EXP 	image_mi: image = 'pics/feet.JPG'
+120.2533 	EXP 	move_circle: autoDraw = True
+120.2533 	EXP 	mi_circle: autoDraw = True
+120.2533 	EXP 	image_mi: autoDraw = True
+124.7371 	EXP 	New trial (rep=7, index=27): <Trial 27 (27 in rep 7) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 27, 'thisTrialN': 27, 'thisRepN': 7}>
+124.7446 	EXP 	move_circle: autoDraw = False
+124.7446 	EXP 	mi_circle: autoDraw = False
+124.7446 	EXP 	image_mi: autoDraw = False
+124.7446 	EXP 	move_circle: autoDraw = False
+124.7446 	EXP 	mi_circle: autoDraw = False
+124.7446 	EXP 	image_mi: autoDraw = False
+124.7446 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+124.7446 	EXP 	move_circle: autoDraw = True
+124.7446 	EXP 	mi_circle: autoDraw = True
+124.7446 	EXP 	image_mi: autoDraw = True
+129.2290 	EXP 	New trial (rep=4, index=28): <Trial 28 (28 in rep 4) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 28, 'thisTrialN': 28, 'thisRepN': 4}>
+129.2371 	EXP 	move_circle: autoDraw = False
+129.2371 	EXP 	mi_circle: autoDraw = False
+129.2371 	EXP 	image_mi: autoDraw = False
+129.2371 	EXP 	move_circle: autoDraw = False
+129.2371 	EXP 	mi_circle: autoDraw = False
+129.2371 	EXP 	image_mi: autoDraw = False
+129.2371 	EXP 	image_mi: image = 'pics/feet.JPG'
+129.2371 	EXP 	move_circle: autoDraw = True
+129.2371 	EXP 	mi_circle: autoDraw = True
+129.2371 	EXP 	image_mi: autoDraw = True
+133.7214 	EXP 	New trial (rep=8, index=29): <Trial 29 (29 in rep 8) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 29, 'thisTrialN': 29, 'thisRepN': 8}>
+133.7290 	EXP 	move_circle: autoDraw = False
+133.7290 	EXP 	mi_circle: autoDraw = False
+133.7290 	EXP 	image_mi: autoDraw = False
+133.7290 	EXP 	move_circle: autoDraw = False
+133.7290 	EXP 	mi_circle: autoDraw = False
+133.7290 	EXP 	image_mi: autoDraw = False
+133.7290 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+133.7290 	EXP 	move_circle: autoDraw = True
+133.7290 	EXP 	mi_circle: autoDraw = True
+133.7290 	EXP 	image_mi: autoDraw = True
+138.2131 	EXP 	New trial (rep=7, index=30): <Trial 30 (30 in rep 7) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 30, 'thisTrialN': 30, 'thisRepN': 7}>
+138.2204 	EXP 	move_circle: autoDraw = False
+138.2204 	EXP 	mi_circle: autoDraw = False
+138.2204 	EXP 	image_mi: autoDraw = False
+138.2204 	EXP 	move_circle: autoDraw = False
+138.2204 	EXP 	mi_circle: autoDraw = False
+138.2204 	EXP 	image_mi: autoDraw = False
+138.2204 	EXP 	image_mi: image = 'pics/none.JPG'
+138.2204 	EXP 	move_circle: autoDraw = True
+138.2204 	EXP 	mi_circle: autoDraw = True
+138.2204 	EXP 	image_mi: autoDraw = True
+142.7049 	EXP 	New trial (rep=5, index=31): <Trial 31 (31 in rep 5) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 31, 'thisTrialN': 31, 'thisRepN': 5}>
+142.7126 	EXP 	move_circle: autoDraw = False
+142.7126 	EXP 	mi_circle: autoDraw = False
+142.7126 	EXP 	image_mi: autoDraw = False
+142.7126 	EXP 	move_circle: autoDraw = False
+142.7126 	EXP 	mi_circle: autoDraw = False
+142.7126 	EXP 	image_mi: autoDraw = False
+142.7126 	EXP 	image_mi: image = 'pics/feet.JPG'
+142.7126 	EXP 	move_circle: autoDraw = True
+142.7126 	EXP 	mi_circle: autoDraw = True
+142.7126 	EXP 	image_mi: autoDraw = True
+147.1975 	EXP 	New trial (rep=6, index=32): <Trial 32 (32 in rep 6) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 32, 'thisTrialN': 32, 'thisRepN': 6}>
+147.2052 	EXP 	move_circle: autoDraw = False
+147.2052 	EXP 	mi_circle: autoDraw = False
+147.2052 	EXP 	image_mi: autoDraw = False
+147.2052 	EXP 	move_circle: autoDraw = False
+147.2052 	EXP 	mi_circle: autoDraw = False
+147.2052 	EXP 	image_mi: autoDraw = False
+147.2052 	EXP 	image_mi: image = 'pics/feet.JPG'
+147.2052 	EXP 	move_circle: autoDraw = True
+147.2052 	EXP 	mi_circle: autoDraw = True
+147.2052 	EXP 	image_mi: autoDraw = True
+151.6897 	EXP 	New trial (rep=7, index=33): <Trial 33 (33 in rep 7) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 33, 'thisTrialN': 33, 'thisRepN': 7}>
+151.6977 	EXP 	move_circle: autoDraw = False
+151.6977 	EXP 	mi_circle: autoDraw = False
+151.6977 	EXP 	image_mi: autoDraw = False
+151.6977 	EXP 	move_circle: autoDraw = False
+151.6977 	EXP 	mi_circle: autoDraw = False
+151.6977 	EXP 	image_mi: autoDraw = False
+151.6977 	EXP 	image_mi: image = 'pics/feet.JPG'
+151.6977 	EXP 	move_circle: autoDraw = True
+151.6977 	EXP 	mi_circle: autoDraw = True
+151.6977 	EXP 	image_mi: autoDraw = True
+156.1820 	EXP 	New trial (rep=8, index=34): <Trial 34 (34 in rep 8) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 34, 'thisTrialN': 34, 'thisRepN': 8}>
+156.1893 	EXP 	move_circle: autoDraw = False
+156.1893 	EXP 	mi_circle: autoDraw = False
+156.1893 	EXP 	image_mi: autoDraw = False
+156.1893 	EXP 	move_circle: autoDraw = False
+156.1893 	EXP 	mi_circle: autoDraw = False
+156.1893 	EXP 	image_mi: autoDraw = False
+156.1893 	EXP 	image_mi: image = 'pics/none.JPG'
+156.1893 	EXP 	move_circle: autoDraw = True
+156.1893 	EXP 	mi_circle: autoDraw = True
+156.1893 	EXP 	image_mi: autoDraw = True
+160.6736 	EXP 	New trial (rep=8, index=35): <Trial 35 (35 in rep 8) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 35, 'thisTrialN': 35, 'thisRepN': 8}>
+160.6810 	EXP 	move_circle: autoDraw = False
+160.6810 	EXP 	mi_circle: autoDraw = False
+160.6810 	EXP 	image_mi: autoDraw = False
+160.6810 	EXP 	move_circle: autoDraw = False
+160.6810 	EXP 	mi_circle: autoDraw = False
+160.6810 	EXP 	image_mi: autoDraw = False
+160.6810 	EXP 	image_mi: image = 'pics/feet.JPG'
+160.6810 	EXP 	move_circle: autoDraw = True
+160.6810 	EXP 	mi_circle: autoDraw = True
+160.6810 	EXP 	image_mi: autoDraw = True
+165.1655 	EXP 	New trial (rep=9, index=36): <Trial 36 (36 in rep 9) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 36, 'thisTrialN': 36, 'thisRepN': 9}>
+165.1729 	EXP 	move_circle: autoDraw = False
+165.1729 	EXP 	mi_circle: autoDraw = False
+165.1729 	EXP 	image_mi: autoDraw = False
+165.1729 	EXP 	move_circle: autoDraw = False
+165.1729 	EXP 	mi_circle: autoDraw = False
+165.1729 	EXP 	image_mi: autoDraw = False
+165.1729 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+165.1729 	EXP 	move_circle: autoDraw = True
+165.1729 	EXP 	mi_circle: autoDraw = True
+165.1729 	EXP 	image_mi: autoDraw = True
+169.6571 	EXP 	New trial (rep=9, index=37): <Trial 37 (37 in rep 9) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 37, 'thisTrialN': 37, 'thisRepN': 9}>
+169.6646 	EXP 	move_circle: autoDraw = False
+169.6646 	EXP 	mi_circle: autoDraw = False
+169.6646 	EXP 	image_mi: autoDraw = False
+169.6646 	EXP 	move_circle: autoDraw = False
+169.6646 	EXP 	mi_circle: autoDraw = False
+169.6646 	EXP 	image_mi: autoDraw = False
+169.6646 	EXP 	image_mi: image = 'pics/none.JPG'
+169.6646 	EXP 	move_circle: autoDraw = True
+169.6646 	EXP 	mi_circle: autoDraw = True
+169.6646 	EXP 	image_mi: autoDraw = True
+174.1491 	EXP 	New trial (rep=9, index=38): <Trial 38 (38 in rep 9) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 38, 'thisTrialN': 38, 'thisRepN': 9}>
+174.1568 	EXP 	move_circle: autoDraw = False
+174.1568 	EXP 	mi_circle: autoDraw = False
+174.1568 	EXP 	image_mi: autoDraw = False
+174.1568 	EXP 	move_circle: autoDraw = False
+174.1568 	EXP 	mi_circle: autoDraw = False
+174.1568 	EXP 	image_mi: autoDraw = False
+174.1568 	EXP 	image_mi: image = 'pics/feet.JPG'
+174.1568 	EXP 	move_circle: autoDraw = True
+174.1568 	EXP 	mi_circle: autoDraw = True
+174.1568 	EXP 	image_mi: autoDraw = True
+178.6412 	EXP 	New trial (rep=9, index=39): <Trial 39 (39 in rep 9) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 39, 'thisTrialN': 39, 'thisRepN': 9}>
+178.6487 	EXP 	move_circle: autoDraw = False
+178.6487 	EXP 	mi_circle: autoDraw = False
+178.6487 	EXP 	image_mi: autoDraw = False
+178.6487 	EXP 	move_circle: autoDraw = False
+178.6487 	EXP 	mi_circle: autoDraw = False
+178.6487 	EXP 	image_mi: autoDraw = False
+178.6487 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+178.6487 	EXP 	move_circle: autoDraw = True
+178.6487 	EXP 	mi_circle: autoDraw = True
+178.6487 	EXP 	image_mi: autoDraw = True
+183.1404 	INFO 	Keyboard events cleared
+183.1403 	EXP 	move_circle: autoDraw = False
+183.1403 	EXP 	mi_circle: autoDraw = False
+183.1403 	EXP 	image_mi: autoDraw = False
+183.1403 	EXP 	move_circle: autoDraw = False
+183.1403 	EXP 	mi_circle: autoDraw = False
+183.1403 	EXP 	image_mi: autoDraw = False
+183.1403 	EXP 	text_run_break: autoDraw = True
+212.1171 	EXP 	Device response: <KeyPress from None: t=212.11458900000434, value=space, duration=None>
+212.1172 	EXP 	New trial (rep=1, index=0): <Trial 1 (0 in rep 1) data={'thisN': 1, 'thisTrialN': 0, 'thisRepN': 1}>
+212.1178 	DATA 	Keypress: space
+212.1249 	EXP 	text_run_break: autoDraw = False
+212.1249 	EXP 	text_wait_screen: autoDraw = True
+212.1504 	EXP 	Device response: <KeyPress from None: t=212.11458900000434, value=space, duration=0.03403420001268387>
+215.1114 	EXP 	Imported classes.csv as conditions, 4 conditions, 2 params
+215.1117 	EXP 	New trial (rep=0, index=0): <Trial 0 (0 in rep 0) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 0, 'thisTrialN': 0, 'thisRepN': 0}>
+215.1187 	EXP 	text_wait_screen: autoDraw = False
+215.1187 	EXP 	text_wait_screen: autoDraw = False
+215.1187 	EXP 	image_mi: image = 'pics/none.JPG'
+215.1187 	EXP 	move_circle: autoDraw = True
+215.1187 	EXP 	mi_circle: autoDraw = True
+215.1187 	EXP 	image_mi: autoDraw = True
+216.1443 	EXP 	Device response: <KeyPress from None: t=216.1386538000079, value=escape, duration=None>
+216.1450 	DATA 	Keypress: escape
+216.2032 	EXP 	Device response: <KeyPress from None: t=216.1386538000079, value=escape, duration=0.061628099996596575>
+216.2032 	EXP 	bci_circle: status = STOPPED
+216.2110 	EXP 	move_circle: autoDraw = False
+216.2110 	EXP 	mi_circle: autoDraw = False
+216.2110 	EXP 	image_mi: autoDraw = False
+216.2111 	EXP 	bci_circle: status = STOPPED
+216.2231 	INFO 	saved data to 'D:\\STUDIUM\\TU\\Mirage91\\Brain-Computer Interface Conference\\Code\\data\\670083_bci_circle_2026-06-20_16h22.03.437.csv'
+216.2241 	INFO 	saved data to D:\STUDIUM\TU\Mirage91\Brain-Computer Interface Conference\Code\data\670083_bci_circle_2026-06-20_16h22.03.437.psydat
+216.9992 	WARNING 	Stopping key buffers but this could be dangerous ifother keyboards rely on the same.

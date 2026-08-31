@@ -1,0 +1,114 @@
+3.1739 	INFO 	Loaded monitor calibration from ['2025_05_09 18:17']
+3.1824 	WARNING 	User requested fullscreen with size [1024  768], but screen is actually [2560, 1600]. Using actual size
+3.2950 	INFO 	Using renderer 'AMD Radeon(TM) Graphics' for graphics
+3.2950 	INFO 	OpenGL version supported by driver is 4..
+3.3881 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, autoLog=True, backendConf=UNKNOWN, backgroundFit=<method-wrapper '__getattribute__' of attributeSetter object at 0x0000021EEE99BD00>, backgroundImage=<method-wrapper '__getattribute__' of attributeSetter object at 0x0000021EEE99BCA0>, bitsMode=UNKNOWN, blendMode='avg', bpc=(8, 8, 8), color=array([0, 0, 0]), colorSpace='rgb', depthBits=8, fullscr=True, gamma=None, gammaErrorPolicy='raise', infoMsg=UNKNOWN, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x0000021EEEAA0D00>, multiSample=False, name='window1', numSamples=2, pos=[np.float64(0.0), np.float64(0.0)], screen=0, size=array([2560, 1600]), stencilBits=0, stereo=False, title='PsychoPy', units='height', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+3.3881 	EXP 	window1: backgroundImage = ''
+3.3881 	EXP 	window1: backgroundFit = 'none'
+3.7614 	EXP 	window1: Attempting to measure frame rate of screen (0) ...
+3.7614 	EXP 	window1: recordFrameIntervals = False
+3.9059 	EXP 	window1: recordFrameIntervals = True
+4.7390 	EXP 	window1: recordFrameIntervals = False
+4.7390 	EXP 	Screen (0) actual frame rate measured at 119.98Hz
+4.9044 	INFO 	keyboard.Keyboard is using ptb backend.
+4.9044 	EXP 	bci_circle: status = STARTED
+4.9436 	EXP 	Created text_pre_block = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_pre_block', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Press any key to start ...', units='height', win=Window(...), wrapWidth=1)
+4.9446 	EXP 	Created text_wait_screen = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_wait_screen', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='', units='height', win=Window(...), wrapWidth=1)
+4.9479 	EXP 	Created move_circle = ShapeStim(__class__=<class 'psychopy.visual.shape.ShapeStim'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=0.0, draggable=False, fillColor=array([0.9216, 0.9216, 0.9216]), fillColorSpace='rgb', fillRGB=array([0.9216, 0.9216, 0.9216]), interpolate=True, lineColor=array([1., 1., 1.]), lineColorSpace='rgb', lineRGB=array([1, 1, 1]), lineWidth=1.0, name='move_circle', opacity=1, ori=0.0, pos=array([0., 0.]), size=array([1., 1.]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+4.9505 	EXP 	Created mi_circle = ShapeStim(__class__=<class 'psychopy.visual.shape.ShapeStim'>, anchor=('center', 'center'), autoDraw=False, autoLog=True, closeShape=True, color=method-wrapper(...), colorSpace='rgb', contrast=None, depth=-1.0, draggable=False, fillColor=array([0, 0, 0]), fillColorSpace='rgb', fillRGB=array([0, 0, 0]), interpolate=True, lineColor=array([ 1., -1., -1.]), lineColorSpace='rgb', lineRGB=array([ 1., -1., -1.]), lineWidth=8.0, name='mi_circle', opacity=1, ori=0.0, pos=array([0., 0.]), size=array([0.15, 0.15]), units='height', vertices=ndarray(...), win=Window(...), windingRule=None)
+4.9540 	EXP 	Created image_mi = ImageStim(__class__=<class 'psychopy.visual.image.ImageStim'>, anchor=('center', 'center'), autoLog=True, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=-3.0, draggable=False, flipHoriz=np.False_, flipVert=np.False_, image='default.png', interpolate=True, mask=None, maskParams=None, name='image_mi', opacity=1.0, ori=0.0, pos=array([0., 0.]), size=array([0.5, 0.5]), texRes=128.0, units='height', win=Window(...))
+4.9596 	EXP 	Created text_run_break = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_run_break', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Trial finished!', units='height', win=Window(...), wrapWidth=1)
+4.9637 	EXP 	Created text_post_run = TextStim(__class__=<class 'psychopy.visual.text.TextStim'>, alignHoriz=method-wrapper(...), alignText='center', alignVert=method-wrapper(...), anchorHoriz='center', anchorVert='center', antialias=True, autoDraw=False, autoLog=True, bold=False, color=array([1., 1., 1.]), colorSpace='rgb', contrast=1.0, depth=0.0, draggable=False, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=np.float64(0.05), italic=False, languageStyle='LTR', name='text_post_run', opacity=1, ori=0.0, pos=array([0., 0.]), rgb=UNKNOWN, text='Run finished. Yupii!!', units='height', win=Window(...), wrapWidth=1)
+0.0337 	INFO 	Keyboard events cleared
+0.0336 	EXP 	text_pre_block: autoDraw = True
+1.7885 	EXP 	Device response: <KeyPress from None: t=1.7757397000095807, value=space, duration=None>
+1.7888 	EXP 	New trial (rep=0, index=0): <Trial 0 (0 in rep 0) data={'thisN': 0, 'thisTrialN': 0, 'thisRepN': 0}>
+1.7897 	DATA 	Keypress: space
+1.7937 	EXP 	text_pre_block: autoDraw = False
+1.7937 	EXP 	text_wait_screen: autoDraw = True
+1.8864 	EXP 	Device response: <KeyPress from None: t=1.7757397000095807, value=space, duration=0.10638179996749386>
+4.7832 	EXP 	Imported classes.csv as conditions, 4 conditions, 2 params
+4.7836 	EXP 	New trial (rep=0, index=0): <Trial 0 (0 in rep 0) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 0, 'thisTrialN': 0, 'thisRepN': 0}>
+4.7986 	EXP 	text_wait_screen: autoDraw = False
+4.7986 	EXP 	text_wait_screen: autoDraw = False
+4.7986 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+4.7986 	EXP 	move_circle: autoDraw = True
+4.7986 	EXP 	mi_circle: autoDraw = True
+4.7986 	EXP 	image_mi: autoDraw = True
+11.4491 	EXP 	New trial (rep=1, index=1): <Trial 1 (1 in rep 1) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 1, 'thisTrialN': 1, 'thisRepN': 1}>
+11.4561 	EXP 	move_circle: autoDraw = False
+11.4561 	EXP 	mi_circle: autoDraw = False
+11.4561 	EXP 	image_mi: autoDraw = False
+11.4561 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+11.4561 	EXP 	move_circle: autoDraw = True
+11.4561 	EXP 	mi_circle: autoDraw = True
+11.4561 	EXP 	image_mi: autoDraw = True
+18.1074 	EXP 	New trial (rep=2, index=2): <Trial 2 (2 in rep 2) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 2, 'thisTrialN': 2, 'thisRepN': 2}>
+18.1147 	EXP 	move_circle: autoDraw = False
+18.1147 	EXP 	mi_circle: autoDraw = False
+18.1147 	EXP 	image_mi: autoDraw = False
+18.1147 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+18.1147 	EXP 	move_circle: autoDraw = True
+18.1147 	EXP 	mi_circle: autoDraw = True
+18.1147 	EXP 	image_mi: autoDraw = True
+24.8191 	EXP 	New trial (rep=0, index=3): <Trial 3 (3 in rep 0) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 3, 'thisTrialN': 3, 'thisRepN': 0}>
+24.8265 	EXP 	move_circle: autoDraw = False
+24.8265 	EXP 	mi_circle: autoDraw = False
+24.8265 	EXP 	image_mi: autoDraw = False
+24.8265 	EXP 	image_mi: image = 'pics/none.JPG'
+24.8265 	EXP 	move_circle: autoDraw = True
+24.8265 	EXP 	mi_circle: autoDraw = True
+24.8265 	EXP 	image_mi: autoDraw = True
+31.4780 	EXP 	New trial (rep=0, index=4): <Trial 4 (4 in rep 0) data={'pic_name': 'pics/feet.JPG', 'class_mi': 'feet', 'thisN': 4, 'thisTrialN': 4, 'thisRepN': 0}>
+31.4871 	EXP 	move_circle: autoDraw = False
+31.4871 	EXP 	mi_circle: autoDraw = False
+31.4871 	EXP 	image_mi: autoDraw = False
+31.4871 	EXP 	image_mi: image = 'pics/feet.JPG'
+31.4871 	EXP 	move_circle: autoDraw = True
+31.4871 	EXP 	mi_circle: autoDraw = True
+31.4871 	EXP 	image_mi: autoDraw = True
+38.1382 	EXP 	New trial (rep=0, index=5): <Trial 5 (5 in rep 0) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 5, 'thisTrialN': 5, 'thisRepN': 0}>
+38.1456 	EXP 	move_circle: autoDraw = False
+38.1456 	EXP 	mi_circle: autoDraw = False
+38.1456 	EXP 	image_mi: autoDraw = False
+38.1456 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+38.1456 	EXP 	move_circle: autoDraw = True
+38.1456 	EXP 	mi_circle: autoDraw = True
+38.1456 	EXP 	image_mi: autoDraw = True
+44.7969 	EXP 	New trial (rep=1, index=6): <Trial 6 (6 in rep 1) data={'pic_name': 'pics/right_hand.JPG', 'class_mi': ' right_hand', 'thisN': 6, 'thisTrialN': 6, 'thisRepN': 1}>
+44.8041 	EXP 	move_circle: autoDraw = False
+44.8041 	EXP 	mi_circle: autoDraw = False
+44.8041 	EXP 	image_mi: autoDraw = False
+44.8041 	EXP 	image_mi: image = 'pics/right_hand.JPG'
+44.8041 	EXP 	move_circle: autoDraw = True
+44.8041 	EXP 	mi_circle: autoDraw = True
+44.8041 	EXP 	image_mi: autoDraw = True
+51.4556 	EXP 	New trial (rep=3, index=7): <Trial 7 (7 in rep 3) data={'pic_name': 'pics/left_hand.JPG', 'class_mi': 'left_hand', 'thisN': 7, 'thisTrialN': 7, 'thisRepN': 3}>
+51.4630 	EXP 	move_circle: autoDraw = False
+51.4630 	EXP 	mi_circle: autoDraw = False
+51.4630 	EXP 	image_mi: autoDraw = False
+51.4630 	EXP 	image_mi: image = 'pics/left_hand.JPG'
+51.4630 	EXP 	move_circle: autoDraw = True
+51.4630 	EXP 	mi_circle: autoDraw = True
+51.4630 	EXP 	image_mi: autoDraw = True
+58.1140 	EXP 	New trial (rep=1, index=8): <Trial 8 (8 in rep 1) data={'pic_name': 'pics/none.JPG', 'class_mi': 'rest', 'thisN': 8, 'thisTrialN': 8, 'thisRepN': 1}>
+58.1215 	EXP 	move_circle: autoDraw = False
+58.1215 	EXP 	mi_circle: autoDraw = False
+58.1215 	EXP 	image_mi: autoDraw = False
+58.1215 	EXP 	image_mi: image = 'pics/none.JPG'
+58.1215 	EXP 	move_circle: autoDraw = True
+58.1215 	EXP 	mi_circle: autoDraw = True
+58.1215 	EXP 	image_mi: autoDraw = True
+61.5474 	EXP 	Device response: <KeyPress from None: t=61.54367440001806, value=lshift, duration=None>
+61.6225 	EXP 	Device response: <KeyPress from None: t=61.54367440001806, value=lshift, duration=0.07706629997119308>
+61.8391 	EXP 	Device response: <KeyPress from None: t=61.836286399979144, value=escape, duration=None>
+61.8399 	DATA 	Keypress: escape
+61.9058 	EXP 	Device response: <KeyPress from None: t=61.836286399979144, value=escape, duration=0.06769659998826683>
+61.9058 	EXP 	bci_circle: status = STOPPED
+61.9136 	EXP 	move_circle: autoDraw = False
+61.9136 	EXP 	mi_circle: autoDraw = False
+61.9136 	EXP 	image_mi: autoDraw = False
+61.9137 	EXP 	bci_circle: status = STOPPED
+61.9169 	INFO 	saved data to 'D:\\STUDIUM\\TU\\Mirage91\\Brain-Computer Interface Conference\\Code\\data\\412639_bci_circle_2026-06-20_17h10.01.514.csv'
+61.9178 	INFO 	saved data to D:\STUDIUM\TU\Mirage91\Brain-Computer Interface Conference\Code\data\412639_bci_circle_2026-06-20_17h10.01.514.psydat
+62.0519 	WARNING 	Stopping key buffers but this could be dangerous ifother keyboards rely on the same.
