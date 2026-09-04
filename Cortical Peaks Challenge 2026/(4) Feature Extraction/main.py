@@ -1,22 +1,21 @@
 """Main where I run the programm in the necessary steps.
 Done by Michael with Python 3.14.7. For packages refer to the imports"""
 
-import mne
 import matplotlib.pyplot as plt
+import mne
 import numpy as np
 import pyxdf
+from feature_extraction import (
+    extract_bandpower_features,
+    extract_csp_features,
+)
+from preprocess import preprocess_run
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import accuracy_score, classification_report
+from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-
-from preprocess import preprocess_run
-from feature_extraction import (
-    extract_csp_features,
-    extract_bandpower_features,
-)
 
 # ============================================================
 # CONFIG — Just set True or False to enable/disable

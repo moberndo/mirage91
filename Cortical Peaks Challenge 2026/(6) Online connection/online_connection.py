@@ -4,32 +4,33 @@ Authors: Mirage 91
 """
 
 ''' PYTHON IMPORTS '''
-from pylsl import StreamInfo, StreamOutlet
-from OnlineProcessingPipeline import OnlineProcessingPipeline as pipe
+import pickle  #saving/loading Python objects to disk
 import time
-from pathlib import Path
-import pickle
+from pathlib import Path  #build file paths
+
 import numpy as np
-from numpy import ones, append, array, copy, reshape, expand_dims, zeros_like, zeros
-import torch
-from torch import load, from_numpy
-import scipy.signal as signal
+import scipy.signal as signal  #build filters
+import torch  #deep leaning framework to run EEGNet classifier
+from numpy import append, array, copy, expand_dims, ones, reshape, zeros, zeros_like
+from OnlineProcessingPipeline import OnlineProcessingPipeline as pipe
+from pylsl import StreamInfo, StreamOutlet  #for streaming time-synched data
+from torch import from_numpy, load
+
 # import classifier ...
-...
 ''' CUSTOM IMPORTS'''
 from classifier_functions import EEGNet
 
 
 ''' SETTINGS '''
-classifier_params = Path(__file__).parent / 'classifier_params' /  '4classes_eegnet_model.pth'# 'lmda_params.pt'
-eeg_fs = 100 # 512 # Hz
+# classifier_params = Path(__file__).parent / 'classifier_params' /  '4classes_eegnet_model.pth'# 'lmda_params.pt'
+eeg_fs = 500
 cutoff_freq1 = [0.5, 30] # Hz
-filterorder = 4
-fs_downsampled = 2
-ftype = 'butter' # Butterworth
+# filterorder = 4
+# fs_downsampled = 2
+# ftype = 'butter' # Butterworth
 btype = 'band'  # or 'lowpass', 'highpass'
-channel_count = 4  # for the classifier stream according to the game and predictor
-length_of_window = 0.5  # second window moving average
+channel_count = 3  # for the classifier stream according to the game and predictor
+# length_of_window = 0.5  # second window moving average
 t_timeout = 5
 
 ''' ################################################################## '''
@@ -52,11 +53,11 @@ def notch_filter(w0, Q, fs):
     b, a = signal.iirnotch(w0=w0, Q=Q, fs=fs)
     return b, a
 
-b_bp, a_bp = butter_bandpass(cutoff_freq1[0], cutoff_freq1[1], fs=500, order=4)
-bp_state = signal.lfilter_zi(b_bp, a_bp)
-bp_state = np.tile(bp_state, (32, 1))
+b_bp, a_bp = butter_bandpass(cutoff_freq1[0], cutoff_freq1[1], fs=500, order=4) #butterworth filter
+bp_state = signal.lfilter_zi(b_bp, a_bp) #computes initial filter state -> "warmed up"
+bp_state = np.tile(bp_state, (32, 1)) #copies initial state once per channel
 
-b_notch, a_notch = notch_filter(w0=50, Q=30, fs=500)
+b_notch, a_notch = notch_filter(w0=50, Q=30, fs=500) #notch filter
 notch_state = signal.lfilter_zi(b_notch, a_notch)
 notch_state = np.tile(notch_state, (32, 1))
 
