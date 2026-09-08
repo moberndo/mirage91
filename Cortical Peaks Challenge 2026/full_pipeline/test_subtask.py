@@ -14,6 +14,7 @@ Run:
     python test_subtask.py --classes feet rest
 
     python test_subtask.py --classes right_hand rest \
+        --recordings-dir data
       --features FBCSP Riemann \
       --classifiers LDA "sLDA (shrinkage)" "SVM (linear)" "SVM (RBF)"
 
@@ -87,14 +88,14 @@ def run_hierarchical_benchmark(X, y, groups, sfreq, ch_names, tmin,
                 y_gate_train = y_gate_all[train_idx]
                 y_true_test = y_true_3class[test_idx]
 
-                # Stage 1: gate, fit fresh on this training fold
+
                 gate_pipe = Pipeline([
                     ("features", build_feature_extractors(sfreq, ch_names, tmin)[feat_name]),
                     ("classifier", get_classifiers()[clf_name]),
                 ])
                 gate_pipe.fit(X_train, y_gate_train)
 
-                # Stage 2: conditional, fit only on this fold's active trials
+
                 active_train_mask = y_gate_train == 1
                 X_train_active = X_train[active_train_mask]
                 y_train_active_raw = y_all[train_idx][active_train_mask]
@@ -106,7 +107,6 @@ def run_hierarchical_benchmark(X, y, groups, sfreq, ch_names, tmin,
                 ])
                 cond_pipe.fit(X_train_active, y_cond_train)
 
-                # Predict + combine on the held-out fold
                 gate_probs = gate_pipe.predict_proba(X_test)
                 p_active = gate_probs[:, list(gate_pipe.classes_).index(1)]
                 p_rest = gate_probs[:, list(gate_pipe.classes_).index(0)]
