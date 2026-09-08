@@ -1,73 +1,76 @@
-"""Filtering, ICA artifact rejection, and re-referencing (CAR or Laplacian/CSD).
-
-Pipeline order matters here:
+"""
+Pipeline order:
 1. notch + band-pass
-2. common-average reference (CAR) - required before ICA: ICLabel was trained
-   on extended-infomax ICA of average-referenced, 1-100 Hz data, and its
-   accuracy is "negatively impacted" (per its own docstring) if you skip this.
-3. fit ICA (picard, extended - a fast equivalent of extended infomax) and
-   reject components via ICLabel.
-4. apply ICA to remove the rejected components.
-5. final re-reference: keep CAR, or switch to a surface Laplacian (CSD).
-   CSD is reference-invariant (it's built from potential *differences*), so
-   it's safe to apply after CAR + ICA without "undoing" step 2 first.
+2. common-average reference (CAR)
+3. (optional, off by default) ICA fit + ICLabel rejection + apply
+4. final re-reference: keep CAR, or switch to a surface Laplacian (CSD)
 
-On ICA thresholds: reference/eeg_drift/preprocess.py's ICLABEL_THRESHOLDS were
-manually tuned by that project's supervisor against one specific subject's
-64-channel PhysioNet-style recordings (see reference/scripts/run_ica_review.py
-+ derive_thresholds.py) - they have no basis for this 32-channel mirage91
-montage/subject and would just be guessing dressed up as precision. Instead
-this uses ICLabel's own documented default: reject a component if its
-*predicted* (argmax) label is a non-brain artifact class, no per-class
-probability threshold. "other" is kept deliberately - it means ICLabel isn't
-confident enough to call it an artifact, so treating it as one would be
-guessing in the opposite direction. If a pilot/supervisor later reviews
-excluded components (see the "ICA components" section in each report) and
-disagrees case-by-case, that's the point at which per-class thresholds
-tuned to this montage would actually mean something - not before.
+Artifact-epoch rejection (reject_artifact_epochs) happens downstream, after
+epoching — see run_pipeline.py. Is used instead of the ICA so we still have 
+some type of artifact handling 
 """
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import mne
 import pandas as pd
 
-MAINS_FREQ_HZ = 50.0  # Graz, Austria
+MAINS_FREQ_HZ = 50.0  # Hz Graz, Austria
 
-# ICLabel's 7 classes; components predicted as one of these are excluded.
-# "brain" and "other" are kept - see module docstring.
-NON_BRAIN_LABELS = {"muscle artifact", "eye blink", "heart beat", "line noise", "channel noise"}
+#but not all that important since we dont use ICA and can't classify that specific without it 
+NON_BRAIN_LABELS = {
+    "muscle artifact",
+    "eye blink",
+    "heart beat",
+    "line noise",
+    "channel noise",
+}
 
 
 def filter_raw(
     raw: mne.io.BaseRaw,
     notch_freq: float = MAINS_FREQ_HZ,
     highpass_freq: float = 1.0,
-    lowpass_freq: float | None = 100.0,
+    lowpass_freq: float | None = 40.0,
+    order: int = 4,
 ) -> mne.io.BaseRaw:
-    """Notch + band-pass filter. Zero-phase IIR (Butterworth), matching the
-    reference eeg_drift.preprocess convention (reference/eeg_drift/preprocess.py)."""
-    raw = raw.copy()
+    """Notch + band-pass filter, CAUSAL (via scipy lfilter, not filtfilt).
 
-    raw.notch_filter(
-        freqs=[notch_freq],
-        notch_widths=2.0,
-        method="iir",
-        iir_params=dict(order=2, ftype="butter"),
-        verbose=False,
-    )
-    raw.filter(
-        l_freq=highpass_freq,
-        h_freq=lowpass_freq,
-        method="iir",
-        iir_params=dict(order=4, ftype="butter"),
-        verbose=False,
-    )
-    return raw
+    Changed from zero-phase to causal on purpose: this makes the offline
+    filter response identical to online. Zero-phase filtering (what MNE's raw.filter/
+    notch_filter do by default) uses future samples via filtfilt — great for
+    offline-only analysis, but it's literally impossible to replicate live,
+    since a live sample stream has no "future" to filter with. This removes
+    that offline/online mismatch entirely, at the cost of a small phase
+    delay (inherent to causal filtering, unavoidable, and also present in
+    your eventual online system regardless).
+    """
+    import numpy as np
+    import scipy.signal as sps
 
+    fs = raw.info["sfreq"]
+    data = raw.get_data()
 
-def fit_ica(raw: mne.io.BaseRaw, random_state: int = 42) -> mne.preprocessing.ICA:
-    """Fit ICA using Picard with extended-Infomax-equivalent settings."""
+    b_notch, a_notch = sps.iirnotch(w0=notch_freq, Q=30, fs=fs)
+    data = sps.lfilter(b_notch, a_notch, data, axis=-1)
+
+    nyquist = fs / 2
+    low = highpass_freq / nyquist
+    if lowpass_freq is not None:
+        high = lowpass_freq / nyquist
+        b_bp, a_bp = sps.butter(order, [low, high], btype="band")
+    else:
+        b_bp, a_bp = sps.butter(order, low, btype="high")
+    data = sps.lfilter(b_bp, a_bp, data, axis=-1)
+
+    raw_filtered = mne.io.RawArray(data, raw.info.copy(), verbose=False)
+    raw_filtered.set_annotations(raw.annotations)
+    return raw_filtered
+
+#not that important since we shouldn't use it
+def fit_ica(raw: mne.io.BaseRaw, random_state: int = 67) -> mne.preprocessing.ICA:
     ica = mne.preprocessing.ICA(
         n_components=None,
         method="picard",
@@ -79,12 +82,9 @@ def fit_ica(raw: mne.io.BaseRaw, random_state: int = 42) -> mne.preprocessing.IC
     return ica
 
 
-def label_and_reject_components(raw: mne.io.BaseRaw, ica: mne.preprocessing.ICA) -> pd.DataFrame:
-    """Run ICLabel and mark non-brain/other components as bad (ica.exclude).
-
-    Returns a per-component table (label, probability, excluded) for the
-    report - the ICA section is meant to be human-checkable, not a black box.
-    """
+def label_and_reject_components(
+    raw: mne.io.BaseRaw, ica: mne.preprocessing.ICA
+) -> pd.DataFrame:
     from mne_icalabel import label_components
 
     ic_labels = label_components(raw, ica, method="iclabel")
@@ -105,10 +105,6 @@ def label_and_reject_components(raw: mne.io.BaseRaw, ica: mne.preprocessing.ICA)
 
 
 def apply_reference(raw: mne.io.BaseRaw, method: str = "car") -> mne.io.BaseRaw:
-    """Final re-reference: 'car' (already applied pre-ICA, kept as-is) or
-    'laplacian' (surface Laplacian / current source density - sharpens
-    focal, lateralized activity like C3/C4 motor ERD that CAR tends to blur
-    with sparse coverage; see reference/Plan.pdf's WP3 re-referencing note)."""
     if method == "car":
         return raw
     if method == "laplacian":
@@ -121,15 +117,22 @@ def preprocess_run(
     reference: str = "car",
     notch_freq: float = MAINS_FREQ_HZ,
     highpass_freq: float = 1.0,
-    lowpass_freq: float | None = 100.0,
-    random_state: int = 42,
-) -> tuple[mne.io.BaseRaw, mne.preprocessing.ICA, pd.DataFrame]:
-    """Full chain: filter -> CAR -> ICA fit/reject/apply -> final reference.
+    lowpass_freq: float | None = 40.0,
+    random_state: int = 67,
+    use_ica: bool = False,
+) -> tuple[mne.io.BaseRaw, mne.preprocessing.ICA | None, pd.DataFrame | None]:
+    """Full chain: filter -> CAR -> (optional ICA fit/reject/apply) -> final reference.
 
-    Returns (clean_raw, ica, component_labels_df).
+    use_ica defaults to False (see module docstring). 
+    Returns (clean_raw, ica_or_None,
+    component_labels_df_or_None).
     """
     raw = filter_raw(raw, notch_freq, highpass_freq, lowpass_freq)
     raw.set_eeg_reference("average", verbose=False)
+
+    if not use_ica:
+        raw_clean = apply_reference(raw, method=reference)
+        return raw_clean, None, None
 
     ica = fit_ica(raw, random_state=random_state)
     labels_df = label_and_reject_components(raw, ica)
@@ -139,3 +142,66 @@ def preprocess_run(
 
     raw_clean = apply_reference(raw_clean, method=reference)
     return raw_clean, ica, labels_df
+
+
+# ---------------------------------------------------------------------------
+# Fit-once / apply-only helpers for the eventual online pipeline.
+# Not used by the offline benchmark below
+# ---------------------------------------------------------------------------
+
+def fit_and_save_ica(
+    raw: mne.io.BaseRaw, save_path: str | Path, random_state: int = 67
+) -> tuple[mne.preprocessing.ICA, pd.DataFrame]:
+    """Fit ICA once on a calibration recording and persist it (unmixing
+    matrix + rejected-component list) so it can be reused without refitting."""
+    ica = fit_ica(raw, random_state=random_state)
+    labels_df = label_and_reject_components(raw, ica)
+    ica.save(save_path, overwrite=True, verbose=False)
+    return ica, labels_df
+
+
+def load_and_apply_ica(raw: mne.io.BaseRaw, load_path: str | Path) -> mne.io.BaseRaw:
+    """Apply a previously-fit, previously-reviewed ICA solution to new data.
+    No refitting, no component review — this is the online-safe operation."""
+    ica = mne.preprocessing.read_ica(load_path, verbose=False)
+    raw_clean = raw.copy()
+    ica.apply(raw_clean, verbose=False)
+    return raw_clean
+
+
+# ---------------------------------------------------------------------------
+# ICA replacement: causal, online-safe artifact rejection at the epoch level.
+# Satisfies TE-3 (the rule that we need artifact rejection) without the offline/online 
+# drift problem ICA has.
+# ---------------------------------------------------------------------------
+
+def reject_artifact_epochs(
+    X: "object",  # np.ndarray, (n_epochs, n_channels, n_times)
+    #very conservative thresholds, we dont want to throw away too much data since we have very little data
+    ptp_threshold: float = 400e-6,
+    grad_threshold: float = 25e-6,
+    max_bad_channel_frac: float = 0.5,
+) -> "object":
+    """Flag epochs likely contaminated by blinks/muscle/movement artifacts,
+    using only information inside that epoch's own window (so it behaves
+    identically offline and online).
+
+    this checks per-channel, then rejects the epoch only if more
+    than max_bad_channel_frac of channels are bad. 
+
+    - ptp_threshold: max allowed peak-to-peak amplitude per channel (volts).
+    - grad_threshold: max allowed sample-to-sample jump per channel (volts).
+    - max_bad_channel_frac: epoch is rejected only if more than this
+      fraction of channels exceed either threshold.
+
+    Returns a boolean mask, shape (n_epochs,), True = keep.
+    """
+    import numpy as np
+
+    X = np.asarray(X)
+    ptp = X.max(axis=-1) - X.min(axis=-1)            # (n_epochs, n_channels)
+    grad = np.abs(np.diff(X, axis=-1)).max(axis=-1)  # (n_epochs, n_channels)
+
+    channel_bad = (ptp > ptp_threshold) | (grad > grad_threshold)
+    bad_frac = channel_bad.mean(axis=-1)
+    return bad_frac <= max_bad_channel_frac
