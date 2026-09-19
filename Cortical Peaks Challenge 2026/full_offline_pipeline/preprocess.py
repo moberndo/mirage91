@@ -60,7 +60,7 @@ def filter_raw(
     nyquist = fs / 2
     low = highpass_freq / nyquist
     high = lowpass_freq / nyquist
-    sos_bp = sps.butter(order, [low, high], btype="band")
+    sos_bp = sps.butter(order, [low, high], btype="band", output="sos")
     data = sps.sosfilt(sos_bp, data, axis=-1)
 
     raw_filtered = mne.io.RawArray(data, raw.info.copy(), verbose=False)

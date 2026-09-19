@@ -54,7 +54,7 @@ def load_xdf_to_raw(filepath: str | Path) -> mne.io.BaseRaw:
     if "FP2" in raw.ch_names:
         raw.rename_channels({"FP2": "Fp2"})
 
-    montage = mne.channels.make_standard_montage("standard_1020")
+    montage = mne.channels.make_standard_montage("colin27_1020")
     raw.set_montage(montage, on_missing="warn", verbose=False)
 
     if marker_stream is not None:

@@ -38,7 +38,7 @@ DEFAULT_BANDPOWER_CLASS_CONFIGS = {
 #we are being very very conservative here but we dont have a lot of data so we want to make sure we dont throw away too much data
 DEFAULT_PTP_THRESHOLD = 400e-6
 DEFAULT_GRAD_THRESHOLD = 20e-6
-DEFAULT_MAX_BAD_CHANNEL_FRAC = 0.5
+DEFAULT_MAX_BAD_CHANNEL_FRAC = 0.3
 
 #default for the ERDS features
 DEFAULT_FREQUENCY_BANDS = [
@@ -54,12 +54,13 @@ DEFAULT_ERDS_SPECS = [
 #you can run the pipeline using a few different settings, run the following in the terminal: 
 
 #python run_pipeline.py --recordings-dir recordings --cv group 
+#python run_pipeline.py --recordings-dir /home/micha/Projects/offline/recordings --cv group --downsample-freq 125
+
 #this will run the pipeline on the recordings in the recordings directory, using group cross-validation (i.e. each session is a separate fold).
 
 #python run_pipeline.py --recordings-dir recordings --cv stratified 
 #this will run the pipeline on the recordings in the recordings directory, using stratified cross-validation (i.e. each fold has a similar distribution of classes, but sessions can be split across folds).
 
-#you might want to clear cache 
 
 #add downsampling to see if it helps with performance
 
@@ -72,25 +73,8 @@ def load_and_preprocess_all(
     ptp_threshold: float = DEFAULT_PTP_THRESHOLD,
     grad_threshold: float = DEFAULT_GRAD_THRESHOLD,
     max_bad_channel_frac: float = DEFAULT_MAX_BAD_CHANNEL_FRAC,
-    cache_dir: Path | None = None,
+
 ):
-
-    if cache_dir is not None:
-        import hashlib
-        import pickle
-
-        cache_dir = Path(cache_dir)
-
-
-        cache_dir.mkdir(parents=True, exist_ok=True)
-        key = (f"{recordings_dir}|{use_ica}|{reference}|{reject_artifacts}|"
-               f"{ptp_threshold}|{grad_threshold}|{max_bad_channel_frac}|"
-               )
-        cache_file = cache_dir / (hashlib.md5(key.encode()).hexdigest() + ".pkl")
-        if cache_file.exists():
-            print(f"Loading cached preprocessed data from {cache_file}")
-            with open(cache_file, "rb") as f:
-                return pickle.load(f)
 
     runs = find_xdf_runs(recordings_dir)
     if not runs:
@@ -142,10 +126,6 @@ def load_and_preprocess_all(
     groups = np.concatenate(group_list, axis=0)
     result = (X, y, groups, sfreq, ch_names)
 
-    if cache_dir is not None:
-        with open(cache_file, "wb") as f:
-            pickle.dump(result, f)
-        print(f"Cached preprocessed data to {cache_file}")
 
     return result
 
@@ -248,11 +228,6 @@ def main():
     parser.add_argument("--max-bad-channel-frac", type=float, default=DEFAULT_MAX_BAD_CHANNEL_FRAC,
                          help="reject epoch only if more than this fraction of channels are bad")
 
-    parser.add_argument("--cache-dir", type=Path, default=Path(".pipeline_cache"),
-                         help="cache preprocessed data here; re-runs with the same "
-                              "settings skip straight to feature/classifier testing. "
-                              "Pass --no-cache to disable.")
-    parser.add_argument("--no-cache", action="store_true")
     parser.add_argument("--n-splits", type=int, default=5)
     parser.add_argument("--features", type=str, nargs="+", default=None,
                          help="only run these feature extractors, e.g. "
@@ -274,15 +249,15 @@ def main():
         args.recordings_dir,
         use_ica=args.use_ica,
         reference=args.reference,
+        downsample_freq=args.downsample_freq,
         reject_artifacts=not args.no_artifact_rejection,
         ptp_threshold=args.ptp_threshold,
         grad_threshold=args.grad_threshold,
         max_bad_channel_frac=args.max_bad_channel_frac,
 
-        cache_dir=None if args.no_cache else args.cache_dir,
     )
     print(f"\nPooled dataset: {X.shape[0]} trials, {X.shape[1]} channels, "
-          f"sfreq={sfreq} Hz, {len(np.unique(groups))} sessions")
+          f"sfreq={sfreq} Hz, downsampled to {args.downsample_freq} Hz, {len(np.unique(groups))} sessions")
 
     run_benchmark(X, y, groups, sfreq, ch_names, tmin=DEFAULT_TMIN,
                   n_splits=args.n_splits, cv_strategy=args.cv,
