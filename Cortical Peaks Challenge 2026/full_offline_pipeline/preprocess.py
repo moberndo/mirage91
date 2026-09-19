@@ -52,21 +52,21 @@ def filter_raw(
     fs = raw.info["sfreq"]
     data = raw.get_data()
 
-    b_notch, a_notch = sps.iirnotch(w0=notch_freq, Q=30, fs=fs)
+    #notch 
+    b_notch, a_notch = sps.iirnotch(w0=notch_freq, Q=30, fs=fs) #Q is quality factor, determines the width of the notch filter
     data = sps.lfilter(b_notch, a_notch, data, axis=-1)
 
+    # band-pass
     nyquist = fs / 2
     low = highpass_freq / nyquist
-    if lowpass_freq is not None:
-        high = lowpass_freq / nyquist
-        b_bp, a_bp = sps.butter(order, [low, high], btype="band")
-    else:
-        b_bp, a_bp = sps.butter(order, low, btype="high")
-    data = sps.lfilter(b_bp, a_bp, data, axis=-1)
+    high = lowpass_freq / nyquist
+    sos_bp = sps.butter(order, [low, high], btype="band")
+    data = sps.sosfilt(sos_bp, data, axis=-1)
 
     raw_filtered = mne.io.RawArray(data, raw.info.copy(), verbose=False)
     raw_filtered.set_annotations(raw.annotations)
     return raw_filtered
+
 
 #not that important since we shouldn't use it
 def fit_ica(raw: mne.io.BaseRaw, random_state: int = 67) -> mne.preprocessing.ICA:
@@ -109,6 +109,28 @@ def apply_reference(raw: mne.io.BaseRaw, method: str = "car") -> mne.io.BaseRaw:
     if method == "laplacian":
         return mne.preprocessing.compute_current_source_density(raw, verbose=False)
     raise ValueError(f"unknown reference method: {method!r} (expected 'car' or 'laplacian')")
+
+
+def downsample_raw(
+    raw: mne.io.BaseRaw,
+    target_sfreq: float,
+    events: "np.ndarray | None" = None,
+):
+    """Downsample raw data to target_sfreq. If events is given (sample-index
+    array from load_xdf_run), it is rescaled in lockstep so event timing
+    stays correct — resampling raw and events separately will desync them.
+    """
+    if target_sfreq >= raw.info["sfreq"]:
+        raise ValueError(
+            f"Target sampling frequency ({target_sfreq} Hz) must be lower than "
+            f"current sampling frequency ({raw.info['sfreq']} Hz)."
+        )
+    if events is not None:
+        raw_downsampled, events_downsampled = raw.copy().resample(
+            target_sfreq, npad="auto", events=events, verbose=False
+        )
+        return raw_downsampled, events_downsampled
+    return raw.copy().resample(target_sfreq, npad="auto", verbose=False)
 
 
 def preprocess_run(

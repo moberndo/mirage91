@@ -22,7 +22,7 @@ from features import (
     RiemannianFeatures,
 )
 from io_utils import EVENT_ID, find_xdf_runs, load_xdf_run
-from preprocess import preprocess_run, reject_artifact_epochs
+from preprocess import preprocess_run, reject_artifact_epochs, downsample_raw
 
 
 #here come a few default settings for the pipeline 
@@ -39,10 +39,6 @@ DEFAULT_BANDPOWER_CLASS_CONFIGS = {
 DEFAULT_PTP_THRESHOLD = 400e-6
 DEFAULT_GRAD_THRESHOLD = 20e-6
 DEFAULT_MAX_BAD_CHANNEL_FRAC = 0.5
-
-# Frontal channels sit right above the eyes and pick up blink/eye-movement
-# artifacts strongly. Set to [] to keep them.
-DEFAULT_EXCLUDE_CHANNELS = [] #in the future when we have more data maybe we can exclude Fp1/Fp2
 
 #default for the ERDS features
 DEFAULT_FREQUENCY_BANDS = [
@@ -65,24 +61,19 @@ DEFAULT_ERDS_SPECS = [
 
 #you might want to clear cache 
 
+#add downsampling to see if it helps with performance
+
 def load_and_preprocess_all(
     recordings_dir: Path,
     use_ica: bool,
     reference: str,
+    downsample_freq: float | None = None,
     reject_artifacts: bool = True,
     ptp_threshold: float = DEFAULT_PTP_THRESHOLD,
     grad_threshold: float = DEFAULT_GRAD_THRESHOLD,
     max_bad_channel_frac: float = DEFAULT_MAX_BAD_CHANNEL_FRAC,
-    exclude_channels: list[str] | None = None,
     cache_dir: Path | None = None,
 ):
-    """
-    exclude_channels: channel names to drop after the eeg-only pick (e.g.
-    Fp1/Fp2 for blink contamination). Defaults to DEFAULT_EXCLUDE_CHANNELS
-    if not given; pass [] explicitly to keep every EEG channel.
-    """
-    if exclude_channels is None:
-        exclude_channels = DEFAULT_EXCLUDE_CHANNELS
 
     if cache_dir is not None:
         import hashlib
@@ -90,11 +81,11 @@ def load_and_preprocess_all(
 
         cache_dir = Path(cache_dir)
 
-        
+
         cache_dir.mkdir(parents=True, exist_ok=True)
         key = (f"{recordings_dir}|{use_ica}|{reference}|{reject_artifacts}|"
                f"{ptp_threshold}|{grad_threshold}|{max_bad_channel_frac}|"
-               f"{sorted(exclude_channels)}")
+               )
         cache_file = cache_dir / (hashlib.md5(key.encode()).hexdigest() + ".pkl")
         if cache_file.exists():
             print(f"Loading cached preprocessed data from {cache_file}")
@@ -115,14 +106,10 @@ def load_and_preprocess_all(
         raw_clean.pick("eeg")  # drop accelerometer/misc channels: not brain signal,
                                # and TE-2 bans using non-neural channels for control
 
-        if exclude_channels:
-            present = [ch for ch in exclude_channels if ch in raw_clean.ch_names]
-            missing = [ch for ch in exclude_channels if ch not in raw_clean.ch_names]
-            if missing:
-                print(f"    NOTE: exclude_channels {missing} not found in this "
-                      f"session's channels, skipping those")
-            if present:
-                raw_clean.drop_channels(present)
+
+        #before epoching you can downsample here 
+        if downsample_freq is not None: 
+            raw_clean, events = downsample_raw(raw_clean, downsample_freq, events=events)
 
         epochs = make_epochs(raw_clean, events, event_id=EVENT_ID)
         if sfreq is None:
@@ -168,6 +155,7 @@ def build_feature_extractors(sfreq: float, ch_names: list[str], tmin: float) -> 
         "Bandpower": BandpowerFeatures(DEFAULT_BANDPOWER_CLASS_CONFIGS, ch_names, sfreq, tmin),
         "CSP": CSPFeatures(n_components=6, sfreq=sfreq, tmin=tmin),
         "FBCSP": FilterBankCSP(bands=DEFAULT_FREQUENCY_BANDS, sfreq=sfreq, tmin=tmin),
+        "Riemann": RiemannianFeatures(bands=DEFAULT_FREQUENCY_BANDS, sfreq=sfreq, tmin=tmin), 
         "ERDS": ERDSFeatures(
             specs=DEFAULT_ERDS_SPECS,
             ch_names=ch_names,
@@ -176,10 +164,7 @@ def build_feature_extractors(sfreq: float, ch_names: list[str], tmin: float) -> 
             baseline_window=DEFAULT_BASELINE or (-2.0, 0.0),
         ),
     }
-    if HAS_PYRIEMANN:
-        extractors["Riemann"] = RiemannianFeatures(bands=DEFAULT_FREQUENCY_BANDS, sfreq=sfreq, tmin=tmin)
-    else:
-        print("NOTE: pyriemann not installed, skipping Riemannian tangent-space features.")
+
     return extractors
 
 
@@ -262,10 +247,7 @@ def main():
                          help="max sample-to-sample jump per channel per epoch, in volts")
     parser.add_argument("--max-bad-channel-frac", type=float, default=DEFAULT_MAX_BAD_CHANNEL_FRAC,
                          help="reject epoch only if more than this fraction of channels are bad")
-    parser.add_argument("--exclude-channels", type=str, nargs="*", default=None,
-                         help="channel names to drop (e.g. --exclude-channels Fp1 Fp2). "
-                              f"Defaults to {DEFAULT_EXCLUDE_CHANNELS}. Pass "
-                              "--exclude-channels with no names to keep every channel.")
+
     parser.add_argument("--cache-dir", type=Path, default=Path(".pipeline_cache"),
                          help="cache preprocessed data here; re-runs with the same "
                               "settings skip straight to feature/classifier testing. "
@@ -283,6 +265,9 @@ def main():
                               "'stratified' = plain StratifiedKFold, ignores session "
                               "boundaries — usually scores higher but partly via "
                               "session leakage, see run_benchmark docstring/comment.")
+    parser.add_argument("--downsample-freq", type=float, default=None,
+                     help="resample to this rate (Hz) before epoching. "
+                          "Default: no downsampling, keep native 500 Hz.")
     args = parser.parse_args()
 
     X, y, groups, sfreq, ch_names = load_and_preprocess_all(
@@ -293,7 +278,7 @@ def main():
         ptp_threshold=args.ptp_threshold,
         grad_threshold=args.grad_threshold,
         max_bad_channel_frac=args.max_bad_channel_frac,
-        exclude_channels=args.exclude_channels,
+
         cache_dir=None if args.no_cache else args.cache_dir,
     )
     print(f"\nPooled dataset: {X.shape[0]} trials, {X.shape[1]} channels, "
