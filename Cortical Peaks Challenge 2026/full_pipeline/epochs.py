@@ -7,13 +7,6 @@ each re-epoching the raw data with their own tmin/tmax, which is what the two
 original scripts did independently (and part of why they couldn't be merged
 without modification).
 
-ASSUMPTION (flagged for you to check): DEFAULT_TMIN/TMAX/BASELINE below are
-my best guess at values that satisfy every feature extractor:
-- bandpower/CSP (feature_extraction.py) want samples from 1.0-3.0s post-cue
-- ERDS (train_classifier_rest_vs_movement.py) wants a baseline window,
-  defaulting to (-2.0, 0.0), plus a post-cue window up to 3.5s
-So the epoch needs to span at least -2.0 to 3.5s. Adjust if your paradigm's
-cue timing / trial length differs.
 """
 
 from __future__ import annotations

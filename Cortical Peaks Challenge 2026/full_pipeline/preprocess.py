@@ -30,8 +30,8 @@ NON_BRAIN_LABELS = {
 def filter_raw(
     raw: mne.io.BaseRaw,
     notch_freq: float = MAINS_FREQ_HZ,
-    highpass_freq: float = 1.0,
-    lowpass_freq: float | None = 60.0,
+    highpass_freq: float = 0.5,
+    lowpass_freq: float | None = 40.0,
     order: int = 4,
 ) -> mne.io.BaseRaw:
     """Notch + band-pass filter, CAUSAL (via scipy lfilter, not filtfilt).
@@ -115,7 +115,7 @@ def preprocess_run(
     raw: mne.io.BaseRaw,
     reference: str = "car",
     notch_freq: float = MAINS_FREQ_HZ,
-    highpass_freq: float = 1.0,
+    highpass_freq: float = 0.5,
     lowpass_freq: float | None = 40.0,
     random_state: int = 67,
     use_ica: bool = False,
@@ -143,11 +143,6 @@ def preprocess_run(
     return raw_clean, ica, labels_df
 
 
-# ---------------------------------------------------------------------------
-# Fit-once / apply-only helpers for the eventual online pipeline.
-# Not used by the offline benchmark below
-# ---------------------------------------------------------------------------
-
 def fit_and_save_ica(
     raw: mne.io.BaseRaw, save_path: str | Path, random_state: int = 67
 ) -> tuple[mne.preprocessing.ICA, pd.DataFrame]:
@@ -168,10 +163,7 @@ def load_and_apply_ica(raw: mne.io.BaseRaw, load_path: str | Path) -> mne.io.Bas
     return raw_clean
 
 
-# ---------------------------------------------------------------------------
 # ICA replacement: causal, online-safe artifact rejection at the epoch level.
-# Satisfies TE-3 without the offline/online drift problem ICA has.
-# ---------------------------------------------------------------------------
 
 def reject_artifact_epochs(
     X: "object",  # np.ndarray, (n_epochs, n_channels, n_times)
@@ -186,9 +178,6 @@ def reject_artifact_epochs(
 
     this checks per-channel, then rejects the epoch only if more
     than max_bad_channel_frac of channels are bad. 
-
-    Rejection is kept (not disabled) to satisfy competition rule
-    TE-3, which requires some form of artifact handling.
 
     - ptp_threshold: max allowed peak-to-peak amplitude per channel (volts).
     - grad_threshold: max allowed sample-to-sample jump per channel (volts).
